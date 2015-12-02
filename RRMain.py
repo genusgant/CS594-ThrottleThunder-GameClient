@@ -203,7 +203,6 @@ class World(DirectObject):
         # Network Setup
         # self.cManager.startConnection()
         # taskMgr.add(self.enterGame, "EnterGame")
-
         # taskMgr.add(self.usePowerup, "usePowerUp")
         self.accept('bullet-contact-added', self.onContactAdded)
         # Physics -- Terrain
@@ -241,7 +240,9 @@ class World(DirectObject):
         self.vehicleContainer.addBoost()
 
     def resetCar(self):
-        self.vehicleContainer.reset()
+        if self.vehicleContainer.chassisNP.getZ() > -30 : self.vehicleContainer.reset()
+        else: self.rm.resetCar()
+        
 
     def createPowerups(self):
         self.powerups = PowerupManager(self, self.vehicleContainer)
@@ -643,19 +644,18 @@ class World(DirectObject):
                 playerVehicle = Vehicle(self.world, createPlayerUsername)#,
                                     #    pos=LVecBase3(vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z),
                                     #    isCurrentPlayer=isCurrentPlayer, carId=vehicleAttributes.carId)
-                if self.login == createPlayerUsername:
+                if isCurrentPlayer:
                     self.vehicleContainer = playerVehicle
                     print "I AM: ", createPlayerUsername
                     # this will be set by the server
                     self.howmanyplayers = len(self.manager.playerList)
                     
                     self.rm = RaceMaster(self, self.vehicleContainer, 1, self.howmanyplayers, 0)
-                    sp = self.rm.getStartingPoints()
-                    pos = sp[0]
-                    self.vehicleContainer.chassisNP.setPosHpr(pos[0], pos[1], pos[2], pos[3], pos[4], pos[5])
+                    self.rm.setStartingPos(0)
+                    
                 
                 # print "Creating other players: ", createPlayerUsername, "@ ", vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z
-                self.vehiclelist[createPlayerUsername] = playerVehicle
+                else: self.vehiclelist[createPlayerUsername] = playerVehicle
 
 
               

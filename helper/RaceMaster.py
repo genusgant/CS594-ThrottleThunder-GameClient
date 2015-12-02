@@ -155,6 +155,28 @@ class RaceMaster():
             sp.append(self.applyOffset(self.checkpointlocs[1], xoff, yoff, i))
         return sp
     
+    def getStartingPoint(self, i):
+        xoff = self.startingOffsets[0]
+        yoff = self.startingOffsets[1]
+        return self.applyOffset(self.checkpointlocs[1], xoff, yoff, i)
+        
+    
+    def setStartingPos(self, i):
+        p = self.getStartingPoint(i)
+        self.setPosHpr(p)
+        
+    def setPosHpr(self, ph):
+        self.vehicleContainer.chassisNP.setPosHpr(ph[0], ph[1], ph[2], ph[3], ph[4], ph[5])
+                    
+    def resetCar(self):
+        l = self.lastcp
+        if l > len(self.checkpointlocs) - 2:
+            l = l-2
+        pos = self.checkpointlocs[self.lastcp]
+        to = self.checkpointlocs[self.lastcp - 1]
+        p = [pos.x, pos.y, pos.z, angleTo(pos, to), 0, 0]
+        self.setPosHpr(p)
+
 #     def generateSections(self):
 #         points = self.trackPoints
 #         s = len(points)-1
