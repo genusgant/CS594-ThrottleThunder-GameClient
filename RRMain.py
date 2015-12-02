@@ -397,6 +397,8 @@ class World(DirectObject):
     def onContactAdded(self, node1, node2):
         isMyCarColliding = False
         if node1.notifiesCollisions() and node2.notifiesCollisions():
+            # play collision sound with another player
+            self.audio.play_collision()
             isEnable = True
             list2 = [node1.getName(), node2.getName()]
             for nodeSet in self.nodeFilterList:
