@@ -70,6 +70,7 @@ class World(DirectObject):
         self.taskMgr.doMethodLater(self.conf['heartbeatRate'], self.doHeartbeat, "heartbeat")
         
         self.taskMgr.doMethodLater(1, self.doSong, "song")
+
         
         self.screenType = "login"
         self.screen.run()

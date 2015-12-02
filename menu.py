@@ -565,6 +565,8 @@ class Menu(ShowBase):
     def launchRRGame(self):
         print "Launching RR GAME"
         self.World.ServerConnection.activeStatus = False
+        self.World.taskMgr.remove("song")
+        self.World.main_theme.stop()
         self.unloadScreen()
         self.rrworld = RRWorldManager(self)
         # data might be require to send to DD world
