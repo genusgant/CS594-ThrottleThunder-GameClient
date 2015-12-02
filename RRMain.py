@@ -496,6 +496,7 @@ class World(DirectObject):
         dt = globalClock.getDt()
         # print "Type: ", type(self.vehicleContainer)
         forces = self.vehicleContainer.processInput(inputState, dt)
+        self.audio.process_input(inputState)
         moving = self.vehicleContainer.chassisNP.getPos()
         if forces != None and forces[0] != None and forces[1] != None and forces[2] != None:
             # fake move for other playera
