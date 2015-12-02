@@ -45,7 +45,7 @@ class Checkpoint(object):
             self.cpnode.setPos(pos.x, pos.y, pos.z)
             self.cpnode.setH(h)
 
-            #main.bulletWorld.attachGhost(self.cpnode.node())
+            main.world.attachGhost(self.cpnode.node())
             
 
          
