@@ -16,8 +16,8 @@ import math
 class Vehicle(object):
     COUNT = 0
 
-    def __init__(self, bulletWorld, pos, username):
-        self.world = bulletWorld
+    def __init__(self, world, username, pos=[0, 0, 0, 0, 0, 0]):
+        self.world = world
         self.acceleration = 1.5
         self.brakeForce = 100.0
         self.mass = 800
@@ -27,10 +27,11 @@ class Vehicle(object):
         self.max_speed = 150  # km
         self.armor = 100
         self.health = 100
-        self.friction = 0.2 #slows the car when not accelerating (based on the brakes)
+        self.friction = 0.2  # slows the car when not accelerating (based on the brakes)
         self.maxWheelForce = 2000.0
         self.maxWheelForce = 2000.0  # acceleration
         self.power_ups = [0, 0, 0]
+        self.speed = 0.0
 
         self.specs = {"mass": self.mass, "maxWheelForce": self.maxWheelForce, "brakeForce": self.brakeForce,
                       "steeringLock": 45.0}
@@ -45,11 +46,12 @@ class Vehicle(object):
 
         self.currentPowerups = {"powerup1": None, "powerup2": None, "powerup3": None}
 
-        self.setupVehicle(bulletWorld)
+        self.setupVehicle(world)
 
         COUNT = 1
 
     def processInput(self, inputState, dt):
+        self.speed = self.vehicle.getCurrentSpeedKmHour()
         # print self.chassisNP.getPos()
         # print self.chassisNP.getH()
         """Use controls to update the player's car"""
@@ -109,8 +111,9 @@ class Vehicle(object):
 
         brakeForce = self.vehicleControlState["brake"] * self.specs["brakeForce"]
 
-        #slows down vehicle when no key pressed
-        if self.vehicleControlState["throttle"] != 1.0 and  self.vehicleControlState["reverse"] != 1.0 and self.vehicleControlState["brake"] != 1.0:
+        # slows down vehicle when no key pressed
+        if self.vehicleControlState["throttle"] != 1.0 and self.vehicleControlState["reverse"] != 1.0 and \
+                        self.vehicleControlState["brake"] != 1.0:
             brakeForce = self.friction * self.specs["brakeForce"]
 
         # Update steering
@@ -126,7 +129,7 @@ class Vehicle(object):
         self.vehicle.setBrake(brakeForce, 2);
         self.vehicle.setBrake(brakeForce, 3);
 
-    def setupVehicle(self, bulletWorld):
+    def setupVehicle(self, world):
         # Chassis
         shape = BulletBoxShape(Vec3(1, 2.2, 0.5))
         ts = TransformState.makePos(Point3(0, 0, .7))
@@ -140,15 +143,15 @@ class Vehicle(object):
         self.chassisNP.node().setMass(800.0)
         self.chassisNP.node().setDeactivationEnabled(False)
 
-        bulletWorld.attachRigidBody(self.chassisNP.node())
+        world.attachRigidBody(self.chassisNP.node())
 
         # np.node().setCcdSweptSphereRadius(1.0)
         # np.node().setCcdMotionThreshold(1e-7)
 
         # Vehicle
-        self.vehicle = BulletVehicle(bulletWorld, self.chassisNP.node())
+        self.vehicle = BulletVehicle(world, self.chassisNP.node())
         self.vehicle.setCoordinateSystem(ZUp)
-        bulletWorld.attachVehicle(self.vehicle)
+        world.attachVehicle(self.vehicle)
 
         self.carNP = loader.loadModel('models/batmobile-chassis.egg')
         # self.yugoNP.setScale(.7)
@@ -223,6 +226,3 @@ class Vehicle(object):
         elif powerupIndex == 2 and self.currentPowerups["powerup3"] is not None:
             self.currentPowerups["powerup3"].useAbility()
             self.currentPowerups["powerup3"] = None
-
-
-

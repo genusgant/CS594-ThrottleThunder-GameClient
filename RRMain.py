@@ -24,7 +24,7 @@ from panda3d.core import NodePath
 from panda3d.bullet import BulletWorld, BulletTriangleMesh, BulletTriangleMeshShape, BulletDebugNode, BulletPlaneShape, \
     BulletRigidBodyNode, BulletBoxShape
 from Track import Track
-from Vehicle import Vehicle
+from rrVehicle import Vehicle
 from Camera import Camera
 from SkyDome import SkyDome
 from Powerups import PowerupManager
@@ -623,9 +623,9 @@ class World(DirectObject):
                 isCurrentPlayer = False
                 if self.login == createPlayerUsername:
                     isCurrentPlayer = True
-                playerVehicle = Vehicle(self, createPlayerUsername,
-                                        pos=LVecBase3(vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z),
-                                        isCurrentPlayer=isCurrentPlayer, carId=vehicleAttributes.carId)
+                playerVehicle = Vehicle(self.world, createPlayerUsername)#,
+                                    #    pos=LVecBase3(vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z),
+                                    #    isCurrentPlayer=isCurrentPlayer, carId=vehicleAttributes.carId)
                 if self.login == createPlayerUsername:
                     self.vehicleContainer = playerVehicle
                     print "I AM: ", createPlayerUsername
