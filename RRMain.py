@@ -579,6 +579,8 @@ class World(DirectObject):
         #   dlight.setColor(Vec4(0.7, 0.7, 0.7, 1))
         #   dlightNP = render.attachNewNode(dlight)
 
+
+
         render.clearLight()
         render.setLight(alightNP)
         #   render.setLight(dlightNP)
@@ -589,6 +591,18 @@ class World(DirectObject):
         sphere.reparentTo(plnp)
 
         render.setShaderAuto()
+
+        # directional light
+        directionalLight = DirectionalLight("directionalLight")
+        directionalLight.setDirection(Vec3(-5, -5, -5))
+        directionalLight.setColor(Vec4(1, 1, 1, 1))
+        directionalLight.setSpecularColor(Vec4(1, 1, 1, 1))
+        directionalLight2 = DirectionalLight("directionalLight2")
+        directionalLight2.setDirection(Vec3(5, 5, -5))
+        directionalLight2.setColor(Vec4(1, 1, 1, 1))
+        directionalLight2.setSpecularColor(Vec4(1, 1, 1, 1))
+        render.setLight(render.attachNewNode(directionalLight))
+        render.setLight(render.attachNewNode(directionalLight2))
 
     def stepPhysicsWorld(self):
         dt = globalClock.getDt()
