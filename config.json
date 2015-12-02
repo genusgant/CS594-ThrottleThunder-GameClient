@@ -1,0 +1,8 @@
+{
+	"host":"csproject.calstatela.edu",
+	"port":9252,
+	"heartbeatRate":0.01,
+	"sendMoveRate": 0.01,
+	"bypassServer":false,
+	"jumpTo":1
+}

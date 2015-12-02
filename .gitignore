@@ -1,0 +1,10 @@
+.project
+.settings
+.build
+.classpath
+.pydevproject
+*.pyc
+*.class
+/bin/
+/.idea/
+*.xml
