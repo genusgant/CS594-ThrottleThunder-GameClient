@@ -566,6 +566,7 @@ class Menu(ShowBase):
         print "Launching RR GAME"
         self.World.ServerConnection.activeStatus = False
         self.World.taskMgr.remove("song")
+        self.usersChatFrame.destroy()
         self.World.main_theme.stop()
         self.unloadScreen()
         self.rrworld = RRWorldManager(self)
