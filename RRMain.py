@@ -45,6 +45,8 @@ from threading import Thread
 from time import sleep
 import re
 from pandac.PandaModules import loadPrcFileData
+from helper.RaceMaster import RaceMaster
+from rrCheckpoint import Checkpoint
 
 loadPrcFileData('', 'bullet-enable-contact-events true')
 
@@ -216,7 +218,13 @@ class World(DirectObject):
 
         # Load Audio
         self.audio = Audio(base, self)
+
+        # Dashboard
         self.dashboard = Dashboard(self, taskMgr)
+
+        # checkpoints for tracking positions
+        #     self.cself.rm.getCheckpointMarkers()
+        taskMgr.doMethodLater(.1, self.rm.updateCheckpoints, 'updateRace')
 
     def activateKeys(self):
         inputState.watchWithModifiers('boostUp', '1-up')
@@ -622,6 +630,15 @@ class World(DirectObject):
                     print "I AM: ", createPlayerUsername
                 # print "Creating other players: ", createPlayerUsername, "@ ", vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z
                 self.vehiclelist[createPlayerUsername] = playerVehicle
+
+
+                # this will be set by the server
+                self.howmanyplayers = 2
+
+                self.rm = RaceMaster(self, self.vehicleContainer, 1, self.howmanyplayers, 0)
+                sp = self.rm.getStartingPoints()
+                pos = sp[0]
+                self.vehicleContainer.chassisNP.setPosHpr(pos[0], pos[1], pos[2], pos[3], pos[4], pos[5])
 
     def startConnection(self):
         """Create a connection to the remote host.
