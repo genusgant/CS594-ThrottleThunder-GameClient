@@ -220,7 +220,7 @@ class World(DirectObject):
         self.audio = Audio(base, self)
 
         # Dashboard
-        self.dashboard = Dashboard(self, taskMgr)
+        self.dashboard = Dashboard(self, taskMgr, self.rm)
 
         # checkpoints for tracking positions
         #     self.cself.rm.getCheckpointMarkers()

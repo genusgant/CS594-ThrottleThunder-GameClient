@@ -7,15 +7,15 @@ from panda3d.core import TransparencyAttrib
 
 
 class Dashboard(DirectObject):
-    # def __init__(self, character, taskMgr, raceMst):
-    def __init__(self, world, taskMgr):
+    def __init__(self, world, taskMgr, raceMst):
+        # def __init__(self, world, taskMgr):
         self.world = world
 
         self.font_digital = loader.loadFont('models/font/SFDigitalReadout-Heavy.ttf')
         self.total_players = 30
         self.rank = 21
         self.main_char = world.vehicleContainer
-        #self.rm = raceMst
+        self.rm = raceMst
         self.speed = "0.0 km/h"
         self.lead1 = ""
         self.lead2 = ""
@@ -45,16 +45,16 @@ class Dashboard(DirectObject):
         # Your Rank
         OnscreenText(text="Rank", style=1, fg=(1, 1, 1, 1), pos=(-.9, .89), align=TextNode.ALeft,
                      font=self.font_digital, scale=.06)
-        #rank = str(self.rm.rank) + "/" + str(self.rm.racers)
-        # self.display_rank = OnscreenText(text=rank, style=1, fg=(1, 1, 1, 1),
-        #                                  pos=(-.8, .85), align=TextNode.ALeft,
-        #                                  scale=.15, font=self.font_digital)
+        rank = str(self.rm.rank) + "/" + str(self.rm.racers)
+        self.display_rank = OnscreenText(text=rank, style=1, fg=(1, 1, 1, 1),
+                                         pos=(-.8, .85), align=TextNode.ALeft,
+                                         scale=.15, font=self.font_digital)
         OnscreenText(text="Players\nLeft", style=1, fg=(1, 1, 1, 1), pos=(-.5, .89), align=TextNode.ALeft,
                      font=self.font_digital, scale=.06)
 
-        #laps = str(self.rm.laps) + " Laps"
-        #self.display_lap = OnscreenText(text=laps, style=1, fg=(1, 1, 1, 1), pos=(1.0, .89), align=TextNode.ALeft,
-        #                                font=self.font_digital, scale=.06)
+        laps = str(self.rm.laps) + " Laps"
+        self.display_lap = OnscreenText(text=laps, style=1, fg=(1, 1, 1, 1), pos=(1.0, .89), align=TextNode.ALeft,
+                                        font=self.font_digital, scale=.06)
 
         # Leaderboard Ranking
         self.leader1 = OnscreenText(text="1:", style=1, fg=(1, 1, 1, 1),
@@ -119,18 +119,18 @@ class Dashboard(DirectObject):
         self.lead3 = leaders.get(3)
 
     def update_rank(self, task):
-        #self.display_rank.destroy()
-        #self.display_lap.destroy()
+        self.display_rank.destroy()
+        self.display_lap.destroy()
 
         # Your Rank
-        #rank = str(self.rm.rank) + "/" + str(self.rm.racers)
-        # self.display_rank = OnscreenText(text=rank, style=1, fg=(1, 1, 1, 1),
-        #                                  pos=(-.8, .85), align=TextNode.ALeft,
-        #                                  scale=.15, font=self.font_digital)
-        #
-        # #laps = str(self.rm.laps) + " Laps - " + str(self.rm.checkpointspassed)
-        # self.display_lap = OnscreenText(text=laps, style=1, fg=(1, 1, 1, 1), pos=(1.0, .89), align=TextNode.ALeft,
-        #                                 font=self.font_digital, scale=.06)
+        rank = str(self.rm.rank) + "/" + str(self.rm.racers)
+        self.display_rank = OnscreenText(text=rank, style=1, fg=(1, 1, 1, 1),
+                                         pos=(-.8, .85), align=TextNode.ALeft,
+                                         scale=.15, font=self.font_digital)
+
+        laps = str(self.rm.laps) + " Laps - " + str(self.rm.checkpointspassed)
+        self.display_lap = OnscreenText(text=laps, style=1, fg=(1, 1, 1, 1), pos=(1.0, .89), align=TextNode.ALeft,
+                                        font=self.font_digital, scale=.06)
 
         # Leader board
         self.leader1.destroy()
