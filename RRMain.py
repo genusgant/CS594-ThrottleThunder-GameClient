@@ -639,23 +639,26 @@ class World(DirectObject):
                 isCurrentPlayer = False
                 if self.login == createPlayerUsername:
                     isCurrentPlayer = True
+                     
                 playerVehicle = Vehicle(self.world, createPlayerUsername)#,
                                     #    pos=LVecBase3(vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z),
                                     #    isCurrentPlayer=isCurrentPlayer, carId=vehicleAttributes.carId)
                 if self.login == createPlayerUsername:
                     self.vehicleContainer = playerVehicle
                     print "I AM: ", createPlayerUsername
+                    # this will be set by the server
+                    self.howmanyplayers = len(self.manager.playerList)
+                    
+                    self.rm = RaceMaster(self, self.vehicleContainer, 1, self.howmanyplayers, 0)
+                    sp = self.rm.getStartingPoints()
+                    pos = sp[0]
+                    self.vehicleContainer.chassisNP.setPosHpr(pos[0], pos[1], pos[2], pos[3], pos[4], pos[5])
+                
                 # print "Creating other players: ", createPlayerUsername, "@ ", vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z
                 self.vehiclelist[createPlayerUsername] = playerVehicle
 
 
-                # this will be set by the server
-                self.howmanyplayers = 2
-
-                self.rm = RaceMaster(self, self.vehicleContainer, 1, self.howmanyplayers, 0)
-                sp = self.rm.getStartingPoints()
-                pos = sp[0]
-                self.vehicleContainer.chassisNP.setPosHpr(pos[0], pos[1], pos[2], pos[3], pos[4], pos[5])
+              
 
     def startConnection(self):
         """Create a connection to the remote host.
