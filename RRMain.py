@@ -35,8 +35,7 @@ from Obstruction import Obstruction
 from LoadingScreen import LoadingScreen
 from VehicleAttributes import VehicleAttributes
 from rrTrack import Track
-# afrom Chat import Chat
-
+from rrAudio import Audio
 # """ Custom Imports """
 # import your modules
 from common.Constants import Constants
@@ -214,6 +213,9 @@ class World(DirectObject):
         # Create Powerups
         self.createPowerups()
         # taskMgr.add(self.powerups.checkPowerPickup, "checkPowerupTask")
+
+        # Load Audio
+        self.audio = Audio(base, self)
         self.dashboard = Dashboard(self, taskMgr)
 
     def activateKeys(self):
@@ -591,6 +593,7 @@ class World(DirectObject):
         # self.debugNP.node().showNormals(True)
 
         self.world = BulletWorld()
+        Track(self.world)
         self.world.setDebugNode(self.debugNP.node())
 
         # Obstruction
