@@ -4,7 +4,8 @@ from net.request.ServerRequest import ServerRequest
 
 class RequestRankings(ServerRequest):
 
-    def send(self):
+    #print "RequestRankings"
+    def send(self, args= []):
 
         try:
             pkg = PyDatagram()

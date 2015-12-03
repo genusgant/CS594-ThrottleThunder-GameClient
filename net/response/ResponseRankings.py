@@ -9,15 +9,15 @@ class ResponseRankings(ServerResponse):
 
         try:
             self.world.dashboard.total_players = data.getInt32()
-            self.world.dashboard.rank = data.getInt32()
-            
-            rankings = {data.getString() : data.getInt32()}
+            rankings={}
+            # rankings = {data.getString() : data.getInt32()}
 
-            self.world.dashboard.update_ranking()
-            # for x in range(0, self.playerCount-1)
-            #     self.rankings[data.getString()] = data.getInt32()
-
-            print "ResponseRankings - ", self.world.dashboard.rank
+            #print "self.world.dashboard.total_players: ",self.world.dashboard.total_players
+            for x in range(0, self.world.dashboard.total_players):
+                name = data.getString()
+                rank = data.getInt32()
+                rankings[rank] = name
+            self.world.dashboard.update_ranking(rankings)
 
             #self.log('Received [' + str(Constants.RAND_STRING) + '] String Response')
 

@@ -16,6 +16,7 @@ from Network.models.FriendConnectionModel import FriendConnectionModel
 from Network.ServerConnection import ServerConnection
 from login import Login
 from menu import Menu
+loadPrcFileData('', 'bullet-enable-contact-events true')
 
 from direct.task.TaskManagerGlobal import taskMgr
 
@@ -66,8 +67,8 @@ class World(DirectObject):
 
         self.ServerConnection.setupConnectionModel(self.queueConnection)
         self.taskMgr.doMethodLater(self.conf['heartbeatRate'], self.doHeartbeat, "heartbeat")
-        self.taskMgr.doMethodLater(1, self.doSong, "song")
 
+        self.taskMgr.doMethodLater(1, self.doSong, "song")
         
         self.screenType = "login"
         self.screen.run()
@@ -80,6 +81,15 @@ class World(DirectObject):
         if self.main_theme.status() == self.main_theme.READY:
             self.main_theme.play()
         return task.again
+
+    def startMusic(self):
+        self.taskMgr.doMethodLater(1, self.doSong, "song")
+
+
+    def stopMusic(self):
+        self.main_theme.stop()
+        self.taskMgr.remove("song")
+        print "stopMusic"
     
     def doMenu(self):
         print("doing menu")

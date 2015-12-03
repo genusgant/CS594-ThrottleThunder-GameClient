@@ -30,6 +30,7 @@ class Terrain(object):
         # Plane
         shape = BulletPlaneShape(Vec3(0, 0, 1), 1)
         universeNode = BulletRigidBodyNode('UniverseNode')
+        universeNode.notifyCollisions(True)
         universeNode.addShape(shape)
         np = self.parentNodePath.attachNewNode(universeNode)
         np.setPos(0, 0, -150)
@@ -45,17 +46,17 @@ class Terrain(object):
         self.parentNodePath = NodePath("FloorNodePath")
         self.parentNodePath.setPos(0, 0, -1)
         self.parentNodePath.setScale(2.0, 2.0, 1.0)
-        self.parentNodePath.setP(90)
+        # self.parentNodePath.setP(90)
 
         self.loadModelAndTexture()
         self.setupCollisionMeshAndRigidNodeFromModel()
 
         main.world.attachRigidBody(self.rigidNodePath.node())
 
-    def loadModelAndTexture(self, path={"model": "models/razorTest1", "texture": "models/tex/floor.jpg"}):
+    def loadModelAndTexture(self, path={"model": "models/map", "texture": "models/tex/floor.jpg"}):
         self.floorModel = loader.loadModel(path["model"])
-        floor_tex = loader.loadTexture(path["texture"])
-        self.floorModel.setTexture(floor_tex)
+        # floor_tex = loader.loadTexture(path["texture"])
+        # self.floorModel.setTexture(floor_tex)
         self.parentNodePath.attachNewNode(self.floorModel.node())
 
     def setupCollisionMeshAndRigidNodeFromModel(self):
@@ -72,6 +73,7 @@ class Terrain(object):
 
         self.rigidNodePath = self.parentNodePath.attachNewNode(self.rigidNode)
         self.rigidNodePath.node().addShape(shape)
+        self.rigidNodePath.setScale(12, 12, 1.5)
         self.rigidNodePath.setCollideMask(BitMask32.allOn())
         self.rigidNodePath.node().notifyCollisions(False)
 

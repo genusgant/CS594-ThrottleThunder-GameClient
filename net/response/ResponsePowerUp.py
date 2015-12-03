@@ -11,12 +11,13 @@ class ResponsePowerUp(ServerResponse):
             username = data.getString()
             powerId = data.getInt32()
 
+            pickup = False
+            if username == self.world.login:
+                pickup = True
+            self.world.powerups.resetPowerupsTask(powerId, pickup)
 
-            vehicle = self.world.vehiclelist[username]
-
-            #self.log('Received [' + str(Constants.RAND_STRING) + '] String Response')
-
-            print "ResponsePowerUp - ", username, " ", powerId
+            if pickup:
+                print "ResponsePowerPickUp for ME - ", powerId
 
         except:
             self.log('Bad [' + str(Constants.SMSG_POWER_UP) + '] Power Up Response')

@@ -8,7 +8,6 @@ from Network.models.QueueConnectionModel import QueueConnectionModel
 from Network.models.FriendConnectionModel import FriendConnectionModel
 from Network.models.PrivateChatConnectionModel import PrivateChatConnectionModel
 from Network.models.ChatConnectionModel import ChatConnectionModel
-from Network.models.TimeConnectionModel import TimeConnectionModel
 from Main import WorldManager
 from RRMain import RRWorldManager
 
@@ -41,17 +40,17 @@ class Menu(ShowBase):
         self.privateChat = {}
         self.chatOffset = 0
         self.car = None
-        
+
         self.onReturnMatch = self.createMatchMaking
-        
+
 
         self.createSocialization()
-        
-        
+
+
         self.World.queueConnection.setHandler(self.handleQueueNotification)
         self.World.globalChatConnection.setHandler(self.handleChatNotification)
         self.World.friendConnection.setHandlers(self.handleFriendNotification,self.handleFriendListNotification)
-        
+
         #self.World.privateChatConnection.setHandler(self.handlePrivateChatNotification)
         self.navi()
 
@@ -145,11 +144,11 @@ class Menu(ShowBase):
         self.screenBtns.append(self.usersChatFrame)
         self.screenBtns.append(self.addFriendBox)
         self.printChat()
-        
+
     def showFriendUsers(self):
         if (self.usersChatFrame != None):
             self.usersChatFrame.destroy()
-                
+
         self.usersChatFrame = DirectScrolledList(
             decButton_pos= (0.80, 0.0, -0.42),
             decButton_text = "-",
@@ -254,7 +253,7 @@ class Menu(ShowBase):
 
         self.map2_btn = DirectButton(image = 'IMAGES/map_2.png', pos = (0.8, 0, -.2), command=self.dd_ScreenMap2, scale = (.5, 1, .4), relief = None)
         self.map2_btn.setTransparency(TransparencyAttrib.MAlpha)
-        
+
         self.onReturnMatch = self.ddMaps
         self.screenBtns.append(self.myImage)
         self.screenBtns.append(self.map1_btn)
@@ -263,7 +262,7 @@ class Menu(ShowBase):
 
     def rrMaps(self):
         print "rrMaps"
-        self.selectedGame = "RR"
+        self.selectedGame = "RR";
         self.unloadScreen()
         self.myImage=OnscreenImage(image = 'IMAGES/matchmaking_menu_map.png', pos = (0, 0, 0), scale = (2, 1, 1))
         self.navi()
@@ -272,7 +271,7 @@ class Menu(ShowBase):
 
         self.map2_btn = DirectButton(image = 'IMAGES/map_2.png', pos = (0.8, 0, -.2), command=self.rr_ScreenMap2, scale = (.5, 1, .4), relief = None)
         self.map2_btn.setTransparency(TransparencyAttrib.MAlpha)
-        
+
         self.onReturnMatch = self.rrMaps
         self.screenBtns.append(self.myImage)
         self.screenBtns.append(self.map1_btn)
@@ -338,9 +337,9 @@ class Menu(ShowBase):
 
         #added by genus
         self.screenBtns.append(self.myImage)
-        
+
         self.onReturnMatch = self.dd_screen
-        
+
 
 #This code create the customiztion window
     def createCustomization(self):
@@ -461,37 +460,27 @@ class Menu(ShowBase):
 
     def carMystery(self):
         self.enableReady(4) #Mystery
- 
-#Handler for the time notification       
-    def handleTimeNotification(self, seconds, milliseconds):
-		print "Recieved time notification"	
-		self.showTime(seconds, milliseconds)
 
-#Show Time Onscreen as text
-    def showTime(self, seconds, milliseconds):
-		sec = str(seconds)
-		ms = str(milliseconds)
-		timer = OnscreenText(text = sec + ':' + ms, pos = (-.8,-.2), scale = 0.07, fg=(1,1,1,1)
-		
-		
     def handleQueueNotification(self, size, sizeNeeded, players):
         print "Received Handle Queue MAX_PLAYERS: ", sizeNeeded
         start = False
-        #comment this out later
-        sizeNeeded = 2
-        #end comment
         if (len(players) >= sizeNeeded):
             self.userCount['text'] = str(len(players)) + ' / '+ str(size)
             self.userMessage['text'] = 'Ready to start'
             start = True
+            print "Ready to go players list", players
+            for val in players:
+                print val
+                if val != None and len(val) >= sizeNeeded and val[1] == 0:
+                    start = False
+                    break
         else:
             self.userCount['text'] = str(len(players)) + ' / '+ str(sizeNeeded)
             self.userMessage['text'] = 'More players needed'
         self.showUsers(players)
         if start:
-            #self.launchDDGame()
-
-            self.launchRRGame()
+            self.launchDDGame()
+            #self.launchRRGame()
 
     def handleChatNotification(self, username, msg):
         self.globalChat.insert(0, [username, msg])
@@ -566,6 +555,7 @@ class Menu(ShowBase):
         print "Launching DD GAME"
         self.World.ServerConnection.activeStatus = False
         self.unloadScreen()
+        self.World.stopMusic()
         self.ddworld = WorldManager(self)
         #data might be require to send to DD world
 
@@ -579,9 +569,6 @@ class Menu(ShowBase):
     def launchRRGame(self):
         print "Launching RR GAME"
         self.World.ServerConnection.activeStatus = False
-        self.World.taskMgr.remove("song")
-        self.usersChatFrame.destroy()
-        self.World.main_theme.stop()
         self.unloadScreen()
         self.rrworld = RRWorldManager(self)
         # data might be require to send to DD world
