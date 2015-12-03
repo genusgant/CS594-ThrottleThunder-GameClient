@@ -10,13 +10,16 @@ from panda3d.bullet import BulletRigidBodyNode
 from panda3d.bullet import BulletDebugNode
 from panda3d.bullet import BulletVehicle
 from panda3d.bullet import ZUp
+import time
 import math
 
 
 class Vehicle(object):
     COUNT = 0
 
-    def __init__(self, world, username, pos=[0, 0, 0, 0, 0, 0]):
+    def __init__(self, world, username, pos=[0, 0, 0, 0, 0, 0], isCurrentPlayer=False):
+
+        self.isCurrentPlayer = isCurrentPlayer
         self.world = world
         self.acceleration = 1.5
         self.brakeForce = 100.0
@@ -32,6 +35,7 @@ class Vehicle(object):
         self.maxWheelForce = 2000.0  # acceleration
         self.power_ups = [0, 0, 0]
         self.speed = 0.0
+        self.startTime = time.time()
 
         self.specs = {"mass": self.mass, "maxWheelForce": self.maxWheelForce, "brakeForce": self.brakeForce,
                       "steeringLock": 45.0}
@@ -128,6 +132,7 @@ class Vehicle(object):
         self.vehicle.applyEngineForce(wheelForce, 3);
         self.vehicle.setBrake(brakeForce, 2);
         self.vehicle.setBrake(brakeForce, 3);
+        return [steering, wheelForce, brakeForce]
 
     def setupVehicle(self, world):
         # Chassis
@@ -226,3 +231,30 @@ class Vehicle(object):
         elif powerupIndex == 2 and self.currentPowerups["powerup3"] is not None:
             self.currentPowerups["powerup3"].useAbility()
             self.currentPowerups["powerup3"] = None
+
+    def move(self, steering, wheelForce, brakeForce, x, y, z, h, p, r):
+        self.applyForcesAndSteering(steering, wheelForce, brakeForce)
+        self.endTime = time.time()
+        #print self.endTime
+        elapsed = self.endTime - self.startTime
+        #self.startTime = self.endTime
+        #if elapsed > 1:
+        self.startTime = self.endTime
+        if not self.isCurrentPlayer:
+            self.setVehiclePos(x, y, z, h, p, r)
+
+    def setVehiclePos(self, x,y, z, h, p, r):
+        self.chassisNP.setPosHpr(x, y, z, h, p, r)
+        return
+
+
+    def applyForcesAndSteering(self, steering, wheelForce, brakeForce):
+        # Apply steering to front wheels
+        self.vehicle.setSteeringValue(steering, 0);
+        self.vehicle.setSteeringValue(steering, 1);
+        # Apply engine and brake to rear wheels
+        self.vehicle.applyEngineForce(wheelForce, 2);
+        self.vehicle.applyEngineForce(wheelForce, 3);
+        self.vehicle.setBrake(brakeForce, 2);
+        self.vehicle.setBrake(brakeForce, 3);
+

@@ -118,6 +118,7 @@ class RRWorldManager():
 
         if self.otherPlayersDataAvailable:
             self.startGameSequence()
+            self.gameWorld.startGameNow()
             return task.done
         else:
             return task.cont
@@ -150,6 +151,7 @@ class RRWorldManager():
             vehicle.p = p
             vehicle.r = r
             self.playerList[username] = vehicle
+
         else:
             VehicleAttributes(username, 0, 0, 0, x, y, z, h, p, r)
 
@@ -202,7 +204,6 @@ class World(DirectObject):
         self.accept('1', self.activateBoost)
         # Network Setup
         # self.cManager.startConnection()
-        # taskMgr.add(self.enterGame, "EnterGame")
         # taskMgr.add(self.usePowerup, "usePowerUp")
         self.accept('bullet-contact-added', self.onContactAdded)
         # Physics -- Terrain
@@ -322,8 +323,8 @@ class World(DirectObject):
 
     def startGameNow(self):
         # self.camera = Camera(self.mainChar)
-        # taskMgr.doMethodLater(.1, self.updateMove, 'updateMove')
-        taskMgr.add(self.update, "moveTask")
+        taskMgr.doMethodLater(.1, self.update, 'updateMove')
+        # taskMgr.add(self.update, "moveTask")
 
     def createEnvironment(self):
         self.environ = loader.loadModel("models/square")
@@ -520,7 +521,7 @@ class World(DirectObject):
         #     self.stepPhysicsWorld()
 
         self.updateCamera(self.vehicleContainer.speed)
-        return task.cont
+        return task.again
 
     def updateCamera(self, speed=0.0, initial=False):
         # """Reposition camera depending on the vehicle speed"""
@@ -640,9 +641,11 @@ class World(DirectObject):
                 isCurrentPlayer = False
                 if self.login == createPlayerUsername:
                     isCurrentPlayer = True
-                     
-                playerVehicle = Vehicle(self.world, createPlayerUsername)#,
-                                    #    pos=LVecBase3(vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z),
+
+                pos=[vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z,vehicleAttributes.h, vehicleAttributes.p,vehicleAttributes.r]
+
+                playerVehicle = Vehicle(self.world, createPlayerUsername,pos, isCurrentPlayer)#,
+                                       # pos=LVecBase3(vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z),
                                     #    isCurrentPlayer=isCurrentPlayer, carId=vehicleAttributes.carId)
                 if isCurrentPlayer:
                     self.vehicleContainer = playerVehicle
@@ -655,7 +658,10 @@ class World(DirectObject):
                     
                 
                 # print "Creating other players: ", createPlayerUsername, "@ ", vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z
-                else: self.vehiclelist[createPlayerUsername] = playerVehicle
+                else:
+                    print "Creating other players: ", createPlayerUsername, "@ ", vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z
+
+                    self.vehiclelist[createPlayerUsername] = playerVehicle
 
 
               

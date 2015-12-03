@@ -20,7 +20,6 @@ class ResponseMove(ServerResponse):
                 h = data.getFloat32()
                 p = data.getFloat32()
                 r = data.getFloat32()
-                #print "Response Move for: ", username,steering, wheelforce, brakeforce, x, y, z, h, p, r
                 vehicle = self.world.vehiclelist[username]
                 vehicle.move(steering, wheelforce, brakeforce, x, y, z, h, p, r)
 

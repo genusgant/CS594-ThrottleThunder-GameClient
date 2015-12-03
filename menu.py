@@ -262,7 +262,7 @@ class Menu(ShowBase):
 
     def rrMaps(self):
         print "rrMaps"
-        self.selectedGame = "RR";
+        self.selectedGame = "RR"
         self.unloadScreen()
         self.myImage=OnscreenImage(image = 'IMAGES/matchmaking_menu_map.png', pos = (0, 0, 0), scale = (2, 1, 1))
         self.navi()
@@ -465,7 +465,7 @@ class Menu(ShowBase):
         print "Received Handle Queue MAX_PLAYERS: ", sizeNeeded
         start = False
         #comment this out later
-        sizeNeeded = 1
+        sizeNeeded = 2
         #end comment
         if (len(players) >= sizeNeeded):
             self.userCount['text'] = str(len(players)) + ' / '+ str(size)
@@ -477,6 +477,7 @@ class Menu(ShowBase):
         self.showUsers(players)
         if start:
             #self.launchDDGame()
+
             self.launchRRGame()
 
     def handleChatNotification(self, username, msg):
