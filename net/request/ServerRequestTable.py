@@ -27,6 +27,7 @@ from net.request.RequestSetRank import RequestSetRank
 from net.request.RequestLogout import RequestLogout
 from net.request.RequestTime import RequestTime
 from net.request.RequestTest import RequestTest
+from net.request.RequestCheckpoints import RequestCheckpoints
 from net.request.RequestEnterGameName import RequestEnterGameName
 
 

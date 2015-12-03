@@ -40,6 +40,7 @@ class Constants:
     CMSG_SET_POSITION                   = 128
     CMSG_TIME                           = 129
     CMSG_SET_RANK                       = 130
+    CMSG_CHECKPOINTS                    = 133
     REQ_HEARTBEAT                       = 301
     CMSG_REQ_TEST                       = 160
 
