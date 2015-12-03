@@ -89,10 +89,13 @@ def addTitle(text):
 
 class WorldManager():
     def __init__(self, lobby):
+        self.startGameFlag = False
+        self.countdownTime = 5
         self.playerList = {}
         self.userList = []
         self.otherPlayersDataAvailable = False
         self.lobby = lobby
+        self.isDDGame = True
         self.gameWorld = World(self)
         self.loadinScreen = LoadingScreen(self.gameWorld)
         self.lobby.World.ServerConnection.activeStatus = False
@@ -101,29 +104,16 @@ class WorldManager():
         self.gameWorld.cManager = self.cManager
         self.cManager.sendRequest(Constants.CMSG_READY)
         self.addVehicleProps(self.lobby.World.username, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-        #self.cManager.sendRequest(Constants.CMSG_SET_POSITION)
-        #while not self.otherPlayersDataAvailable:
-            #print "Wait for respponse"
-            #sleep(1)
-        # Fake player creation for the time being
-        # x = 10
-        # y = 10
-        # z = 0
-        # print "LOBBY LIST: ", self.lobby.playerList
-        # if len(self.lobby.playerList) > 0:
-        #     for idx, player in enumerate(self.lobby.playerList):
-        #         if player != None:
-        #             print "Creating -", player
-        #             self.addPlayer(player, 1, 0, 0, x, y, z, 0, 0, 0)
-        #             x += 10
-        #             y += 10
         taskMgr.add(self.startGameTask, "startGameTask")
 
 
     def startGameTask(self, task):
-
         if self.otherPlayersDataAvailable:
+            self.otherPlayersDataAvailable = False
             self.startGameSequence()
+            return task.cont
+        if self.startGameFlag:
+            self.loadinScreen.finish(self.countdownTime)
             return task.done
         else:
             return task.cont
@@ -159,8 +149,8 @@ class WorldManager():
             VehicleAttributes(username, 0, 0, 0, x, y, z, h, p, r)
 
     def startGameSequence(self):
-        self.loadinScreen.finish()
         self.gameWorld.initializeGameWorld()
+        self.cManager.sendRequest(Constants.CMSG_READY)
 
 
 class World(DirectObject):

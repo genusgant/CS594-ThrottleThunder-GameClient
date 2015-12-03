@@ -89,6 +89,7 @@ class RRWorldManager():
         self.userList = []
         self.otherPlayersDataAvailable = False
         self.lobby = lobby
+        self.isDDGame = False
         self.gameWorld = World(self)
         self.loadinScreen = LoadingScreen(self.gameWorld)
         self.lobby.World.ServerConnection.activeStatus = False

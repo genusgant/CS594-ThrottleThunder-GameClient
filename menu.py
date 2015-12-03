@@ -179,6 +179,7 @@ class Menu(ShowBase):
             text_bg = (1,1,1,0),
             text_scale = 0.2
             )
+        self.screenBtns.append(self.usersChatFrame)
 
         for friend in self.friends:
             l = DirectLabel(text = friend, text_scale=0.1,
@@ -479,8 +480,10 @@ class Menu(ShowBase):
             self.userMessage['text'] = 'More players needed'
         self.showUsers(players)
         if start:
-            self.launchDDGame()
-            #self.launchRRGame()
+            if self.gameType == "DD":
+                self.launchDDGame()
+            elif self.gameType == "RR":
+                self.launchRRGame()
 
     def handleChatNotification(self, username, msg):
         self.globalChat.insert(0, [username, msg])
@@ -548,6 +551,7 @@ class Menu(ShowBase):
             return
         print "Car selected: ", self.selectedCar
         self.World.queueConnection.sendReadyMessage(self.selectedCar)
+        self.gameType = "DD"
         print "DD Ready pressed " , self.selectedCar
         # Call the DD World from here
 
@@ -564,6 +568,7 @@ class Menu(ShowBase):
         if (self.selectedCar == 0):
             return
         self.World.queueConnection.sendReadyMessage(self.selectedCar)
+        self.gameType = "RR"
         print "RR Ready pressed ", self.selectedCar
 
     def launchRRGame(self):

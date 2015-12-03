@@ -3,7 +3,7 @@ from direct.gui.OnscreenImage import OnscreenImage
 from direct.gui.OnscreenText import OnscreenText,TextNode
 from direct.task import Task
 
-countDownStart = 6
+#countDownStart = 6
 
 class LoadingScreen:
     def __init__(self, main):
@@ -13,18 +13,19 @@ class LoadingScreen:
         #base.graphicsEngine.renderFrame()
         base.graphicsEngine.renderFrame()
 
-    def finish(self):
+    def finish(self, countDownStart):
+        self.countDownStart = int(countDownStart/1000)
         self.imageObject.destroy()
         self.countDownText = OnscreenText(text=str(countDownStart), style=1, fg=(1,1,1,1),
                 pos=(0.01, 0.1), align = TextNode.ACenter, scale = .2, mayChange = 1)
         taskMgr.add(self.countDown,"countDownTask")
 
     def countDown(self,task):
-        timeLeft = "%01d" % (countDownStart - task.time)
-        if (countDownStart - task.time) > 1:
+        timeLeft = "%01d" % (self.countDownStart - task.time)
+        if (self.countDownStart - task.time) > 1:
             self.countDownText.setText(timeLeft)
             return task.cont
-        elif 1 > (countDownStart - task.time) > 0:
+        elif 1 > (self.countDownStart - task.time) > 0:
             self.countDownText.setText("GO!")
             return task.cont
         else:
