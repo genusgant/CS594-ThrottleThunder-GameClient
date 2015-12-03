@@ -16,13 +16,13 @@ class Audio(DirectObject):
         # play background music
         self.play_music_rr()
         # engine sound
-        self.engineSound = self.audioManager.loadSfx("audio/accelerating/accelerating1.mp3")
+        self.engineSound = self.audioManager.loadSfx("audio/accelerating/accelerating1.ogg")
         # self.engineSound.setLoop(True)
         self.engineSound.setPlayRate(1.0)
         # self.engineSound.play()
 
         self.audioManager.attachSoundToObject(self.engineSound, self.world.vehicleContainer.chassisNP)
-        self.brakeSound = self.audioManager.loadSfx("audio/braking/braking2.mp3")
+        self.brakeSound = self.audioManager.loadSfx("audio/braking/braking2.ogg")
         # self.brakeSound.setLoop(True)
         self.brakeSound.setPlayRate(1.0)
         self.audioManager.attachSoundToObject(self.brakeSound, self.world.vehicleContainer.chassisNP)
@@ -30,15 +30,15 @@ class Audio(DirectObject):
     def play_music_rr(self):
         # load background music
         music1 = loader.loadSfx("audio/bkgd/Sandstorm.m4a")
-        music2 = loader.loadSfx("audio/bkgd/LevelsNoVocals.mp3")
-        music3 = loader.loadSfx("audio/bkgd/RaceMusic.mp3")
+        music2 = loader.loadSfx("audio/bkgd/LevelsNoVocals.ogg")
+        music3 = loader.loadSfx("audio/bkgd/RaceMusic.ogg")
 
         music_seq = Sequence(SoundInterval(music1), SoundInterval(music2), SoundInterval(music3),
                              name="Music Sequence")
         music_seq.loop(0.0, -1.0, 1.0)
 
     def play_collision(self):
-        collide = loader.loadSfx("audio/crashing/crashing4.mp3")
+        collide = loader.loadSfx("audio/crashing/crashing4.ogg")
         collide.setVolume(1.0)
         collide.play()
 
@@ -107,13 +107,13 @@ class Audio(DirectObject):
         #     # Set sounds to play for collisions
         #     # self.collisionSound = CollisionSound(
         #     #     nodePath=self.np,
-        #     #     sounds=["data/sounds/09.wav"],
+        #     #     sounds=["data/sounds/09.ogg"],
         #     #     thresholdForce=600.0,
         #     #     maxForce=800000.0)
         #
         #     # np - nodePath
         #
-        #     self.engineSound = self.audioManager.loadSfx("audio/accelerating/accelerating1.mp3")
+        #     self.engineSound = self.audioManager.loadSfx("audio/accelerating/accelerating1.ogg")
         #     self.audioManager.attachSoundToObject(self.engineSound, self.world.mainCharRef.chassisNP)
         #     self.engineSound.setLoop(True)
         #     self.engineSound.setPlayRate(0.6)
