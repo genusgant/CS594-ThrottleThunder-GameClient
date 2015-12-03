@@ -11,7 +11,6 @@ class RequestCheckpoints(ServerRequest):
             pkg.addUint16(Constants.CMSG_CHECKPOINTS)
             pkg.addInt32(args[0])
             pkg.addInt32(args[1])
-            pkg.addFloat32(args[2])
 
             self.cWriter.send(pkg, self.connection)
 
