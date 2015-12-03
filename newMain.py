@@ -58,14 +58,14 @@ class World(DirectObject):
         self.ServerConnection.setupConnectionModel(self.friendConnection)
         
         
-        self.taskMgr.doMethodLater(self.conf['heartbeatRate'], self.doHeartbeat, "heartbeat")#uncomment when going live
+#         self.taskMgr.doMethodLater(self.conf['heartbeatRate'], self.doHeartbeat, "heartbeat")#uncomment when going live
         
         
         self.screen = Login(self)#uncomment when going live
         #self.screen = Menu(self)#comment this one when you are trying to log into it like normal
 
         self.ServerConnection.setupConnectionModel(self.queueConnection)
-        
+        self.taskMgr.doMethodLater(self.conf['heartbeatRate'], self.doHeartbeat, "heartbeat")
         self.taskMgr.doMethodLater(1, self.doSong, "song")
 
         

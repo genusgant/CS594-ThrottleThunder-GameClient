@@ -47,6 +47,7 @@ import re
 from pandac.PandaModules import loadPrcFileData
 from helper.RaceMaster import RaceMaster
 from rrCheckpoint import Checkpoint
+from TopView import TopView
 
 loadPrcFileData('', 'bullet-enable-contact-events true')
 
@@ -222,6 +223,10 @@ class World(DirectObject):
         # Dashboard
         self.dashboard = Dashboard(self, taskMgr, self.rm)
 
+        #mini map
+        self.miniMap = TopView(self.vehicleContainer)
+        taskMgr.doMethodLater(.1, self.miniMap.update, 'updateMinimap')
+ 
         # checkpoints for tracking positions
         #     self.cself.rm.getCheckpointMarkers()
         taskMgr.doMethodLater(.1, self.rm.updateCheckpoints, 'updateRace')
@@ -528,7 +533,7 @@ class World(DirectObject):
         minDistance = 8.0
         maxDistance = 13.0
         minHeight = 1.5
-        maxHeight = 3.0
+        maxHeight = 4.0
         maxSpeed = 30.0  # m/s
 
         distance = (minDistance + (maxDistance - minDistance) * speed / maxSpeed)
