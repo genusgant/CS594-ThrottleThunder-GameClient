@@ -10,12 +10,6 @@ class ResponsePowerPickUp(ServerResponse):
         try:
             username = data.getString()
             powerId = data.getInt32()
-            
-            self.world.powerList.update(username, powerId)
-
-            # If returns 1 Gives the player the Item based on what they hit
-
-            print "ResponsePowerPickUp - ", powerId
 
         except:
             self.log('Bad [' + str(Constants.SMSG_POWER_UP_PICK_UP) + '] Power Pick Up Response')

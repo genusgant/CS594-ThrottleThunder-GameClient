@@ -75,3 +75,26 @@ class Constants:
     SMSG_SET_READY                      = 231
     SMSG_RENDER_CHARACTER               = 310
     SMSG_REMOVE_CHARACTER               = 311
+
+
+    MAX_HEALTH = {
+        "0": 150,
+        "1": 250,
+        "2": 400,
+    }
+    VEHICLE_HEALTH = {
+        "0": 100,
+        "1": 200,
+        "2": 400,
+    }
+
+    MAX_WEIGHT = {
+        "0": 100,
+        "1": 200,
+        "2": 400,
+    }
+    MAX_ARMOR = {
+        "0": 300,
+        "1": 200,
+        "2": 100,
+    }

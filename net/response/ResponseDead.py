@@ -8,10 +8,20 @@ class ResponseDead(ServerResponse):
     def execute(self, data):
 
         try:
-            username = data.getString()
+            self.username = data.getString()
 
-            vehicle = self.world.vehiclelist[username]
-            vehicle.remove()
+            if self.username in self.world.vehiclelist.keys():
+                vehicle = self.world.vehiclelist[self.username]
+                vehicle.props.health = vehicle.props.armor = 0
+                self.world.deadCounter +=1
+
+                print  "deadCounter/vehiclelist :",self.world.deadCounter,"/",len(self.world.vehiclelist)
+
+                if self.world.deadCounter == len(self.world.vehiclelist)-1:
+                    print "Last Man Standing"
+                    self.world.gameEnd()
+
+                #vehicle.chassisNP.removeNode()
 
             print "ResponseDead - ",self.username
             #self.log('Received [' + str(Constants.RAND_STRING) + '] String Response')

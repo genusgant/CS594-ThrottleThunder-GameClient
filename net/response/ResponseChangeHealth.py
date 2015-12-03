@@ -8,12 +8,13 @@ class ResponseChangeHealth(ServerResponse):
     def execute(self, data):
 
         try:
-            username = data.getInt32()
+            username = data.getString()
             health = data.getInt32()
 
             # Need to set Heading and use keys
-            vehicle = self.world.vehiclelist[username]
-            vehicle.setHealth(health)
+            if self.world.login != username and username in self.world.vehiclelist.keys():
+                vehicle = self.world.vehiclelist[username]
+                vehicle.setPropHealth(health)
 
             print "ResponseChangeHealth - ",username, " ", health
 

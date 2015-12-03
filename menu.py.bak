@@ -9,6 +9,7 @@ from Network.models.FriendConnectionModel import FriendConnectionModel
 from Network.models.PrivateChatConnectionModel import PrivateChatConnectionModel
 from Network.models.ChatConnectionModel import ChatConnectionModel
 from Main import WorldManager
+from RRMain import RRWorldManager
 
 class Menu(ShowBase):
 
@@ -272,7 +273,6 @@ class Menu(ShowBase):
         self.map2_btn.setTransparency(TransparencyAttrib.MAlpha)
         
         self.onReturnMatch = self.rrMaps
-
         self.screenBtns.append(self.myImage)
         self.screenBtns.append(self.map1_btn)
         self.screenBtns.append(self.map2_btn)
@@ -295,7 +295,7 @@ class Menu(ShowBase):
         if(self.selectedGame == "DD"):
             selectcommand = self.pressDDReady
         else:
-            selectcommand = self.pressRReady
+            selectcommand = self.pressRRReady
         self.ready_btn = DirectButton(image = 'IMAGES/ready_btn.png', pos = (-1.1, 0, -.3), scale = (.2, 1, .04), relief = None, command=selectcommand)
 
         self.screenBtns.append(self.bruiser_btn)
@@ -317,6 +317,8 @@ class Menu(ShowBase):
         self.userMessage['text_fg'] = (0.7,0.7,1.0,0.5);
         self.screenBtns.append(self.userCount)
         self.screenBtns.append(self.userMessage)
+
+        self.screenBtns.append(self.myImage)
 
         self.onReturnMatch = self.rr_screen
 
@@ -462,6 +464,9 @@ class Menu(ShowBase):
     def handleQueueNotification(self, size, sizeNeeded, players):
         print "Received Handle Queue MAX_PLAYERS: ", sizeNeeded
         start = False
+        #comment this out later
+        sizeNeeded = 1
+        #end comment
         if (len(players) >= sizeNeeded):
             self.userCount['text'] = str(len(players)) + ' / '+ str(size)
             self.userMessage['text'] = 'Ready to start'
@@ -471,7 +476,8 @@ class Menu(ShowBase):
             self.userMessage['text'] = 'More players needed'
         self.showUsers(players)
         if start:
-            self.launchDDGame()
+            #self.launchDDGame()
+            self.launchRRGame()
 
     def handleChatNotification(self, username, msg):
         self.globalChat.insert(0, [username, msg])
@@ -554,7 +560,14 @@ class Menu(ShowBase):
         if (self.selectedCar == 0):
             return
         self.World.queueConnection.sendReadyMessage(self.selectedCar)
-        print "RR Ready pressed " , self.selectedCar
+        print "RR Ready pressed ", self.selectedCar
+
+    def launchRRGame(self):
+        print "Launching RR GAME"
+        self.World.ServerConnection.activeStatus = False
+        self.unloadScreen()
+        self.rrworld = RRWorldManager(self)
+        # data might be require to send to DD world
 
     def showUsers(self, players):
         #print "showUsers"

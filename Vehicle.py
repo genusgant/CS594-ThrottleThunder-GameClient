@@ -30,53 +30,87 @@ class VehicleProps():
     def __init__(self, type):
         self.constants = Constants()
         self.velocity = 0
-        self.type = type
+        self.isInvincible = False
+        self.type = str(type)
         self.armor = 0
         self.boost = 1
-
-        if type == 2:
-            self.weight = self.health = self.maxHealth = 400
-            self.maxArmor = 300
-        elif type == 1:
-            self.weight = self.health = self.maxHealth = 200
-            self.maxArmor = 200
-        else:
-            self.weight = self.health = self.maxHealth = 100
-            self.maxArmor = 100
+        #print "VehicleProps for Type: ", self.type
+        #print "VEHICLE_HEALTH", self.constants.VEHICLE_HEALTH
+        self.weight = self.health = self.constants.VEHICLE_HEALTH[self.type]
 
     def setVelocity(self, velocity):
         self.velocity = velocity
 
     def getHealthStatus(self):
         additionalHealth = 0
-        health = (self.health/self.weight) * 100
-        if health > 100:
-            additionalHealth = health - 100
-
+        if self.health > self.constants.VEHICLE_HEALTH[self.type]:
+            additionalHealth = self.health - self.constants.VEHICLE_HEALTH[self.type]
+        health = self.health - additionalHealth
+        #if additionalHealth >0:
+            #print health, additionalHealth
         result = {
             "health": health,
             "additionalHealth": additionalHealth
         }
-
         return result
+
+    def getArmorStatus(self):
+        return self.armor
+
+    def getBarDetails(self):
+        #print "getBarDetails"
+        healthRange = self.constants.VEHICLE_HEALTH[self.type]
+        maxHealthRange = self.constants.MAX_HEALTH[self.type]
+        armorRange = self.constants.MAX_ARMOR[self.type]
+
+        result = {
+            "health": healthRange,
+            "additionalHealth": maxHealthRange - healthRange,
+            "armor": armorRange
+        }
+        return result
+
+
+    def getHitPoint(self):
+        hitPoint = self.health + self.armor
+        return hitPoint
+
+    def setDamage(self, damage):
+        if not self.isInvincible:
+            self.armor -= damage
+            if self.armor < 0:
+                self.health += self.armor
+                self.armor = 0
+
+        if self.health < 0:
+            return False
+        else:
+            return True
+
+    def setHealth(self, health):
+        self.health = health
+        if self.health > self.constants.MAX_HEALTH[self.type]:
+            self.armor = self.health - self.constants.MAX_HEALTH[self.type]
+            self.health = self.constants.MAX_HEALTH[self.type]
 
     def setHealthStatus(self, health):
         self.health += health
-        if self.health > self.props. self.constants.MAX_HEALTH[self.type]:
+        if self.health > self.constants.MAX_HEALTH[self.type]:
             self.armor = self.health - self.props. self.constants.MAX_HEALTH[self.type]
             self.health = self.props. self.constants.MAX_HEALTH[self.type]
 
 class Vehicle(object):
     COUNT = 0
 
-    def __init__(self, main, username, pos = LVecBase3(-5, -5, 1), isCurrentPlayer = False, carId=1):
+    def __init__(self, main, username, pos = LVecBase3(-5, -5, 1), isCurrentPlayer = False, carId=3):
         self.username = username
+        self.main = main
         self.isCurrentPlayer = isCurrentPlayer
         self.boostCount = 0
         self.boostActive = False
         self.boostStep = 2
         self.boostDuration = 0
-        self.startTime = self.boostStartTime = time.time()
+        self.moveStartTime = self.startTime = self.boostStartTime = time.time()
         self.pos = pos
         self.boostFactor = 1.2
         self.specs = {"mass": 800.0,
@@ -95,14 +129,19 @@ class Vehicle(object):
 
         self.setupVehicle(main)
 
-        self.props = VehicleProps(type)
+        self.props = VehicleProps(carId)
 
         self.currentPowerups = {"powerup1": None, "powerup2": None, "powerup3": None}
-        # if isCurrentPlayer:
-        #     #This command is required for Panda to render particles
-        #     base.enableParticles()
-        #     self.p = ParticleEffect()
+        if isCurrentPlayer:
+            #This command is required for Panda to render particles
+            base.enableParticles()
+            self.p = ParticleEffect()
         #     self.loadParticleConfig('steam.ptf')
+
+    def setPropHealth(self, health):
+        self.props.setHealth(health)
+        if not self.isCurrentPlayer:
+            self.main.updateStatusBars(self.username, self.props.health)
 
     def loadParticleConfig(self, file):
         #Start of the code from steam.ptf
@@ -123,10 +162,10 @@ class Vehicle(object):
         self.applyForcesAndSteering(steering, wheelForce, brakeForce)
         self.endTime = time.time()
         #print self.endTime
-        elapsed = self.endTime - self.startTime
+        elapsed = self.endTime - self.moveStartTime
         #self.startTime = self.endTime
         #if elapsed > 1:
-        self.startTime = self.endTime
+        self.moveStartTime = self.endTime
         if not self.isCurrentPlayer:
             self.setVehiclePos(x, y, z, h, p, r)
 
@@ -239,13 +278,18 @@ class Vehicle(object):
         speed = math.sqrt(sum(v ** 2 for v in velocity))
         return speed, speed/self.specs["maxSpeed"]
 
+    def getBoost(self):
+        maxBoost = 3.0
+        currentScaledBoost = self.boostCount / maxBoost
+        return currentScaledBoost
+
     def updateHealth(self, damage):
         self.vehicleControlState["health"] -= 0.25
-        if self.vehicleControlState["health"] < 0.0:
+        if self.vehicleControlState["health"] <= 0.0:
             self.killVehicle("Lost health")
 
-    def killVehicle(self, resaon = ""):
-        print "Sent request to server for killing this player because: ", resaon
+    def killVehicle(self, reason = ""):
+        print "Sent request to server for killing this player because: ", reason
 
     def updateMovement(self, move, dt):
         """Use controls to update the player's car"""
@@ -322,25 +366,25 @@ class Vehicle(object):
         return
 
     def setupVehicle(self, main):
+        scale = 0.5
         # Chassis
         shape = BulletBoxShape(Vec3(0.6, 1.4, 0.5))
-        ts = TransformState.makePos(Point3(0, 0, 0.5))
-        name = "vehicle"
-        if self.isCurrentPlayer:
-            name = self.username
+        ts = TransformState.makePos(Point3(0, 0, 0.5 * scale))
+
+        name = self.username
         self.chassisNode = BulletRigidBodyNode(name)
         self.chassisNode.setTag('username', str(name))
         self.chassisNP = main.worldNP.attachNewNode(self.chassisNode)
         self.chassisNP.setName(str(name))
         self.chassisNP.node().addShape(shape, ts)
-        self.chassisNP.setScale(.5,.5,.5)
+        self.chassisNP.setScale(scale)
 
         self.chassisNP.setPos(self.pos)
         if self.isCurrentPlayer:
             self.chassisNP.node().notifyCollisions(True)
             self.chassisNP.node().setMass(800.0)
         else:
-            self.chassisNP.node().notifyCollisions(False)
+            self.chassisNP.node().notifyCollisions(True)
             self.chassisNP.node().setMass(400.0)
         self.chassisNP.node().setDeactivationEnabled(False)
 
@@ -364,22 +408,22 @@ class Vehicle(object):
         # Right front wheel
         np = loader.loadModel('models/yugo/yugotireR.egg')
         np.reparentTo(main.worldNP)
-        self.addWheel(Point3( 0.70,  1.05, 0.3), True, np)
+        self.addWheel(Point3( 0.70 * scale,  1.05 * scale, 0.3), True, np)
 
         # Left front wheel
         np = loader.loadModel('models/yugo/yugotireL.egg')
         np.reparentTo(main.worldNP)
-        self.addWheel(Point3(-0.70,  1.05, 0.3), True, np)
+        self.addWheel(Point3(-0.70 * scale,  1.05 * scale, 0.3), True, np)
 
         # Right rear wheel
         np = loader.loadModel('models/yugo/yugotireR.egg')
         np.reparentTo(main.worldNP)
-        self.addWheel(Point3( 0.70, -1.05, 0.3), False, np)
+        self.addWheel(Point3( 0.70 * scale, -1.05 * scale, 0.3), False, np)
 
         # Left rear wheel
         np = loader.loadModel('models/yugo/yugotireL.egg')
         np.reparentTo(main.worldNP)
-        self.addWheel(Point3(-0.70, -1.05, 0.3), False, np)
+        self.addWheel(Point3(-0.70 * scale, -1.05 * scale, 0.3), False, np)
 
     def addWheel(self, pos, front, np):
         wheel = self.vehicle.createWheel()
@@ -403,7 +447,7 @@ class Vehicle(object):
     def reset(self):
         #self.chassisNP.setP(0)
         #self.chassisNP.setR(0)
-        print "kegwe", self.chassisNP.getX(),self.chassisNP.getY(),self.chassisNP.getZ(),self.chassisNP.getH(),0,0
+        #print "kegwe", self.chassisNP.getX(),self.chassisNP.getY(),self.chassisNP.getZ(),self.chassisNP.getH(),0,0
         self.chassisNP.setPosHpr(self.chassisNP.getX(),self.chassisNP.getY(),self.chassisNP.getZ(),self.chassisNP.getH(),0,0)
 
 

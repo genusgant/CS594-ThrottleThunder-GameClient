@@ -464,20 +464,23 @@ class Menu(ShowBase):
     def handleQueueNotification(self, size, sizeNeeded, players):
         print "Received Handle Queue MAX_PLAYERS: ", sizeNeeded
         start = False
-        #comment this out later
-        sizeNeeded = 1
-        #end comment
         if (len(players) >= sizeNeeded):
             self.userCount['text'] = str(len(players)) + ' / '+ str(size)
             self.userMessage['text'] = 'Ready to start'
             start = True
+            print "Ready to go players list", players
+            for val in players:
+                print val
+                if val != None and len(val) >= sizeNeeded and val[1] == 0:
+                    start = False
+                    break
         else:
             self.userCount['text'] = str(len(players)) + ' / '+ str(sizeNeeded)
             self.userMessage['text'] = 'More players needed'
         self.showUsers(players)
         if start:
-            #self.launchDDGame()
-            self.launchRRGame()
+            self.launchDDGame()
+            #self.launchRRGame()
 
     def handleChatNotification(self, username, msg):
         self.globalChat.insert(0, [username, msg])
@@ -552,6 +555,7 @@ class Menu(ShowBase):
         print "Launching DD GAME"
         self.World.ServerConnection.activeStatus = False
         self.unloadScreen()
+        self.World.stopMusic()
         self.ddworld = WorldManager(self)
         #data might be require to send to DD world
 

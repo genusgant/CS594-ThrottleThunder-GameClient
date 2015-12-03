@@ -50,6 +50,9 @@ from time import sleep
 from Dashboard import Dashboard
 import re
 from pandac.PandaModules import loadPrcFileData
+from Audio import Audio
+from OtherPlayersHealth import OtherPlayersHealth
+from pandac.PandaModules import loadPrcFileData
 
 loadPrcFileData('', 'bullet-enable-contact-events true')
 
@@ -96,7 +99,7 @@ class WorldManager():
         self.cManager = ConnectionManager(self, self.lobby.World.ServerConnection)
         self.cManager.startConnection()
         self.gameWorld.cManager = self.cManager
-        self.cManager.sendRequest(Constants.CMSG_REQ_TEST)
+        self.cManager.sendRequest(Constants.CMSG_READY)
         self.addVehicleProps(self.lobby.World.username, 0, 0, 0, 0, 0, 0, 0, 0, 0)
         #self.cManager.sendRequest(Constants.CMSG_SET_POSITION)
         #while not self.otherPlayersDataAvailable:
@@ -178,16 +181,19 @@ class World(DirectObject):
 
     def __init__(self, manager):
         # Stores the list of all the others players characters
+        self.cleanParticle = False
         self.vehiclelist = {}
         self.isActive = False
         self.nodeFilterList = []
         self.collisionThreadSet = []
         self.otherPlayer = None
+        self.deadCounter = 0
         self.manager = manager
         self.lobby = manager.lobby
         self.login = self.lobby.World.username
         #self.cManager = self.manager.cManager
         self.isDebug = False
+        self.enemyHealthList = {}
 
     def initializeGameWorld(self):
 
@@ -204,6 +210,9 @@ class World(DirectObject):
         self.accept('1', self.activateBoost)
         # Network Setup
         #self.cManager.startConnection()
+        # Create Audio Manager
+        self.audioManager = Audio(self)
+        self.audioManager.startAudioManager()
         #taskMgr.add(self.enterGame, "EnterGame")
 
         #taskMgr.add(self.usePowerup, "usePowerUp")
@@ -216,7 +225,7 @@ class World(DirectObject):
         self.setupCamera()
         # Create Powerups
         self.createPowerups()
-        #taskMgr.add(self.powerups.checkPowerPickup, "checkPowerupTask")
+        taskMgr.add(self.powerups.checkPowerPickup, "checkPowerupTask")
         self.dashboard = Dashboard(self, taskMgr)
 
 
@@ -255,6 +264,10 @@ class World(DirectObject):
 
     def doReset(self):
         self.mainCharRef.reset()
+
+    def doRanking(self):
+        #print "doRanking called"
+        self.cManager.sendRequest(Constants.CMSG_RANKINGS)
 
 
     def enterGame(self, task):
@@ -398,6 +411,7 @@ class World(DirectObject):
     def onContactAdded(self, node1, node2):
         isMyCarColliding = False
         if node1.notifiesCollisions() and node2.notifiesCollisions():
+            self.audioManager.play_collision()
             isEnable = True
             list2 = [node1.getName(), node2.getName()]
             for nodeSet in self.nodeFilterList:
@@ -407,32 +421,50 @@ class World(DirectObject):
 
             if isEnable:
                 isMyCarColliding = False
-                npA = NodePath.anyPath(node1)
-                npB = NodePath.anyPath(node2)
-                message = ""
                 if node1.getName() == self.login:
-                    nodeA = node1
-                    nodeB = node2
                     isMyCarColliding = True
+                    if node2.getName() == 'UniverseNode':
+                        self.killMe()
+                        return
                 elif node2.getName() == self.login:
-                    nodeA = node2
-                    nodeB = node1
                     isMyCarColliding = True
+                    if node1.getName() == 'UniverseNode':
+                        self.killMe()
+                        return
 
-            if isMyCarColliding:
-                print "isMyCarColliding: True"
-                name1 = node1.getTag("username")
-                vehicle1 = self.vehicleList[name1]
-                vehicle1.props.setVelocity(node1.getLinearVelocity().length())
-                name2 = node2.getTag("username")
-                vehicle2 = self.vehicleList[name2]
-                vehicle2.props.setVelocity(node2.getLinearVelocity().length())
-                self.calculateDamage(vehicle1, vehicle2)
+                if isMyCarColliding:
+                    name1 = node1.getName()
+                    vehicle1 = self.vehiclelist[name1]
+                    vehicle1.props.setVelocity(node1.getLinearVelocity().length())
+                    name2 = node2.getName()
+                    vehicle2 = self.vehiclelist[name2]
+                    vehicle2.props.setVelocity(node2.getLinearVelocity().length())
+                    self.calculateDamage(vehicle1, vehicle2)
 
-            self.nodeFilterList.append((node1.getName(), node2.getName()))
-            thread = Thread(target=self.removeCollisionSet, args=(1, ))
-            self.collisionThreadSet.append(thread)
-            thread.start()
+                self.nodeFilterList.append((node1.getName(), node2.getName()))
+                thread = Thread(target=self.removeCollisionSet, args=(1, ))
+                self.collisionThreadSet.append(thread)
+                thread.start()
+
+    def killMe(self):
+        self.vehicleContainer.props.health = self.vehicleContainer.props.armor = 0
+        self.cManager.sendRequest(Constants.CMSG_HEALTH, 0)
+        #self.vehicleContainer.chassisNP.removeNode()
+        self.cManager.sendRequest(Constants.CMSG_DEAD)
+        self.gameEnd(True)
+
+    def gameEnd(self, isDead=False):
+        self.dashboard.gameResult(isDead)
+        self.audioManager.StopAudioManager()
+        self.cleanup()
+
+
+    def callLobby(self):
+
+        self.cleanup()
+        # self.lobby.createSocialization()
+        self.lobby.World.startMusic()
+        self.lobby.World.doMenu()
 
     def doExit(self):
         self.cleanup()
@@ -443,7 +475,6 @@ class World(DirectObject):
         self.setup()
 
     def toggleWireframe(self):
-
         base.toggleWireframe()
 
     def toggleTexture(self):
@@ -470,21 +501,31 @@ class World(DirectObject):
         #Front collisionSection = 3, mid = 2, back = 1
         damageFactor = (((fromWeight + toWeight) * (fromSpeed + toSpeed)) / 100)
 
-        fromDamage = .5 * damageFactor / fromCollisionSection
-        toDamage = .5 * damageFactor / toCollisionSection
+        damage = .5 * damageFactor / fromCollisionSection
+        #toDamage = .5 * damageFactor / toCollisionSection
+        damage = int(damage)
+        print "Damage: ", damage
+        #print "To Damage: ", toDamage
+        if fromCar.username == self.login:
+            if not fromCar.props.setDamage(damage):
+                self.killMe()
+            else:
+                self.cManager.sendRequest(Constants.CMSG_HEALTH, fromCar.props.getHitPoint())
 
-        print "From Damage: ", fromDamage
-        print "To Damage: ", toDamage
+        else:
+            if not toCar.props.setDamage(damage):
+                self.killMe()
+            else:
+                self.cManager.sendRequest(Constants.CMSG_HEALTH, toCar.props.getHitPoint())
 
-        fromCar.props.armor -= fromDamage
-        if fromCar.props.armor < 0:
-            fromCar.props.armor = 0
-            fromCar.props.health -= fromCar.props.armor
-
-        toCar.props.armor -= toDamage
-        if toCar.props.armor < 0:
-            toCar.props.armor = 0
-            toCar.props.health -= toCar.props.armor
+        print "My health: ", self.vehicleContainer.props.health
+        if self.vehicleContainer.props.health < 50 and not self.cleanParticle:
+            #self.vehicleContainer.loadParticleConfig('steam.ptf')
+            self.cleanParticle = True
+        else:
+            if self.cleanParticle:
+                #self.vehicleContainer.p.cleanup()
+                self.cleanParticle = False
 
     def doScreenshot(self):
 
@@ -496,6 +537,7 @@ class World(DirectObject):
     # ____TASK___
     def update(self, task):
         dt = globalClock.getDt()
+        self.audioManager.updateSound(self.vehicleContainer)
         #print "Type: ", type(self.vehicleContainer)
         forces = self.vehicleContainer.processInput(inputState, dt)
         moving = self.vehicleContainer.chassisNP.getPos()
@@ -509,7 +551,8 @@ class World(DirectObject):
                                        self.vehicleContainer.chassisNP.getH(), self.vehicleContainer.chassisNP.getP(), self.vehicleContainer.chassisNP.getR()])
 
         #self.moveCrazyCar(dt)
-        self.world.doPhysics(dt, 10, 0.008)
+        if self.world != None:
+            self.world.doPhysics(dt, 10, 0.008)
 
         # if inputState.isSet('step'):
         #     self.vehicleContainer.processInput(inputState, dt)
@@ -547,6 +590,7 @@ class World(DirectObject):
     def cleanup(self):
         self.world = None
         self.worldNP.removeNode()
+        self.cManager.closeConnection()
 
     def setupCamera(self):
         base.disableMouse()
@@ -588,6 +632,8 @@ class World(DirectObject):
         # create a sphere to denote the light
         sphere = loader.loadModel("models/sphere")
         sphere.reparentTo(plnp)
+        sun_tex = loader.loadTexture("models/tex/sun.jpg")
+        sphere.setTexture(sun_tex, 1)
 
         render.setShaderAuto()
 
@@ -627,11 +673,28 @@ class World(DirectObject):
                 if self.login == createPlayerUsername:
                     isCurrentPlayer = True
                 playerVehicle = Vehicle(self, createPlayerUsername, pos=LVecBase3(vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z),isCurrentPlayer=isCurrentPlayer, carId=vehicleAttributes.carId)
+                if self.login != createPlayerUsername:
+                    self.enemyHealth = OtherPlayersHealth(self,playerVehicle)
+                    self.enemyHealthList[createPlayerUsername] = self.enemyHealth
+                    #taskMgr.add(self.updateStatusBars,"healthchange")
+                #Send Health
+                # CMSG_HEALTH
+                self.cManager.sendRequest(Constants.CMSG_HEALTH, playerVehicle.props.getHitPoint())
                 if self.login == createPlayerUsername:
                     self.vehicleContainer = playerVehicle
+                    # self.audioManager.play_music_dd()
+                    self.audioManager.initialiseSound(self.vehicleContainer)
                     print "I AM: ", createPlayerUsername
                 #print "Creating other players: ", createPlayerUsername, "@ ", vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z
                 self.vehiclelist[createPlayerUsername] = playerVehicle
+
+    def updateStatusBars(self, username, health):
+        if username in self.enemyHealthList.keys():
+            enemyHealth = self.enemyHealthList[username]
+            print "self.vehicleContainer.props.health", self.vehicleContainer.props.health
+            enemyHealth.HealthBar['value'] = health
+        else:
+            print "updateStatusBars: Enemy entry not found"
 
     def startConnection(self):
         """Create a connection to the remote host.
@@ -663,6 +726,7 @@ class World(DirectObject):
             result[3] = 1
 
         return result
+
 
 #w = WorldManager()
 #run()

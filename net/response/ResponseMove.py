@@ -21,8 +21,9 @@ class ResponseMove(ServerResponse):
                 p = data.getFloat32()
                 r = data.getFloat32()
                 #print "Response Move for: ", username,steering, wheelforce, brakeforce, x, y, z, h, p, r
-                vehicle = self.world.vehiclelist[username]
-                vehicle.move(steering, wheelforce, brakeforce, x, y, z, h, p, r)
+                if username in self.world.vehiclelist.keys():
+                	vehicle = self.world.vehiclelist[username]
+                	vehicle.move(steering, wheelforce, brakeforce, x, y, z, h, p, r)
 
         except:
             self.log('Bad [' + str(Constants.SMSG_MOVE) + '] Move Response')
