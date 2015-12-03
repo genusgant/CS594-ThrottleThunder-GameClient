@@ -6,7 +6,7 @@ Created on Nov 20, 2015
 # import CurveHelper
 from CurveHelper import loadTrack, makeVec, angleTo, mPoint
 from rrCheckpoint import Checkpoint
-from ..common.Constants import Constants
+from common.Constants import Constants
 
 
 class RaceMaster():
