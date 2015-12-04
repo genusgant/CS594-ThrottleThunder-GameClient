@@ -48,7 +48,11 @@ from pandac.PandaModules import loadPrcFileData
 from helper.RaceMaster import RaceMaster
 from rrCheckpoint import Checkpoint
 from TopView import TopView
+import atexit
 
+def disconnect(world):
+    world.cManager.sendRequest(Constants.CMSG_DISCONNECT)
+    
 loadPrcFileData('', 'bullet-enable-contact-events true')
 
 SPEED = 0.5
@@ -96,6 +100,7 @@ class RRWorldManager():
         self.lobby.World.ServerConnection.activeStatus = False
         self.cManager = ConnectionManager(self, self.lobby.World.ServerConnection)
         self.cManager.startConnection()
+        atexit.register(disconnect, self)
         self.gameWorld.cManager = self.cManager
         self.cManager.sendRequest(Constants.CMSG_READY)
         self.addVehicleProps(self.lobby.World.username, 0, 0, 0, 0, 0, 0, 0, 0, 0)
