@@ -87,6 +87,7 @@ class RRWorldManager():
     def __init__(self, lobby):
         self.playerList = {}
         self.userList = []
+        self.countdownTime = 5
         self.otherPlayersDataAvailable = False
         self.lobby = lobby
         self.isDDGame = False
@@ -158,7 +159,7 @@ class RRWorldManager():
             VehicleAttributes(username, 0, 0, 0, x, y, z, h, p, r)
 
     def startGameSequence(self):
-        self.loadinScreen.finish()
+        self.loadinScreen.finish(self.countdownTime)
         self.gameWorld.initializeGameWorld()
 
 

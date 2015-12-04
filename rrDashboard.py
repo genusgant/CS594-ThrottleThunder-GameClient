@@ -108,9 +108,9 @@ class Dashboard(DirectObject):
         return task.cont
 
     # server updates client time in ms
-    def force_timer(self, server_time):
-        self.start_time = datetime.datetime.now()
-        self.countdown_time = datetime.timedelta(milliseconds=server_time)
+    # def force_timer(self, server_time):
+    #     self.start_time = datetime.datetime.now()
+    #     self.countdown_time = datetime.timedelta(milliseconds=server_time)
 
     def update_ranking(self, leaders):
         # get usernames from list
