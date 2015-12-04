@@ -13,9 +13,9 @@ class Audio(DirectObject):
 
     def play_music_rr(self):
         # load background music
-        music1 = loader.loadSfx("audio/bkgd/Sandstorm.m4a")
-        music2 = loader.loadSfx("audio/bkgd/LevelsNoVocals.mp3")
-        music3 = loader.loadSfx("audio/bkgd/RaceMusic.mp3")
+        music1 = loader.loadSfx("audio/bkgd/Sandstorm.ogg")
+        music2 = loader.loadSfx("audio/bkgd/LevelsNoVocals.ogg")
+        music3 = loader.loadSfx("audio/bkgd/RaceMusic.ogg")
 
         music_seq = Sequence(SoundInterval(music1), SoundInterval(music2), SoundInterval(music3),
                              name="Music Sequence")

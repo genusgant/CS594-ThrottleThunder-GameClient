@@ -24,7 +24,7 @@ class ResponseSetPosition(ServerResponse):
                 h= data.getFloat32()
                 p= data.getFloat32()
                 r= data.getFloat32()
-                print "Set Position Updated for: ", username, "at- ", x,y,z
+                print "Set Position Updated for: ", username, "at- ", x,y,z,h,p,r
                 self.worldMgr.modifyPlayerPos(username, x,y,z,h,p,r)
                     #self.world.createOtherVehicles(username, carId, carPaint, carTires, x,y,z,h,p,r)
                 #else:
