@@ -97,7 +97,7 @@ class RRWorldManager():
         self.cManager = ConnectionManager(self, self.lobby.World.ServerConnection)
         self.cManager.startConnection()
         self.gameWorld.cManager = self.cManager
-        self.cManager.sendRequest(Constants.CMSG_REQ_TEST)
+        self.cManager.sendRequest(Constants.CMSG_READY)
         self.addVehicleProps(self.lobby.World.username, 0, 0, 0, 0, 0, 0, 0, 0, 0)
         # self.cManager.sendRequest(Constants.CMSG_SET_POSITION)
         # while not self.otherPlayersDataAvailable:

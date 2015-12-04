@@ -42,7 +42,7 @@ class Constants:
     CMSG_SET_RANK                       = 130
     CMSG_CHECKPOINTS                    = 133
     REQ_HEARTBEAT                       = 301
-    CMSG_REQ_TEST                       = 127
+    CMSG_REQ_TEST                       = 160
 
     SMSG_LOGIN                          = 201
     SMSG_DISCONNECT                     = 202
