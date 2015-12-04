@@ -6,7 +6,7 @@ class Constants:
     RAND_SHORT                          = 3
     RAND_FLOAT                          = 4
 
-    SERVER_IP                           = 'csproject.calstatela.edu' # csproject.calstatela.edu # also need to change config.json
+    SERVER_IP                           = 'localhost' # csproject.calstatela.edu # also need to change config.json
     SERVER_PORT                         = 9252
     DEBUG                               = True
     MSG_NONE                            = 0
@@ -79,23 +79,27 @@ class Constants:
 
 
     MAX_HEALTH = {
-        "0": 150,
-        "1": 250,
-        "2": 400,
+        "1": 150,
+        "2": 225,
+        "3": 300,
+        "4": 400,
     }
     VEHICLE_HEALTH = {
-        "0": 100,
-        "1": 200,
-        "2": 400,
+        "1": 100,
+        "2": 175,
+        "3": 250,
+        "4": 350,
     }
 
     MAX_WEIGHT = {
-        "0": 100,
-        "1": 200,
-        "2": 400,
+        "1": 100,
+        "2": 200,
+        "3": 275,
+        "4": 350,
     }
     MAX_ARMOR = {
-        "0": 300,
-        "1": 200,
-        "2": 100,
+        "1": 375,
+        "2": 300,
+        "3": 225,
+        "4": 125,
     }
