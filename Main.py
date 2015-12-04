@@ -53,12 +53,13 @@ from pandac.PandaModules import loadPrcFileData
 from Audio import Audio
 from OtherPlayersHealth import OtherPlayersHealth
 from pandac.PandaModules import loadPrcFileData
+loadPrcFileData('', 'bullet-enable-contact-events true')
 import atexit
 
 def disconnect(world):
     world.cManager.sendRequest(Constants.CMSG_DISCONNECT)
 
-loadPrcFileData('', 'bullet-enable-contact-events true')
+
 
 SPEED = 0.5
 

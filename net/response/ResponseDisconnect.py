@@ -9,7 +9,8 @@ class ResponseDisconnect(ServerResponse):
 
         try:
             username = data.getString()
-            
+            self.world.vehiclelist[username].chassisNP.remove()
+            #self.world.vehiclelist[username].chassisNode.remove()
             self.world.vehiclelist.pop(username)
 
         except:
