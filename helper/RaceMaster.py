@@ -80,6 +80,9 @@ class RaceMaster():
         if cp > self.lastcp:
             self.lastcp = cp
             self.checkpointspassed += 1
+            self.main.cManager.sendRequest(Constants.CMSG_CHECKPOINTS, [self.laps, self.checkpointspassed])
+            print "checkpoint req sent"
+
         elif cp == 0:
             if self.lastcp >= self.getCPperLap() - 3:
                 # if self.checkpointspassed >= self.getCPperLap():
@@ -121,7 +124,7 @@ class RaceMaster():
                         # print("I Hit a checkpoint!!!")
                         self.hitCheckpoint(self.checkpointmarkers[i].cid)
                         # print("cp: " + str( i) + " last id: " + str(self.lastcp) + " cp passed: " + str(self.checkpointspassed))
-                self.main.cManager.sendRequest(Constants.CMSG_CHECKPOINTS, [self.laps, self.checkpointspassed])
+
 
         return task.again
 
