@@ -6,7 +6,7 @@ class Constants:
     RAND_SHORT                          = 3
     RAND_FLOAT                          = 4
 
-    SERVER_IP                           = 'localhost' # csproject.calstatela.edu # also need to change config.json
+    SERVER_IP                           = 'csproject.calstatela.edu' # csproject.calstatela.edu # also need to change config.json
     SERVER_PORT                         = 9252
     DEBUG                               = True
     MSG_NONE                            = 0
@@ -42,7 +42,7 @@ class Constants:
     CMSG_SET_RANK                       = 130
     CMSG_CHECKPOINTS                    = 133
     REQ_HEARTBEAT                       = 301
-    CMSG_REQ_TEST                       = 160
+    CMSG_REQ_TEST                       = 127
 
     SMSG_LOGIN                          = 201
     SMSG_DISCONNECT                     = 202

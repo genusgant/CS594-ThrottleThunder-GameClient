@@ -225,10 +225,10 @@ class World(DirectObject):
         # Dashboard
         self.dashboard = Dashboard(self, taskMgr, self.rm)
 
-        #mini map
+        # mini map
         self.miniMap = TopView(self.vehicleContainer)
         taskMgr.doMethodLater(.1, self.miniMap.update, 'updateMinimap')
- 
+
         # checkpoints for tracking positions
         #     self.cself.rm.getCheckpointMarkers()
         taskMgr.doMethodLater(.1, self.rm.updateCheckpoints, 'updateRace')
@@ -248,9 +248,10 @@ class World(DirectObject):
         self.vehicleContainer.addBoost()
 
     def resetCar(self):
-        if self.vehicleContainer.chassisNP.getZ() > -30 : self.vehicleContainer.reset()
-        else: self.rm.resetCar()
-        
+        if self.vehicleContainer.chassisNP.getZ() > -30:
+            self.vehicleContainer.reset()
+        else:
+            self.rm.resetCar()
 
     def createPowerups(self):
         self.powerups = PowerupManager(self, self.vehicleContainer)
@@ -443,6 +444,25 @@ class World(DirectObject):
             thread = Thread(target=self.removeCollisionSet, args=(1,))
             self.collisionThreadSet.append(thread)
             thread.start()
+
+    def killMe(self):
+        self.vehicleContainer.props.health = self.vehicleContainer.props.armor = 0
+        self.cManager.sendRequest(Constants.CMSG_HEALTH, 0)
+        # self.vehicleContainer.chassisNP.removeNode()
+        self.cManager.sendRequest(Constants.CMSG_DEAD)
+        self.gameEnd(True)
+
+    def gameEnd(self, isDead=False):
+        self.dashboard.gameResult(isDead)
+        self.audioManager.StopAudioManager()
+        self.cleanup()
+
+    def callLobby(self):
+
+        self.cleanup()
+        # self.lobby.createSocialization()
+        self.lobby.World.startMusic()
+        self.lobby.World.doMenu()
 
     def doExit(self):
         self.cleanup()
@@ -649,29 +669,27 @@ class World(DirectObject):
                 if self.login == createPlayerUsername:
                     isCurrentPlayer = True
 
-                pos=[vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z,vehicleAttributes.h, vehicleAttributes.p,vehicleAttributes.r]
+                pos = [vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z, vehicleAttributes.h,
+                       vehicleAttributes.p, vehicleAttributes.r]
 
-                playerVehicle = Vehicle(self.world, createPlayerUsername,pos, isCurrentPlayer)#,
-                                       # pos=LVecBase3(vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z),
-                                    #    isCurrentPlayer=isCurrentPlayer, carId=vehicleAttributes.carId)
+                playerVehicle = Vehicle(self.world, createPlayerUsername, pos, isCurrentPlayer)  # ,
+                # pos=LVecBase3(vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z),
+                #    isCurrentPlayer=isCurrentPlayer, carId=vehicleAttributes.carId)
                 if isCurrentPlayer:
                     self.vehicleContainer = playerVehicle
                     print "I AM: ", createPlayerUsername
                     # this will be set by the server
                     self.howmanyplayers = len(self.manager.playerList)
-                    
+
                     self.rm = RaceMaster(self, self.vehicleContainer, 1, self.howmanyplayers, 0)
                     self.rm.setStartingPos(0)
-                    
-                
+
+
                 # print "Creating other players: ", createPlayerUsername, "@ ", vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z
                 else:
                     print "Creating other players: ", createPlayerUsername, "@ ", vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z
 
                     self.vehiclelist[createPlayerUsername] = playerVehicle
-
-
-              
 
     def startConnection(self):
         """Create a connection to the remote host.

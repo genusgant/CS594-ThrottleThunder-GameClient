@@ -67,6 +67,7 @@ class ServerRequestTable:
         self.add(Constants.CMSG_TIME, 'RequestTime')
         self.add(Constants.CMSG_ENTER_GAME_NAME, 'RequestEnterGameName')
         self.add(Constants.CMSG_REQ_TEST, 'RequestTest')
+        self.add(Constants.CMSG_CHECKPOINTS, 'RequestCheckpoints')
 
 
     def add(self, constant, name):
