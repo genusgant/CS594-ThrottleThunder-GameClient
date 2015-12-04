@@ -161,6 +161,7 @@ class RRWorldManager():
     def startGameSequence(self):
         self.loadinScreen.finish(self.countdownTime)
         self.gameWorld.initializeGameWorld()
+        self.cManager.sendRequest(Constants.CMSG_READY)
 
 
 class World(DirectObject):
