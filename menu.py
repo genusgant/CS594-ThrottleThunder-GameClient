@@ -10,6 +10,10 @@ from Network.models.PrivateChatConnectionModel import PrivateChatConnectionModel
 from Network.models.ChatConnectionModel import ChatConnectionModel
 from Main import WorldManager
 from RRMain import RRWorldManager
+import atexit
+
+def disconnect(world):
+    world.authConnection.sendDisconnectRequest()
 
 class Menu(ShowBase):
 
@@ -18,6 +22,7 @@ class Menu(ShowBase):
         #self.appRunner = None#added this to overide the login
         self.playerList = []
         self.World = World
+        atexit.register(disconnect, self.World)
         self.WhichScreen = "";
         self.lastSelectedFriend = None
 

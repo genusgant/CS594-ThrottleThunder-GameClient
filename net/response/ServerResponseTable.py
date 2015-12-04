@@ -10,6 +10,7 @@ from common.Constants import Constants
 # from ResponseChatOne import ResponseChatOne
 
 from net.response.ResponseLogin import ResponseLogin
+from net.response.ResponseDisconnect import ResponseDisconnect
 from net.response.ResponseMove import ResponseMove
 from net.response.ResponsePowerUp import ResponsePowerUp
 from net.response.ResponsePowerPickUp import ResponsePowerPickUp
@@ -47,6 +48,7 @@ class ServerResponseTable:
         # self.add(Constants.CMSG_CHAT_ONE, 'ResponseChatOne')
 
         self.add(Constants.SMSG_LOGIN, 'ResponseLogin')
+        self.add(Constants.SMSG_DISCONNECT, 'ResponseDisconnect')
         self.add(Constants.SMSG_MOVE, 'ResponseMove')
         self.add(Constants.SMSG_POWER_UP, 'ResponsePowerUp')
         self.add(Constants.SMSG_POWER_UP_PICK_UP, 'ResponsePowerPickUp')
