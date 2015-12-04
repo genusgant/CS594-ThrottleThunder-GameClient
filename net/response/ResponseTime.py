@@ -14,6 +14,7 @@ class ResponseTime(ServerResponse):
                 #isDDGame is True when it is DD Game False otherwise
                 #if not self.worldMgr.isDDGame:
                     #self.world.dashboard.force_timer(data.getInt32())
+                pass
             elif test == 0:
                 self.worldMgr.countdownTime = data.getInt32()
                 self.worldMgr.startGameFlag = True
