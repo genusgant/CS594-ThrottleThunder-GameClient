@@ -53,6 +53,10 @@ from pandac.PandaModules import loadPrcFileData
 from Audio import Audio
 from OtherPlayersHealth import OtherPlayersHealth
 from pandac.PandaModules import loadPrcFileData
+import atexit
+
+def disconnect(world):
+    world.cManager.sendRequest(Constants.CMSG_DISCONNECT)
 
 loadPrcFileData('', 'bullet-enable-contact-events true')
 
@@ -101,6 +105,7 @@ class WorldManager():
         self.lobby.World.ServerConnection.activeStatus = False
         self.cManager = ConnectionManager(self, self.lobby.World.ServerConnection)
         self.cManager.startConnection()
+        atexit.register(disconnect, self)
         self.gameWorld.cManager = self.cManager
         self.cManager.sendRequest(Constants.CMSG_READY)
         self.addVehicleProps(self.lobby.World.username, 0, 0, 0, 0, 0, 0, 0, 0, 0)

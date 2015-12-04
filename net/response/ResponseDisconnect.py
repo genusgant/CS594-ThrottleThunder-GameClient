@@ -9,8 +9,8 @@ class ResponseDisconnect(ServerResponse):
 
         try:
             username = data.getString()
-
-            self.world.vehiclelist.remove(username)
+            
+            self.world.vehiclelist.pop(username)
 
         except:
             self.log('Bad [' + str(Constants.SMSG_DISCONNECT) + '] Disconnect Response')
