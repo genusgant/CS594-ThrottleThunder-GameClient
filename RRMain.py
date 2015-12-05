@@ -282,57 +282,57 @@ class World(DirectObject):
     def enterGame(self, task):
         self.startGameNow()
         return task.done
-        if self.gameState == self.gameStateDict["Login"]:
-            # responseValue = 1 indicates that this state has been finished
-            if self.responseValue == 1:
-                print "Authentication succeeded"
-                # Authentication succeeded
-                self.cManager.sendRequest(Constants.CMSG_CREATE_LOBBY, ["raceroyal", "0", "1"])
-                self.gameState = self.gameStateDict["CreateLobby"]
-                self.responseValue = -1
-        elif self.gameState == self.gameStateDict["CreateLobby"]:
-            if self.responseValue == 1:
-                # Lobby Created and we are already in
-                print "Lobby Created and we are already in"
-                self.gameState = self.gameStateDict["EnterGame"]
-                self.responseValue = -1
-                self.cManager.sendRequest(Constants.CMSG_READY)
-
-            elif self.responseValue == 0:
-                # Game already created, let's join it
-                print "Game already created, let's join it"
-                self.cManager.sendRequest(Constants.CMSG_ENTER_GAME_NAME, "raceroyal")
-                # self.gameState = self.gameStateDict["EnterGame"]
-                # self.responseValue = -1
-                self.responseValue = -1
-                self.gameState = self.gameStateDict["InitializeGame"]
-                #               Everyone is in the game, we send ReqReady, and the server will send positions when every client did
-                self.cManager.sendRequest(Constants.CMSG_READY)
-
-        elif self.gameState == self.gameStateDict["EnterGame"]:
-            if self.responseValue == 1:
-                #                 When the positions are sent, an acknowledgment is sent and we begin the InitializeGame
-                print "When the positions are sent, an acknowledgment is sent and we begin the InitializeGame"
-                self.responseValue = -1
-                self.gameState = self.gameStateDict["InitializeGame"]
-                #               Everyone is in the game, we send ReqReady, and the server will send positions when every client did
-                self.cManager.sendRequest(Constants.CMSG_READY)
-
-        elif self.gameState == self.gameStateDict["InitializeGame"]:
-            if self.responseValue == 1:
-                print "Set up the camera"
-                # Set up the camera
-                self.camera = Camera(self.mainChar)
-                self.gameState = self.gameStateDict["BeginGame"]
-                self.cManager.sendRequest(Constants.CMSG_READY)
-                self.responseValue = -1
-
-        elif self.gameState == self.gameStateDict["BeginGame"]:
-            if self.responseValue == 1:
-                print "Begin Game"
-                # taskMgr.doMethodLater(.1, self.updateMove, 'updateMove')
-                taskMgr.add(self.update, "moveTask")
-                return task.done
+        # if self.gameState == self.gameStateDict["Login"]:
+        #     # responseValue = 1 indicates that this state has been finished
+        #     if self.responseValue == 1:
+        #         print "Authentication succeeded"
+        #         # Authentication succeeded
+        #         self.cManager.sendRequest(Constants.CMSG_CREATE_LOBBY, ["raceroyal", "0", "1"])
+        #         self.gameState = self.gameStateDict["CreateLobby"]
+        #         self.responseValue = -1
+        # elif self.gameState == self.gameStateDict["CreateLobby"]:
+        #     if self.responseValue == 1:
+        #         # Lobby Created and we are already in
+        #         print "Lobby Created and we are already in"
+        #         self.gameState = self.gameStateDict["EnterGame"]
+        #         self.responseValue = -1
+        #         self.cManager.sendRequest(Constants.CMSG_READY)
+        #
+        #     elif self.responseValue == 0:
+        #         # Game already created, let's join it
+        #         print "Game already created, let's join it"
+        #         self.cManager.sendRequest(Constants.CMSG_ENTER_GAME_NAME, "raceroyal")
+        #         # self.gameState = self.gameStateDict["EnterGame"]
+        #         # self.responseValue = -1
+        #         self.responseValue = -1
+        #         self.gameState = self.gameStateDict["InitializeGame"]
+        #         #               Everyone is in the game, we send ReqReady, and the server will send positions when every client did
+        #         self.cManager.sendRequest(Constants.CMSG_READY)
+        #
+        # elif self.gameState == self.gameStateDict["EnterGame"]:
+        #     if self.responseValue == 1:
+        #         #                 When the positions are sent, an acknowledgment is sent and we begin the InitializeGame
+        #         print "When the positions are sent, an acknowledgment is sent and we begin the InitializeGame"
+        #         self.responseValue = -1
+        #         self.gameState = self.gameStateDict["InitializeGame"]
+        #         #               Everyone is in the game, we send ReqReady, and the server will send positions when every client did
+        #         self.cManager.sendRequest(Constants.CMSG_READY)
+        #
+        # elif self.gameState == self.gameStateDict["InitializeGame"]:
+        #     if self.responseValue == 1:
+        #         print "Set up the camera"
+        #         # Set up the camera
+        #         self.camera = Camera(self.mainChar)
+        #         self.gameState = self.gameStateDict["BeginGame"]
+        #         self.cManager.sendRequest(Constants.CMSG_READY)
+        #         self.responseValue = -1
+        #
+        # elif self.gameState == self.gameStateDict["BeginGame"]:
+        #     if self.responseValue == 1:
+        #         print "Begin Game"
+        #         # taskMgr.doMethodLater(.1, self.updateMove, 'updateMove')
+        #         taskMgr.add(self.update, "moveTask")
+        #         return task.done
 
         return task.cont
 
