@@ -333,8 +333,8 @@ class World(DirectObject):
         #         # taskMgr.doMethodLater(.1, self.updateMove, 'updateMove')
         #         taskMgr.add(self.update, "moveTask")
         #         return task.done
-
-        return task.cont
+        #
+        # return task.cont
 
     def startGameNow(self):
         # self.camera = Camera(self.mainChar)
