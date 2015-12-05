@@ -164,7 +164,7 @@ class RRWorldManager():
             VehicleAttributes(username, 0, 0, 0, x, y, z, h, p, r)
 
     def startGameSequence(self):
-        self.loadinScreen.finish(self.countdownTime)
+        self.loadinScreen.finish(self.countdownTime)  # David said this line is breaking the timer. need to remove?
         self.gameWorld.initializeGameWorld()
         self.cManager.sendRequest(Constants.CMSG_READY)
 
