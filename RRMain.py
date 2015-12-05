@@ -251,7 +251,8 @@ class World(DirectObject):
         self.world.setGravity(Vec3(0, 0, -9.81))
 
     def activateBoost(self):
-        self.vehicleContainer.addBoost()
+        if hasattr(self.vehicleContainer,"addBoost"):
+            self.vehicleContainer.addBoost()
 
     def resetCar(self):
         if self.vehicleContainer.chassisNP.getZ() > -30:
