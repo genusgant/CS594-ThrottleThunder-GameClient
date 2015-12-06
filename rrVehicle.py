@@ -163,24 +163,24 @@ class Vehicle(object):
         self.carNP.reparentTo(self.chassisNP)
 
         # Right front wheel
-        np = loader.loadModel('models/batmobile-wheel-right.egg')
-        np.reparentTo(render)
-        self.addWheel(Point3(1, 1.1, .7), True, np)
+        self.rfnp = loader.loadModel('models/batmobile-wheel-right.egg')
+        self.rfnp.reparentTo(render)
+        self.addWheel(Point3(1, 1.1, .7), True, self.rfnp)
 
         # Left front wheel
-        np = loader.loadModel('models/batmobile-wheel-left.egg')
-        np.reparentTo(render)
-        self.addWheel(Point3(-1, 1.1, .7), True, np)
+        self.lfnp = loader.loadModel('models/batmobile-wheel-left.egg')
+        self.lfnp.reparentTo(render)
+        self.addWheel(Point3(-1, 1.1, .7), True, self.lfnp)
 
         # Right rear wheel
-        np = loader.loadModel('models/batmobile-wheel-right.egg')
-        np.reparentTo(render)
-        self.addWheel(Point3(1, -2, .7), False, np)
+        self.rrnp = loader.loadModel('models/batmobile-wheel-right.egg')
+        self.rrnp.reparentTo(render)
+        self.addWheel(Point3(1, -2, .7), False, self.rrnp)
 
         # Left rear wheel
-        np = loader.loadModel('models/batmobile-wheel-left.egg')
-        np.reparentTo(render)
-        self.addWheel(Point3(-1, -2, .7), False, np)
+        self.lrnp = loader.loadModel('models/batmobile-wheel-left.egg')
+        self.lrnp.reparentTo(render)
+        self.addWheel(Point3(-1, -2, .7), False, self.lrnp)
 
     def addWheel(self, pos, front, np):
         wheel = self.vehicle.createWheel()
@@ -258,3 +258,12 @@ class Vehicle(object):
         self.vehicle.setBrake(brakeForce, 2);
         self.vehicle.setBrake(brakeForce, 3);
 
+
+    def remove(self, main):
+        """ Remove the whole vehicle. chassis and 4 wheels. """
+        main.world.removeVehicle(self.vehicle)
+        self.chassisNP.remove()
+        self.lfnp.removeNode()
+        self.rfnp.removeNode()
+        self.rrnp.removeNode()
+        self.lrnp.removeNode()

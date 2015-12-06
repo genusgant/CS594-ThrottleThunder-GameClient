@@ -406,24 +406,24 @@ class Vehicle(object):
         #self.carNP.reparentTo(self.chassisNP)
 
         # Right front wheel
-        np = loader.loadModel('models/yugo/yugotireR.egg')
-        np.reparentTo(main.worldNP)
-        self.addWheel(Point3( 0.70 * scale,  1.05 * scale, 0.3), True, np)
+        self.rfnp = loader.loadModel('models/yugo/yugotireR.egg')
+        self.rfnp.reparentTo(main.worldNP)
+        self.addWheel(Point3( 0.70 * scale,  1.05 * scale, 0.3), True, self.rfnp)
 
         # Left front wheel
-        np = loader.loadModel('models/yugo/yugotireL.egg')
-        np.reparentTo(main.worldNP)
-        self.addWheel(Point3(-0.70 * scale,  1.05 * scale, 0.3), True, np)
+        self.lfnp = loader.loadModel('models/yugo/yugotireL.egg')
+        self.lfnp.reparentTo(main.worldNP)
+        self.addWheel(Point3(-0.70 * scale,  1.05 * scale, 0.3), True, self.lfnp)
 
         # Right rear wheel
-        np = loader.loadModel('models/yugo/yugotireR.egg')
-        np.reparentTo(main.worldNP)
-        self.addWheel(Point3( 0.70 * scale, -1.05 * scale, 0.3), False, np)
+        self.rrnp = loader.loadModel('models/yugo/yugotireR.egg')
+        self.rrnp.reparentTo(main.worldNP)
+        self.addWheel(Point3( 0.70 * scale, -1.05 * scale, 0.3), False, self.rrnp)
 
         # Left rear wheel
-        np = loader.loadModel('models/yugo/yugotireL.egg')
-        np.reparentTo(main.worldNP)
-        self.addWheel(Point3(-0.70 * scale, -1.05 * scale, 0.3), False, np)
+        self.lrnp = loader.loadModel('models/yugo/yugotireL.egg')
+        self.lrnp.reparentTo(main.worldNP)
+        self.addWheel(Point3(-0.70 * scale, -1.05 * scale, 0.3), False, self.lrnp)
 
     def addWheel(self, pos, front, np):
         wheel = self.vehicle.createWheel()
@@ -480,3 +480,14 @@ class Vehicle(object):
         elif powerupIndex == 2 and self.currentPowerups["powerup3"] is not None:
             self.currentPowerups["powerup3"].useAbility()
             self.currentPowerups["powerup3"] = None
+
+            
+    def remove(self, main):
+        """ Remove the whole vehicle. chassis and 4 wheels. """
+        main.world.removeVehicle(self.vehicle)
+        self.chassisNP.remove()
+        self.lfnp.removeNode()
+        self.rfnp.removeNode()
+        self.rrnp.removeNode()
+        self.lrnp.removeNode()
+
