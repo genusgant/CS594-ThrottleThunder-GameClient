@@ -42,7 +42,15 @@ class AuthConnectionModel(ServerConnection):
         self.screenModel.parseAuthResponse(data.getUint16())
         
     def getDisconnect(self, data):
-        self.screenModel.parseDiscResponse(data.getUint16())
+        try:
+            username = data.getString()
+            if self.world.vehiclelist[username] != None :
+                self.world.vehiclelist[username].chassisNP.remove()
+                #self.world.vehiclelist[username].chassisNode.remove()
+                self.world.vehiclelist.pop(username)
+
+        except:
+            print "Something went wrong"
 
     def getReg(self, data):
         self.screenModel.parseRegResponse(data.getUint16())
