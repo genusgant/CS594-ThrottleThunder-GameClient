@@ -80,7 +80,6 @@ class RaceMaster():
         if cp > self.lastcp:
             self.lastcp = cp
             self.checkpointspassed += 1
-            self.main.cManager.sendRequest(Constants.CMSG_CHECKPOINTS, [self.laps, self.checkpointspassed])
 
         elif cp == 0:
             if self.lastcp >= self.getCPperLap() - 3:
@@ -95,6 +94,8 @@ class RaceMaster():
                 # recalculate cp distance
 
                 # returns number of laps compleated
+                
+        self.main.cManager.sendRequest(Constants.CMSG_CHECKPOINTS, [self.laps, self.checkpointspassed])
 
     def getLaps(self):
         self.laps
