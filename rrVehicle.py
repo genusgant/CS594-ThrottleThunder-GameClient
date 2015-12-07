@@ -165,19 +165,21 @@ class Vehicle(object):
                 #2 swisftstar
                 #3 stalion 
                 #4 batmobile
-                #5 Hovercraft 
-        if self.type == 1 :
-         self.LoadBruiser
-        elif self.type == 2 :
-         self.swisftstar
-        elif self.type == 3 :
-         self.LoadStalion
-        elif self.type == 4 :
-         self.LoadBatmobile
+                #5 Hovercraft
+        print "vechile created type: ",self.type
+        if self.type == 1:
+            self.LoadBruiser()
+        elif self.type == 2:
+            self.LoadSwiftstar()
+        elif self.type == 3:
+            self.LoadStalion()
+        elif self.type == 4:
+            self.LoadBatmobile()
         #elif self.type ==  :
-        # self.LoadHoverboard
+        else:
+            self.LoadHoverboard()
 
-        self.LoadSwiftstar()
+        # self.LoadSwiftstar()
 
     def LoadBatmobile(self):                                                # Load the batmobile! 
         self.carNP = loader.loadModel('models/batmobile-chassis.egg')

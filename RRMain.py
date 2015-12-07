@@ -684,8 +684,8 @@ class World(DirectObject):
                 #3 stalion 
                 #4 batmobile
                 #5 Hovercraft 
-                self.vehicleType = 1
-                playerVehicle = Vehicle(self.world, self. vehicleType, createPlayerUsername, pos, isCurrentPlayer )  # ,
+                #self.vehicleType = 1
+                playerVehicle = Vehicle(self.world, createPlayerUsername, vehicleAttributes.carId, pos, isCurrentPlayer )  # ,
                 # pos=LVecBase3(vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z),
                 #    isCurrentPlayer=isCurrentPlayer, carId=vehicleAttributes.carId)
                 if isCurrentPlayer:
