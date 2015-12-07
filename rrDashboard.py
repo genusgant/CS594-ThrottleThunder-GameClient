@@ -116,7 +116,7 @@ class Dashboard(DirectObject):
             for i in range(len(leaders)):
                 if leaders.get(i) == self.world.login:
                     self.rm.rank = i
-                    print("My rank: " + str(i))
+                    # print("My rank: " + str(i))
                     break
 
             # get usernames from list
