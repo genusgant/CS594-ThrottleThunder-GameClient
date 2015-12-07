@@ -689,9 +689,8 @@ class World(DirectObject):
                     self.howmanyplayers = len(self.manager.playerList)
 
                     self.rm = RaceMaster(self, self.vehicleContainer, 1, self.howmanyplayers, 0)
-                    self.rm.setStartingPos(0)
-
-
+                    # self.rm.setStartingPos(pos)
+                    
                 # print "Creating other players: ", createPlayerUsername, "@ ", vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z
                 else:
                     print "Creating other players: ", createPlayerUsername, "@ ", vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z
