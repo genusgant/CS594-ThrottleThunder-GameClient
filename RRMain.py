@@ -101,6 +101,7 @@ class RRWorldManager():
         atexit.register(disconnect, self)
         self.gameWorld.cManager = self.cManager
         self.cManager.sendRequest(Constants.CMSG_READY)
+        self.cManager.sendRequest(Constants.CMSG_RANKINGS)
         self.addVehicleProps(self.lobby.World.username, 0, 0, 0, 0, 0, 0, 0, 0, 0)
         # self.cManager.sendRequest(Constants.CMSG_SET_POSITION)
         # while not self.otherPlayersDataAvailable:
@@ -245,6 +246,10 @@ class World(DirectObject):
         inputState.watchWithModifiers('right', 'd')
         inputState.watchWithModifiers('turnLeft', 'q')
         inputState.watchWithModifiers('turnRight', 'e')
+        inputState.watchWithModifiers('forward', 'up')
+        inputState.watchWithModifiers('left', 'left')
+        inputState.watchWithModifiers('brake', 'down')
+        inputState.watchWithModifiers('right', 'right')
 
         self.world.setGravity(Vec3(0, 0, -9.81))
 
@@ -253,10 +258,9 @@ class World(DirectObject):
             self.vehicleContainer.addBoost()
 
     def resetCar(self):
-        if self.vehicleContainer.chassisNP.getZ() > -30:
+            if self.vehicleContainer.chassisNP.getZ() < -30:
+                self.rm.resetCar()
             self.vehicleContainer.reset()
-        else:
-            self.rm.resetCar()
 
     def createPowerups(self):
         self.powerups = PowerupManager(self, self.vehicleContainer)
@@ -463,7 +467,6 @@ class World(DirectObject):
         self.cleanup()
 
     def callLobby(self):
-
         self.cleanup()
         # self.lobby.createSocialization()
         self.lobby.World.startMusic()
