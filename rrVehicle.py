@@ -188,48 +188,48 @@ class Vehicle(object):
 
         # Right front wheel
         self.rfnp = loader.loadModel('models/batmobile-wheel-right.egg')
-        self.rfnp.reparentTo(render)
-        self.addWheel(Point3(1, 1.1, .7), True, self.rfnp)
+        self.rfnp.reparentTo(self.chassisNP)
+        self.addWheel(Point3(1, 1.1, .7), True, self.rfnp, .25)
 
         # Left front wheel
         self.lfnp = loader.loadModel('models/batmobile-wheel-left.egg')
-        self.lfnp.reparentTo(render)
-        self.addWheel(Point3(-1, 1.1, .7), True, self.lfnp)
+        self.lfnp.reparentTo(self.chassisNP)
+        self.addWheel(Point3(-1, 1.1, .7), True, self.lfnp, .25)
 
         # Right rear wheel
         self.rrnp = loader.loadModel('models/batmobile-wheel-right.egg')
-        self.rrnp.reparentTo(render)
-        self.addWheel(Point3(1, -2, .7), False, self.rrnp)
+        self.rrnp.reparentTo(self.chassisNP)
+        self.addWheel(Point3(1, -2, .7), False, self.rrnp, .25)
 
         # Left rear wheel
         self.lrnp = loader.loadModel('models/batmobile-wheel-left.egg')
-        self.lrnp.reparentTo(render)
-        self.addWheel(Point3(-1, -2, .7), False, self.lrnp)
+        self.lrnp.reparentTo(self.chassisNP)
+        self.addWheel(Point3(-1, -2, .7), False, self.lrnp, .25)
 
     def LoadStalion(self):                       # Load the Stalion ! 
-        self.carNP = loader.loadModel('models/stalion.egg')
+        self.carNP = loader.loadModel('models/stallion.egg')
         # self.yugoNP.setScale(.7)
         self.carNP.reparentTo(self.chassisNP)
 
         # Right front wheel
         np = loader.loadModel('models/batmobile-wheel-right.egg')
-        np.reparentTo(render)
-        self.addWheel(Point3(1, 1.1, .7), True, np)
+        np.reparentTo(self.chassisNP)
+        self.addWheel(Point3(1, 1.1, .7), True, np, .25)
 
         # Left front wheel
         np = loader.loadModel('models/batmobile-wheel-left.egg')
-        np.reparentTo(render)
-        self.addWheel(Point3(-1, 1.1, .7), True, np)
+        np.reparentTo(self.chassisNP)
+        self.addWheel(Point3(-1, 1.1, .7), True, np, .25)
 
         # Right rear wheel
         np = loader.loadModel('models/batmobile-wheel-right.egg')
-        np.reparentTo(render)
-        self.addWheel(Point3(1, -2, .7), False, np)
+        np.reparentTo(self.chassisNP)
+        self.addWheel(Point3(1, -2, .7), False, np, .25)
 
         # Left rear wheel
         np = loader.loadModel('models/batmobile-wheel-left.egg')
-        np.reparentTo(render)
-        self.addWheel(Point3(-1, -2, .7), False, np)
+        np.reparentTo(self.chassisNP)
+        self.addWheel(Point3(-1, -2, .7), False, np, .25)
 
     def LoadBruiser(self):                             # Load the bruiser ! 
         self.carNP = loader.loadModel('models/bruiser.egg')
@@ -238,23 +238,23 @@ class Vehicle(object):
 
         # Right front wheel
         np = loader.loadModel('models/batmobile-wheel-right.egg')
-        np.reparentTo(render)
-        self.addWheel(Point3(1, 1.1, .7), True, np)
+        np.reparentTo(self.chassisNP)
+        self.addWheel(Point3(1, 1.1, .7), True, np, .25)
 
         # Left front wheel
         np = loader.loadModel('models/batmobile-wheel-left.egg')
-        np.reparentTo(render)
-        self.addWheel(Point3(-1, 1.1, .7), True, np)
+        np.reparentTo(self.chassisNP)
+        self.addWheel(Point3(-1, 1.1, .7), True, np, .25)
 
         # Right rear wheel
         np = loader.loadModel('models/batmobile-wheel-right.egg')
-        np.reparentTo(render)
-        self.addWheel(Point3(1, -2, .7), False, np)
+        np.reparentTo(self.chassisNP)
+        self.addWheel(Point3(1, -2, .7), False, np, .25)
 
         # Left rear wheel
         np = loader.loadModel('models/batmobile-wheel-left.egg')
-        np.reparentTo(render)
-        self.addWheel(Point3(-1, -2, .7), False, np)
+        np.reparentTo(self.chassisNP)
+        self.addWheel(Point3(-1, -2, .7), False, np, .25)
 
     def LoadSwiftstar(self):                         # Load the swiftstar ! 
         self.carNP = loader.loadModel('models/swiftstar-chassis.egg')
@@ -263,25 +263,25 @@ class Vehicle(object):
 
         # Right front wheel
         np = loader.loadModel('models/swiftstar-fr-tire.egg')
-        np.reparentTo(render)
+        np.reparentTo(self.chassisNP)
         self.addWheel(Point3(1.3, 1.4, 0.9), True, np, 0.5)
 
         # Left front wheel
         np = loader.loadModel('models/swiftstar-fl-tire.egg')
-        np.reparentTo(render)
-        self.addWheel(Point3(-1.3, 1.4, 0.9), True, np,0.5)
+        np.reparentTo(self.chassisNP)
+        self.addWheel(Point3(-1.3, 1.4, 0.9), True, np, 0.5)
 
         # Right rear wheel
         np = loader.loadModel('models/swiftstar-rr-tire.egg')
-        np.reparentTo(render)
-        self.addWheel(Point3(1.5, -2.5, 1.2), False, np,0.7)
+        np.reparentTo(self.chassisNP)
+        self.addWheel(Point3(1.5, -2.5, 1.2), False, np, 0.7)
 
         # Left rear wheel
         np = loader.loadModel('models/swiftstar-rl-tire.egg')
-        np.reparentTo(render)
-        self.addWheel(Point3(-1.5, -2.5, 1.2), False, np,0.7)
+        np.reparentTo(self.chassisNP)
+        self.addWheel(Point3(-1.5, -2.5, 1.2), False, np, 0.7)
 
-    def addWheel(self, pos, front, np ,radius):
+    def addWheel(self, pos, front, np, radius):
         wheel = self.vehicle.createWheel()
 
         wheel.setNode(np.node())
@@ -296,7 +296,7 @@ class Vehicle(object):
         wheel.setSuspensionStiffness(40.0)
         wheel.setWheelsDampingRelaxation(2.3)
         wheel.setWheelsDampingCompression(4.4)
-        wheel.setFrictionSlip(100.0);
+        wheel.setFrictionSlip(100.0)
         wheel.setRollInfluence(0.1)
 
     def reset(self):
@@ -349,20 +349,20 @@ class Vehicle(object):
 
     def applyForcesAndSteering(self, steering, wheelForce, brakeForce):
         # Apply steering to front wheels
-        self.vehicle.setSteeringValue(steering, 0);
-        self.vehicle.setSteeringValue(steering, 1);
+        self.vehicle.setSteeringValue(steering, 0)
+        self.vehicle.setSteeringValue(steering, 1)
         # Apply engine and brake to rear wheels
-        self.vehicle.applyEngineForce(wheelForce, 2);
-        self.vehicle.applyEngineForce(wheelForce, 3);
-        self.vehicle.setBrake(brakeForce, 2);
-        self.vehicle.setBrake(brakeForce, 3);
+        self.vehicle.applyEngineForce(wheelForce, 2)
+        self.vehicle.applyEngineForce(wheelForce, 3)
+        self.vehicle.setBrake(brakeForce, 2)
+        self.vehicle.setBrake(brakeForce, 3)
 
 
     def remove(self, main):
         """ Remove the whole vehicle. chassis and 4 wheels. """
         main.world.removeVehicle(self.vehicle)
         self.chassisNP.remove()
-        self.lfnp.removeNode()
-        self.rfnp.removeNode()
-        self.rrnp.removeNode()
-        self.lrnp.removeNode()
+        # self.lfnp.removeNode()
+        # self.rfnp.removeNode()
+        # self.rrnp.removeNode()
+        # self.lrnp.removeNode()
