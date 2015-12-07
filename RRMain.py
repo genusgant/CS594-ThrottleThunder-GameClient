@@ -1,5 +1,3 @@
-# Roaming-Ralph was modified to remove collision part.
-
 # import direct.directbase.DirectStart
 import sys
 import math
@@ -678,8 +676,13 @@ class World(DirectObject):
 
                 pos = [vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z, vehicleAttributes.h,
                        vehicleAttributes.p, vehicleAttributes.r]
-
-                playerVehicle = Vehicle(self.world, createPlayerUsername, pos, isCurrentPlayer)  # ,
+                #1 Bruiser
+                #2 swisftstar
+                #3 stalion 
+                #4 batmobile
+                #5 Hovercraft 
+                self.vehicleType = 1
+                playerVehicle = Vehicle(self.world, self. vehicleType, createPlayerUsername, pos, isCurrentPlayer )  # ,
                 # pos=LVecBase3(vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z),
                 #    isCurrentPlayer=isCurrentPlayer, carId=vehicleAttributes.carId)
                 if isCurrentPlayer:

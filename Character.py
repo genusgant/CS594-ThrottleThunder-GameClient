@@ -25,7 +25,7 @@ import time
 
 class Character:
     playerId = 1
-    type = 0
+    type = 1
 
     def __init__(self, tempworld, bulletWorld, type, playerId):
         self.world = tempworld
