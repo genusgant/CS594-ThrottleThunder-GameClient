@@ -15,7 +15,8 @@ class Dashboard():
         self.time_elapsed = datetime.timedelta(milliseconds=0)
         self.countdown_time = datetime.timedelta(minutes=8)
         #
-        self.screenBtns = [] 
+        self.screenBtns = []
+        self.otherc={}
 
         self.isGameTimeOver = False
 
@@ -74,8 +75,14 @@ class Dashboard():
         self.mini_map = OnscreenImage(image="models/dashb/speedometer.png", scale=.2, pos=(-1.15, 0, .8))
         self. mini_map.setTransparency(TransparencyAttrib.MAlpha)
         self.char = OnscreenImage(image='models/triangle.png', scale=.1, parent=self.mini_map,pos=(-1.15, 0, .8) )
-        self.otherchar = OnscreenImage(image='models/power_ups/pow1.png', scale=.1,
-                                          parent=self.mini_map ,pos=(-1.15, 0, .8))
+        self.otherchar = OnscreenImage(image='models/triangle.png', scale=.1, parent=self.mini_map,pos=(-1.15, 0, .8) )
+
+        for i in  self.gameEngine.vehiclelist:
+            self.otherc[i]= OnscreenImage(image='models/power_ups/pow3.png',
+                                               scale=.05,parent=self.mini_map ,pos=(-1.15, 0, .8))
+        
+            self.otherc[i].destroy()
+            
 
         self.screenBtns.append(self.display_timer)
         self.screenBtns.append(self.mini_map)
@@ -296,20 +303,20 @@ class Dashboard():
             # connected player
             for i in  self.gameEngine.vehiclelist:
                 car= self.gameEngine.vehiclelist[i]
-                if car != None:
+
+                if car != None and car is not main_char:
                     i_x=car.chassisNP.getX()
                     i_y=car.chassisNP.getY()
                     i_h=car.chassisNP.getH()
                     if(i_x<bound and i_y<bound and i_y>(bound*-1) and i_x>(bound*-1) ):
-                        self.otherchar.destroy()
-
-
-                        self.otherchar = OnscreenImage(image='models/power_ups/pow1.png', scale=.07, parent=self.mini_map ,
-                                                   pos=(i_x/size, 0, i_y/size),color=(1,1,0,1))
-
-                        self.otherchar.setR(-i_h)
-                        self.screenBtns.append(self.otherchar)
-            #powerup
+                       
+                        self.otherc[i].destroy()
+                        self.otherc[i] = OnscreenImage(image='models/power_ups/pow2.png', scale=.05, parent=self.mini_map ,
+                                           pos=(i_x/size, 0, i_y/size),color=(1,1,0,1))
+                
+                        self.otherc[i].setR(-i_h)
+                                              
+           
             if(x<bound and y<bound and x>(bound*-1) and x>(bound*-1)):
                 self.char.destroy()
                 self.char = OnscreenImage(image='models/triangle.png', scale=.1, parent=self.mini_map ,pos=(x/size, 0, y/size))
