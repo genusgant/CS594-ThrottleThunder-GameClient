@@ -13,6 +13,9 @@ class ResponseDead(ServerResponse):
             if self.username in self.world.vehiclelist.keys():
                 vehicle = self.world.vehiclelist[self.username]
                 vehicle.props.health = vehicle.props.armor = 0
+                #Handle removing character when dead
+                vehicle.remove()
+                del self.world.vehiclelist[self.username]
                 self.world.deadCounter +=1
 
                 print  "deadCounter/vehiclelist :",self.world.deadCounter,"/",len(self.world.vehiclelist)

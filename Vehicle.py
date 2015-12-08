@@ -113,6 +113,7 @@ class Vehicle(object):
         self.moveStartTime = self.startTime = self.boostStartTime = time.time()
         self.pos = pos
         self.boostFactor = 1.2
+        self.props = VehicleProps(carId)
         self.specs = {"mass": 800.0,
                     "maxWheelForce": 2000.0,
                     "brakeForce": 100.0,
@@ -127,9 +128,7 @@ class Vehicle(object):
         self.centreingRate = 1.2
         self.speed = 0
 
-        self.setupVehicle(main)
-
-        self.props = VehicleProps(carId)
+        self.setupVehicle(main)        
 
         self.currentPowerups = {"powerup1": None, "powerup2": None, "powerup3": None}
         if isCurrentPlayer:
