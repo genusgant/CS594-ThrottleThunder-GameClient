@@ -42,7 +42,7 @@ class RaceMaster():
         
     '''
     tracks = ['FullTrack.curves', 'flattrack.curves']
-    trackscale = [70, 1]
+    trackscale = [70, 2*.6]
 
     def __init__(self, mGame, mvc, track, nracers, startingPos):
         '''
@@ -68,14 +68,14 @@ class RaceMaster():
         self.setStartingPos(self.rank)
 
     def reverseTrack(self):
-        temp = self.checkpointlocs
-        l = len(temp)
-        self.checkpointlocs = []
-        for i in range(l):
-            self.checkpointlocs.append(temp[l - i - 1])
-
-            # check points are only counted if its id is > the lastcp. or else you might be going backwards.
-
+		temp = self.checkpointlocs
+		l = len(temp)
+		ch = []
+		for i in range(l):
+			ch.append(temp[l - i - 1])
+		self.checkpointlocs = ch
+            
+    # check points are only counted if its id is > the lastcp. or else you might be going backwards.
     def hitCheckpoint(self, cp):
         if cp > self.lastcp:
             self.lastcp = cp
@@ -94,20 +94,16 @@ class RaceMaster():
                 # recalculate cp distance
 
                 # returns number of laps compleated
-                
-        self.main.cManager.sendRequest(Constants.CMSG_CHECKPOINTS, [self.laps, self.checkpointspassed])
-
+    
     def getLaps(self):
         self.laps
-
-    #         return self.checkpointspassed // self.getCPperLap()
 
 
     def getCPperLap(self):
         return len(self.checkpointlocs)
 
     def getRacePos(self):
-        return self.racePos
+        return self.rank
 
     # ____TASK___
     def updateCheckpoints(self, task):
@@ -155,20 +151,20 @@ class RaceMaster():
 
 
     def applyOffset(self, start, x, y, m):
-        return [start.x + x * m, start.y + y * m, start.z, angleTo(start, self.checkpointlocs[2]), 0, 0]
+        return [start.x + x * m, start.y + y * m, start.z, angleTo(start, self.checkpointlocs[1]), 0, 0]
 
     def getStartingPoints(self):
         sp = []
         xoff = self.startingOffsets[0]
         yoff = self.startingOffsets[1]
         for i in range(self.racers):
-            sp.append(self.applyOffset(self.checkpointlocs[1], xoff, yoff, i))
+            sp.append(self.applyOffset(self.checkpointlocs[0], xoff, yoff, i))
         return sp
 
     def getStartingPoint(self, i):
         xoff = self.startingOffsets[0]
         yoff = self.startingOffsets[1]
-        return self.applyOffset(self.checkpointlocs[1], xoff, yoff, i)
+        return self.applyOffset(self.checkpointlocs[0], xoff, yoff, i)
 
     def setStartingPos(self, i):
         p = self.getStartingPoint(i)
@@ -179,11 +175,11 @@ class RaceMaster():
 
     def resetCar(self):
         l = self.lastcp
-        if l == -1: l = 0
-        if l > len(self.checkpointlocs) - 2:
+        if l == -1: l = 0		# if they have not hit any checkpoints
+        if l > len(self.checkpointlocs) - 2:	# if they are on the last cp push back a bit
             l = l - 2
-        pos = self.checkpointlocs[self.lastcp]
-        to = self.checkpointlocs[self.lastcp - 1]
+        pos = self.checkpointlocs[l]
+        to = self.checkpointlocs[l + 1]
         p = [pos.x, pos.y, pos.z, angleTo(pos, to), 0, 0]
         self.setPosHpr(p)
 
