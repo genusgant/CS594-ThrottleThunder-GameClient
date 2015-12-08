@@ -668,7 +668,13 @@ class World(DirectObject):
                 isCurrentPlayer=False
                 if self.login == createPlayerUsername:
                     isCurrentPlayer = True
-                playerVehicle = Vehicle(self, createPlayerUsername, pos=LVecBase3(vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z),isCurrentPlayer=isCurrentPlayer, carId=vehicleAttributes.carId)
+                playerVehicle = Vehicle(self, createPlayerUsername,
+                                        pos=LVecBase3(vehicleAttributes.x,
+                                                      vehicleAttributes.y,
+                                                      vehicleAttributes.z),
+                                        isCurrentPlayer=isCurrentPlayer,
+                                        carId=vehicleAttributes.carId)
+
                 if self.login != createPlayerUsername:
                     self.enemyHealth = OtherPlayersHealth(self,playerVehicle)
                     self.enemyHealthList[createPlayerUsername] = self.enemyHealth
@@ -722,7 +728,6 @@ class World(DirectObject):
             result[3] = 1
 
         return result
-
 
 #w = WorldManager()
 #run()

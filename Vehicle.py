@@ -121,6 +121,8 @@ class Vehicle(object):
                     "maxReverseSpeed": 10.0}
         self.vehicleControlState = {"throttle": 0, "reverse": False, "brake": 0.0, "steering": 0.0, "health": 1}
 
+        self.vehicleType = carId;
+
         # Steering change per second, normalised to steering lock
         # Eg. 45 degrees lock and 1.0 rate means 45 degrees per second
         self.steeringRate = 0.8
@@ -365,7 +367,8 @@ class Vehicle(object):
         self.chassisNP.setPosHpr(x, y, z, h, p, r)
         return
 
-    def setupVehicle(self, main):
+
+    def setupVehicleOld(self, main):
         scale = 0.5
         # Chassis
         shape = BulletBoxShape(Vec3(0.6, 1.4, 0.5))
@@ -425,7 +428,172 @@ class Vehicle(object):
         self.lrnp.reparentTo(main.worldNP)
         self.addWheel(Point3(-0.70 * scale, -1.05 * scale, 0.3), False, self.lrnp)
 
-    def addWheel(self, pos, front, np):
+    # load the vehicle
+    def setupVehicle(self, main):
+        scale = 0.5
+        # Chassis
+        shape = BulletBoxShape(Vec3(0.6, 1.4, 0.5))
+        ts = TransformState.makePos(Point3(0, 0, 0.5 * scale))
+
+        name = self.username
+        self.chassisNode = BulletRigidBodyNode(name)
+        self.chassisNode.setTag('username', str(name))
+        self.chassisNP = main.worldNP.attachNewNode(self.chassisNode)
+        self.chassisNP.setName(str(name))
+        self.chassisNP.node().addShape(shape, ts)
+        self.chassisNP.setScale(scale)
+
+        self.chassisNP.setPos(self.pos)
+        if self.isCurrentPlayer:
+            self.chassisNP.node().notifyCollisions(True)
+            self.chassisNP.node().setMass(800.0)
+        else:
+            self.chassisNP.node().notifyCollisions(True)
+            self.chassisNP.node().setMass(400.0)
+        self.chassisNP.node().setDeactivationEnabled(False)
+
+        main.world.attachRigidBody(self.chassisNP.node())
+
+        #np.node().setCcdSweptSphereRadius(1.0)
+        #np.node().setCcdMotionThreshold(1e-7)
+
+        # Vehicle
+        self.vehicle = BulletVehicle(main.world, self.chassisNP.node())
+        self.vehicle.setCoordinateSystem(ZUp)
+        main.world.attachVehicle(self.vehicle)
+
+        print "Mohd: selected car type: ", self.vehicleType
+
+        # Choose the car type here
+            #1 Bruiser
+            #2 swisftstar
+            #3 stalion
+            #4 batmobile
+            #5 Hovercraft
+        if self.vehicleType == 1 :
+            self.loadBruiser(main, scale)
+        if self.vehicleType == 2 :
+            self.loadDefaultVehicle(main, scale)
+        if self.vehicleType == 3 :
+            self.loadDefaultVehicle(main, scale)
+            # self.loadStalion(main, scale)
+        if self.vehicleType == 4 :
+            self.loadDefaultVehicle(main, scale)
+
+
+        #elif self.type ==  :
+        # self.LoadHoverboard
+
+        # self.LoadSwiftstar()
+
+
+    # instantiating Bruser car type 1
+    def loadBruiser(self, main, scale):
+        self.yugoNP = loader.loadModel('models/bruiser.egg')
+        self.yugoNP.reparentTo(self.chassisNP)
+
+        #self.carNP = loader.loadModel('models/batmobile-chassis.egg')
+        #self.yugoNP.setScale(.7)
+        #self.carNP.reparentTo(self.chassisNP)
+
+        xWheelLeft = -0.95
+        xWheelRight = 0.95
+        yWheelFront = 2.1
+        yWheelRear = -2.0
+        zWheel = 0.6
+        radius = 0.5
+
+        # Right front wheel
+        self.rfnp = loader.loadModel('models/batmobile-wheel-right.egg')
+        self.rfnp.reparentTo(main.worldNP)
+        self.addWheel(Point3( xWheelRight * scale,  yWheelFront * scale, zWheel), True, self.rfnp, radius)
+
+        # Left front wheel
+        self.lfnp = loader.loadModel('models/batmobile-wheel-left.egg')
+        self.lfnp.reparentTo(main.worldNP)
+        self.addWheel(Point3(xWheelLeft * scale,  yWheelFront * scale, zWheel), True, self.lfnp, radius)
+
+        # Right rear wheel
+        self.rrnp = loader.loadModel('models/batmobile-wheel-right.egg')
+        self.rrnp.reparentTo(main.worldNP)
+        self.addWheel(Point3( xWheelRight * scale, yWheelRear * scale, zWheel), False, self.rrnp, radius)
+
+        # Left rear wheel
+        self.lrnp = loader.loadModel('models/batmobile-wheel-left.egg')
+        self.lrnp.reparentTo(main.worldNP)
+        self.addWheel(Point3(xWheelLeft * scale, yWheelRear * scale, zWheel), False, self.lrnp, radius)
+
+    # instantiating Stalion car type 3
+    def loadStalion(self, main, scale):
+        self.yugoNP = loader.loadModel('models/stallion.egg')
+        self.yugoNP.reparentTo(self.chassisNP)
+
+        xWheelLeft = -1
+        xWheelRight = 1
+        yWheelFront = 1.1
+        yWheelRear = -2.0
+        zWheel = 0.7
+        radius = 0.25
+
+        # Right front wheel
+        self.rfnp = loader.loadModel('models/batmobile-wheel-right.egg')
+        self.rfnp.reparentTo(main.worldNP)
+        self.addWheel(Point3( xWheelRight * scale,  yWheelFront * scale, zWheel), True, self.rfnp, radius)
+
+        # Left front wheel
+        self.lfnp = loader.loadModel('models/batmobile-wheel-left.egg')
+        self.lfnp.reparentTo(main.worldNP)
+        self.addWheel(Point3(xWheelLeft * scale,  yWheelFront * scale, zWheel), True, self.lfnp, radius)
+
+        # Right rear wheel
+        self.rrnp = loader.loadModel('models/batmobile-wheel-right.egg')
+        self.rrnp.reparentTo(main.worldNP)
+        self.addWheel(Point3( xWheelRight * scale, yWheelRear * scale, zWheel), False, self.rrnp, radius)
+
+        # Left rear wheel
+        self.lrnp = loader.loadModel('models/batmobile-wheel-left.egg')
+        self.lrnp.reparentTo(main.worldNP)
+        self.addWheel(Point3(xWheelLeft * scale, yWheelRear * scale, zWheel), False, self.lrnp, radius)
+
+
+    # instantiating Default car type
+    def loadDefaultVehicle(self, main, scale):
+        # Vehicle
+        self.vehicle = BulletVehicle(main.world, self.chassisNP.node())
+        self.vehicle.setCoordinateSystem(ZUp)
+        main.world.attachVehicle(self.vehicle)
+
+        radius = 0.25
+
+        self.yugoNP = loader.loadModel('models/yugo/yugo.egg')
+        self.yugoNP.reparentTo(self.chassisNP)
+
+        #self.carNP = loader.loadModel('models/batmobile-chassis.egg')
+        #self.yugoNP.setScale(.7)
+        #self.carNP.reparentTo(self.chassisNP)
+
+        # Right front wheel
+        self.rfnp = loader.loadModel('models/yugo/yugotireR.egg')
+        self.rfnp.reparentTo(main.worldNP)
+        self.addWheel(Point3( 0.70 * scale,  1.05 * scale, 0.3), True, self.rfnp, radius)
+
+        # Left front wheel
+        self.lfnp = loader.loadModel('models/yugo/yugotireL.egg')
+        self.lfnp.reparentTo(main.worldNP)
+        self.addWheel(Point3(-0.70 * scale,  1.05 * scale, 0.3), True, self.lfnp, radius)
+
+        # Right rear wheel
+        self.rrnp = loader.loadModel('models/yugo/yugotireR.egg')
+        self.rrnp.reparentTo(main.worldNP)
+        self.addWheel(Point3( 0.70 * scale, -1.05 * scale, 0.3), False, self.rrnp, radius)
+
+        # Left rear wheel
+        self.lrnp = loader.loadModel('models/yugo/yugotireL.egg')
+        self.lrnp.reparentTo(main.worldNP)
+        self.addWheel(Point3(-0.70 * scale, -1.05 * scale, 0.3), False, self.lrnp, radius)
+
+
+    def addWheel(self, pos, front, np, radius):
         wheel = self.vehicle.createWheel()
 
         wheel.setNode(np.node())
@@ -434,13 +602,14 @@ class Vehicle(object):
 
         wheel.setWheelDirectionCs(Vec3(0, 0, -1))
         wheel.setWheelAxleCs(Vec3(1, 0, 0))
-        wheel.setWheelRadius(0.25)
+        # wheel.setWheelRadius(0.25)
+        wheel.setWheelRadius(radius)
         wheel.setMaxSuspensionTravelCm(40.0)
 
         wheel.setSuspensionStiffness(40.0)
         wheel.setWheelsDampingRelaxation(2.3)
         wheel.setWheelsDampingCompression(4.4)
-        wheel.setFrictionSlip(100.0);
+        wheel.setFrictionSlip(100.0)
         wheel.setRollInfluence(0.1)
 
 
