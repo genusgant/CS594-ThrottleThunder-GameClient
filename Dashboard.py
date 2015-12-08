@@ -75,7 +75,7 @@ class Dashboard():
         self.mini_map = OnscreenImage(image="models/dashb/speedometer.png", scale=.2, pos=(-1.15, 0, .8))
         self. mini_map.setTransparency(TransparencyAttrib.MAlpha)
         self.char = OnscreenImage(image='models/triangle.png', scale=.1, parent=self.mini_map,pos=(-1.15, 0, .8) )
-        self.otherchar = OnscreenImage(image='models/triangle.png', scale=.1, parent=self.mini_map,pos=(-1.15, 0, .8) )
+        #self.otherchar = OnscreenImage(image='models/triangle.png', scale=.1, parent=self.mini_map,pos=(-1.15, 0, .8) )
 
         for i in  self.gameEngine.vehiclelist:
             self.otherc[i]= OnscreenImage(image='models/power_ups/pow3.png',
@@ -87,7 +87,7 @@ class Dashboard():
         self.screenBtns.append(self.display_timer)
         self.screenBtns.append(self.mini_map)
         self.screenBtns.append(self.char)
-        self.screenBtns.append(self.otherchar)
+        #self.screenBtns.append(self.otherchar)
 
         self.offset = 0.13
         self.setupSpeedImages()

@@ -55,17 +55,17 @@ class RaceMaster():
             self.reverseTrack()  # flip check point order
         #         print self.checkpointlocs
         self.trackSections = startingPos
-        self.racePos = startingPos
         self.racers = nracers
 
         # for tracking race positions
-        self.rank = 0
         self.laps = 0
         self.checkpointspassed = 0
         self.distanceToNextCP = 0
         self.lastcp = -1
         self.main = mGame
         self.setupCheckpoints(mGame)
+        self.rank = startingPos
+        self.setStartingPos(self.rank)
 
     def reverseTrack(self):
         temp = self.checkpointlocs
@@ -111,8 +111,7 @@ class RaceMaster():
 
     # ____TASK___
     def updateCheckpoints(self, task):
-        #         ghost = self.cpnode.node()
-        i = 0
+        #self.rank = self.main.mRank
         for i in range(len(self.checkpointmarkers)):
             ghost = self.checkpointmarkers[i].cpnode.node()
             hits = ghost.getNumOverlappingNodes()
@@ -124,7 +123,9 @@ class RaceMaster():
                         # print("I Hit a checkpoint!!!")
                         self.hitCheckpoint(self.checkpointmarkers[i].cid)
                         # print("cp: " + str( i) + " last id: " + str(self.lastcp) + " cp passed: " + str(self.checkpointspassed))
-
+        arg = [ self.laps, self.checkpointspassed ]
+        self.main.cManager.sendRequest(Constants.CMSG_CHECKPOINTS, arg)
+        self.main.cManager.sendRequest(Constants.CMSG_RANKINGS)
 
         return task.again
 
@@ -178,6 +179,7 @@ class RaceMaster():
 
     def resetCar(self):
         l = self.lastcp
+        if l == -1: l = 0
         if l > len(self.checkpointlocs) - 2:
             l = l - 2
         pos = self.checkpointlocs[self.lastcp]
