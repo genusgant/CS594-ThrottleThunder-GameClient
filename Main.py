@@ -653,7 +653,7 @@ class World(DirectObject):
         # self.obstruction = Obstruction(self)
 
         # Heightfield (static)
-        self.terrainContainer = Terrain(self, base, render)
+        self.terrainContainer = Terrain(self, base, render, type = self.lobby.ddMapTitle)
 
 
     def createPlayers(self):

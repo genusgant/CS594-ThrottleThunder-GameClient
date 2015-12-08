@@ -45,7 +45,7 @@ class Terrain(object):
     def terrainFromModel(self, main):
         self.parentNodePath = NodePath("FloorNodePath")
         self.parentNodePath.setPos(0, 0, -1)
-        self.parentNodePath.setScale(2.0, 2.0, 1.0)
+        self.parentNodePath.setScale(6.0, 6.0, 1.0)
         # self.parentNodePath.setP(90)
 
         self.loadModelAndTexture()
@@ -73,7 +73,7 @@ class Terrain(object):
 
         self.rigidNodePath = self.parentNodePath.attachNewNode(self.rigidNode)
         self.rigidNodePath.node().addShape(shape)
-        self.rigidNodePath.setScale(12, 12, 1.5)
+        self.rigidNodePath.setScale(12.0, 12.0, 1.25)
         self.rigidNodePath.setCollideMask(BitMask32.allOn())
         self.rigidNodePath.node().notifyCollisions(False)
 

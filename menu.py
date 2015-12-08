@@ -18,6 +18,7 @@ def disconnect(world):
 class Menu(ShowBase):
 
     def __init__(self, World):
+        self.ddMapTitle = "heightMap"
         #just comment out the two lines below
         #self.appRunner = None#added this to overide the login
         self.playerList = []
@@ -438,11 +439,13 @@ class Menu(ShowBase):
     def dd_ScreenMap1(self):
         self.World.queueConnection.sendQueueMessage(0) #0=map1
         print "Screen Map 1"
+        self.ddMapTitle = "heightMap"
         self.dd_screen()
 
     def dd_ScreenMap2(self):
         self.World.queueConnection.sendQueueMessage(1) #1=map2
         print "Screen Map 2"
+        self.ddMapTitle = "model"
         self.dd_screen()
 
     def rr_ScreenMap1(self):
@@ -634,7 +637,7 @@ class Menu(ShowBase):
             print 'Adding '+player[0]
             self.myScrolledList.addItem(l)
         self.screenBtns.append(self.myScrolledList)
-            
+
     def unloadScreen(self):
         for btn in self.screenBtns:
             btn.destroy()
