@@ -22,6 +22,7 @@ from panda3d.core import NodePath
 from panda3d.bullet import BulletWorld, BulletTriangleMesh, BulletTriangleMeshShape, BulletDebugNode, BulletPlaneShape, \
     BulletRigidBodyNode, BulletBoxShape
 from Track import Track
+import rrDayTrack
 from rrVehicle import Vehicle
 from Camera import Camera
 from SkyDome import SkyDome
@@ -47,6 +48,7 @@ from helper.RaceMaster import RaceMaster
 from rrCheckpoint import Checkpoint
 from TopView import TopView
 import atexit
+
 
 def disconnect(world):
     world.cManager.sendRequest(Constants.CMSG_DISCONNECT)
@@ -92,6 +94,7 @@ class RRWorldManager():
         self.countdownTime = 5
         self.otherPlayersDataAvailable = False
         self.lobby = lobby
+        self.trackNum = self.lobby.mapNum
         self.isDDGame = False
         self.gameWorld = World(self)
         self.loadinScreen = LoadingScreen(self.gameWorld)
@@ -185,6 +188,7 @@ class World(DirectObject):
     characters = []
 
     def __init__(self, manager):
+        self.trackNum = manager.trackNum
         # Stores the list of all the others players characters
         self.vehiclelist = {}
         self.isActive = False
@@ -489,7 +493,7 @@ class World(DirectObject):
         base.toggleTexture()
 
     def toggleDebug(self):
-        if self.debugNP.isHidden() and self.isDebug:
+        if self.debugNP.isHidden():
             self.debugNP.show()
         else:
             self.debugNP.hide()
@@ -655,7 +659,7 @@ class World(DirectObject):
         # self.debugNP.node().showNormals(True)
 
         self.world = BulletWorld()
-        Track(self.world)
+        self.track(self.trackNum)
         self.world.setDebugNode(self.debugNP.node())
 
         # Obstruction
@@ -663,6 +667,13 @@ class World(DirectObject):
 
         # Heightfield (static)
         # self.terrainContainer = Terrain(self, base, render)
+
+    def track(self, trackNum):
+        if trackNum == 1:
+            Track(self.world)
+        elif trackNum == 2:
+            rrDayTrack.Track(self.world)
+
 
     def createPlayers(self):
         # Dynamic - moving bodies

@@ -18,6 +18,8 @@ def disconnect(world):
 class Menu(ShowBase):
 
     def __init__(self, World):
+
+        self.mapNum = 0
         #just comment out the two lines below
         #self.appRunner = None#added this to overide the login
         self.playerList = []
@@ -449,11 +451,13 @@ class Menu(ShowBase):
         self.World.queueConnection.sendQueueMessage(2) #2=map3
         print "Screen Map 3"
         self.rr_screen()
+        self.mapNum = 1
 
     def rr_ScreenMap2(self):
         self.World.queueConnection.sendQueueMessage(3) #3=map4
         print "Screen Map 4"
         self.rr_screen()
+        self.mapNum = 2
 
     def carBruiser(self):
         self.enableReady(1) #Bruiser
@@ -581,6 +585,7 @@ class Menu(ShowBase):
         self.World.ServerConnection.activeStatus = False
         self.unloadScreen()
         self.rrworld = RRWorldManager(self)
+        # self.rrworld.trackNum = self.mapNum
         # data might be require to send to DD world
 
     def showUsers(self, players):

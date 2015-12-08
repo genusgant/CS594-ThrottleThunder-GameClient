@@ -18,12 +18,12 @@ class Vehicle(object):
     COUNT = 0
 
     def __init__(self, world, username, vehicleType, pos=[0, 0, 0, 0, 0, 0], isCurrentPlayer=False):
-
+        #print vehicleType
         self.isCurrentPlayer = isCurrentPlayer
         self.world = world
         self.acceleration = 1.5
         self.brakeForce = 100.0
-        self.mass = 800
+        self.mass = 1600
         self.max_speed = 150
         self.reverse_limit = -40
         self.mass = 800.0  # kg
@@ -138,8 +138,8 @@ class Vehicle(object):
 
     def setupVehicle(self, world):
         # Chassis
-        shape = BulletBoxShape(Vec3(1, 2.2, 0.5))
-        ts = TransformState.makePos(Point3(0, 0, .7))
+        shape = BulletBoxShape(Vec3(1, 1.8, 0.5))
+        ts = TransformState.makePos(Point3(0, 0, 1))
         self.chassisNode = BulletRigidBodyNode('Vehicle')
         self.chassisNP = render.attachNewNode(self.chassisNode)
         self.chassisNP.node().addShape(shape, ts)
@@ -177,7 +177,8 @@ class Vehicle(object):
             self.LoadBatmobile()
         #elif self.type ==  :
         else:
-            self.LoadHoverboard()
+            self.LoadBatmobile()
+            #self.LoadHoverboard()
 
         # self.LoadSwiftstar()
 
@@ -189,22 +190,22 @@ class Vehicle(object):
         # Right front wheel
         self.rfnp = loader.loadModel('models/batmobile-wheel-right.egg')
         self.rfnp.reparentTo(self.chassisNP)
-        self.addWheel(Point3(1, 1.1, .7), True, self.rfnp, .25)
+        self.addWheel(Point3(1, 1.1, .7), True, self.rfnp, .35)
 
         # Left front wheel
         self.lfnp = loader.loadModel('models/batmobile-wheel-left.egg')
         self.lfnp.reparentTo(self.chassisNP)
-        self.addWheel(Point3(-1, 1.1, .7), True, self.lfnp, .25)
+        self.addWheel(Point3(-1, 1.1, .7), True, self.lfnp, .35)
 
         # Right rear wheel
         self.rrnp = loader.loadModel('models/batmobile-wheel-right.egg')
         self.rrnp.reparentTo(self.chassisNP)
-        self.addWheel(Point3(1, -2, .7), False, self.rrnp, .25)
+        self.addWheel(Point3(1, -2, .7), False, self.rrnp, .35)
 
         # Left rear wheel
         self.lrnp = loader.loadModel('models/batmobile-wheel-left.egg')
         self.lrnp.reparentTo(self.chassisNP)
-        self.addWheel(Point3(-1, -2, .7), False, self.lrnp, .25)
+        self.addWheel(Point3(-1, -2, .7), False, self.lrnp, .35)
 
     def LoadStalion(self):                       # Load the Stalion ! 
         self.carNP = loader.loadModel('models/stallion.egg')
@@ -291,7 +292,7 @@ class Vehicle(object):
         wheel.setWheelDirectionCs(Vec3(0, 0, -1))
         wheel.setWheelAxleCs(Vec3(1, 0, 0))
         wheel.setWheelRadius(radius)
-        wheel.setMaxSuspensionTravelCm(40.0)
+        wheel.setMaxSuspensionTravelCm(10.0)
 
         wheel.setSuspensionStiffness(40.0)
         wheel.setWheelsDampingRelaxation(2.3)
