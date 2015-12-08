@@ -44,6 +44,7 @@ from time import sleep
 import re
 from pandac.PandaModules import loadPrcFileData
 from helper.RaceMaster import RaceMaster
+from OtherPlayersUsername import OtherPlayersUsername
 from rrCheckpoint import Checkpoint
 from TopView import TopView
 import atexit
@@ -682,9 +683,11 @@ class World(DirectObject):
                 #4 batmobile
                 #5 Hovercraft 
                 self.vehicleType = 1
-                playerVehicle = Vehicle(self.world, self. vehicleType, createPlayerUsername, pos, isCurrentPlayer )  # ,
+                playerVehicle = Vehicle(self.world, createPlayerUsername, pos, isCurrentPlayer)
                 # pos=LVecBase3(vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z),
                 #    isCurrentPlayer=isCurrentPlayer, carId=vehicleAttributes.carId)
+                if self.login != createPlayerUsername:
+                    self.otherUser = OtherPlayersUsername(self,playerVehicle)
                 if isCurrentPlayer:
                     self.vehicleContainer = playerVehicle
                     print "I AM: ", createPlayerUsername
