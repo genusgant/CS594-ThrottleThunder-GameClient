@@ -20,7 +20,7 @@ class Track(object):
 
         self.world = bulletWorld
 
-        self.addCollisionPlane(5)
+        self.addCollisionPlane(0)
 
         self.sky = SkyDome()
 

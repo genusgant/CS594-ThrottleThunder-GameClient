@@ -189,25 +189,25 @@ class Vehicle(object):
 
         # Right front wheel
         self.rfnp = loader.loadModel('models/batmobile-wheel-right.egg')
-        self.rfnp.reparentTo(self.chassisNP)
-        self.addWheel(Point3(1, 1.1, .7), True, self.rfnp, .35)
+        self.rfnp.reparentTo(render)
+        self.addWheel(Point3(1, 1.1, .7), True, self.rfnp, .33)
 
         # Left front wheel
         self.lfnp = loader.loadModel('models/batmobile-wheel-left.egg')
-        self.lfnp.reparentTo(self.chassisNP)
-        self.addWheel(Point3(-1, 1.1, .7), True, self.lfnp, .35)
+        self.lfnp.reparentTo(render)
+        self.addWheel(Point3(-1, 1.1, .7), True, self.lfnp, .33)
 
         # Right rear wheel
         self.rrnp = loader.loadModel('models/batmobile-wheel-right.egg')
-        self.rrnp.reparentTo(self.chassisNP)
-        self.addWheel(Point3(1, -2, .7), False, self.rrnp, .35)
+        self.rrnp.reparentTo(render)
+        self.addWheel(Point3(1, -2, .7), False, self.rrnp, .33)
 
         # Left rear wheel
         self.lrnp = loader.loadModel('models/batmobile-wheel-left.egg')
-        self.lrnp.reparentTo(self.chassisNP)
-        self.addWheel(Point3(-1, -2, .7), False, self.lrnp, .35)
+        self.lrnp.reparentTo(render)
+        self.addWheel(Point3(-1, -2, .7), False, self.lrnp, .33)
 
-    def LoadStalion(self):                       # Load the Stalion ! 
+    def LoadStalion(self):                       # Load the Stalion !
         self.carNP = loader.loadModel('models/stallion.egg')
         # self.yugoNP.setScale(.7)
         self.carNP.reparentTo(self.chassisNP)

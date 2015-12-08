@@ -18,9 +18,9 @@ class Camera:
         base.camera.setZ(self.floater, self.pos.getZ())
         base.camera.lookAt(self.floater)
 
-    def update(self, vehicle):
-        self.floater.setPos(vehicle.getPos())
-        self.floater.setZ(vehicle.getZ() + 2.0)
+    def update(self):
+        self.floater.setPos(self.vehicle.getPos())
+        self.floater.setZ(self.vehicle.getZ() + 2.0)
         base.camera.setPos(self.pos)
         base.camera.setZ(self.floater, self.pos.getZ())
         base.camera.lookAt(self.floater)
