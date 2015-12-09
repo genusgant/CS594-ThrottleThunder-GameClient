@@ -21,7 +21,7 @@ class ResponseDead(ServerResponse):
                     #del self.world.vehiclelist[self.username]
                     if self.world.deadCounter == len(self.world.vehiclelist)-1:
                         print "Last Man Standing"
-                    self.world.gameEnd()
+                        self.world.gameEnd()
             else:  # for RR game
                 if self.world.login == self.username:
                     print "you are dead"
