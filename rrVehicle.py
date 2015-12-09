@@ -18,7 +18,7 @@ class Vehicle(object):
     COUNT = 0
 
     def __init__(self, world, username, vehicleType, pos=[0, 0, 0, 0, 0, 0], isCurrentPlayer=False):
-
+        self.isDead = False
         self.isCurrentPlayer = isCurrentPlayer
         self.world = world
         self.acceleration = 1.5
@@ -358,9 +358,9 @@ class Vehicle(object):
         self.vehicle.setBrake(brakeForce, 3)
 
 
-    def remove(self, main):
+    def remove(self):
         """ Remove the whole vehicle. chassis and 4 wheels. """
-        main.world.removeVehicle(self.vehicle)
+        # main.world.removeVehicle(self.vehicle)
         self.chassisNP.remove()
         # self.lfnp.removeNode()
         # self.rfnp.removeNode()

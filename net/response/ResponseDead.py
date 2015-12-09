@@ -49,10 +49,23 @@ class ResponseDead(ServerResponse):
                     #del self.world.vehiclelist[self.username]
                     if self.world.deadCounter == len(self.world.vehiclelist)-1:
                         print "Last Man Standing"
-                    self.world.gameEnd()
-                else:  # for RR game
-                    print "RR code here"
-                    #vehicle.remove()
+                        self.world.gameEnd()
+            else:  # for RR game
+                if self.world.login == self.username:
+                    print "you are dead"
+    
+                if self.username in self.world.vehiclelist.keys():
+                    vehicle = self.world.vehiclelist[self.username]
+                    vehicle.remove()
+                    del self.world.vehiclelist[self.username]
+                    self.world.deadCounter += 1
+    
+                    print "deadCounter/vehiclelist :", self.world.deadCounter, "/", len(self.world.vehiclelist)
+    
+                    if self.world.deadCounter == len(self.world.vehiclelist)-1:
+                        print "Last Man Standing"
+                        self.world.gameEnd()
+
 
             print "ResponseDead - ",self.username
 >>>>>>> d5accc3f7cc83e9bbf0afdc242696b051aeb8ee1
