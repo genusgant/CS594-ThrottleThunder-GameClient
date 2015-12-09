@@ -304,7 +304,7 @@ class Dashboard():
             for i in  self.gameEngine.vehiclelist:
                 car= self.gameEngine.vehiclelist[i]
 
-                if car != None and car is not main_char:
+                if car != None and car is not main_char and car.isDead == False:
                     i_x=car.chassisNP.getX()
                     i_y=car.chassisNP.getY()
                     i_h=car.chassisNP.getH()
