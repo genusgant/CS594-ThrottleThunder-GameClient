@@ -80,7 +80,7 @@ class PowerupIcon:
 class PowerupManager:
     #Max number of each powerup
     MAX_COUNT = 2
-    POWERUP_RESET_TIME = 10
+    POWERUP_RESET_TIME = 60
 
     def __init__(self, main, actor):
         self.actor = actor
