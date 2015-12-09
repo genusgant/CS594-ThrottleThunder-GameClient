@@ -172,7 +172,7 @@ class RRWorldManager():
 
 class World(DirectObject):
     gameStateDict = {"Login": 0, "CreateLobby": 4, "EnterGame": 1, "BeginGame": 2, "InitializeGame": 3}
-    gameState = -1
+    dash_ready = False
     # Login , EnterGame , BeginGame
     responseValue = -1
     currentTime = 0
@@ -232,6 +232,7 @@ class World(DirectObject):
 
         # Dashboard
         self.dashboard = Dashboard(self, taskMgr, self.rm)
+        self.dash_ready = True
 
         # mini map
         self.miniMap = TopView(self.vehicleContainer)

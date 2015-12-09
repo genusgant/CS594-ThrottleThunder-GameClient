@@ -8,18 +8,29 @@ class ResponseRankings(ServerResponse):
     def execute(self, data):
 
         try:
-            self.world.dashboard.total_players = data.getInt32()
-            rankings={}
-            # rankings = {data.getString() : data.getInt32()}
+            if self.worldMgr.isDDGame:
+                self.world.dashboard.total_players = data.getInt32()
+                rankings = {}
+                # rankings = {data.getString() : data.getInt32()}
 
-            #print "self.world.dashboard.total_players: ",self.world.dashboard.total_players
-            for x in range(0, self.world.dashboard.total_players):
-                name = data.getString()
-                rank = data.getInt32()
-                rankings[rank] = name
-            self.world.dashboard.update_ranking(rankings)
+                #print "self.world.dashboard.total_players: ",self.world.dashboard.total_players
+                for x in range(0, self.world.dashboard.total_players):
+                    name = data.getString()
+                    rank = data.getInt32()
+                    rankings[rank] = name
+                self.world.dashboard.update_ranking(rankings)
+            else:
+                if self.world.dash_ready: # if dashboard is ready
+                    self.world.dashboard.total_players = data.getInt32()
+                    rankings = {}
+                    # rankings = {data.getString() : data.getInt32()}
 
-            #self.log('Received [' + str(Constants.RAND_STRING) + '] String Response')
+                    #print "self.world.dashboard.total_players: ",self.world.dashboard.total_players
+                    for x in range(0, self.world.dashboard.total_players):
+                        name = data.getString()
+                        rank = data.getInt32()
+                        rankings[rank] = name
+                    self.world.dashboard.update_ranking(rankings)
 
         except:
             self.log('Bad [' + str(Constants.SMSG_RANKINGS) + '] Rankings Response')

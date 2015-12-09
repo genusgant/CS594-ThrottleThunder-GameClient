@@ -18,9 +18,9 @@ class Dashboard(DirectObject):
         self.main_char = world.vehicleContainer
         self.rm = raceMst
         self.speed = "0.0 km/h"
-        self.lead1 = ""
-        self.lead2 = ""
-        self.lead3 = ""
+        self.lead1 = "[waiting]"
+        self.lead2 = "[waiting]"
+        self.lead3 = "[waiting]"
         self.start_time = datetime.datetime.now()
         self.time_elapsed = datetime.timedelta(milliseconds=0)
         self.countdown_time = datetime.timedelta(minutes=8)
@@ -116,6 +116,7 @@ class Dashboard(DirectObject):
     #     self.countdown_time = datetime.timedelta(milliseconds=server_time)
 
     def update_ranking(self, leaders):
+
             for i in range(len(leaders)):
                 if leaders.get(i) == self.world.login:
                     self.rm.rank = i
@@ -123,9 +124,10 @@ class Dashboard(DirectObject):
                     break
 
             # get usernames from list
-            # self.lead1 = leaders.get(1)
-            # self.lead2 = leaders.get(2)
-            # self.lead3 = leaders.get(3)
+            self.lead1 = leaders.get(1)
+            self.lead2 = leaders.get(2)
+            self.lead3 = leaders.get(3)
+
 
     def update_rank(self, task):
         self.display_rank.destroy()
@@ -145,18 +147,21 @@ class Dashboard(DirectObject):
         self.leader1.destroy()
         self.leader2.destroy()
         self.leader3.destroy()
+
         lead1 = "1:" + self.lead1
-        lead2 = "2:" + self.lead2
-        lead3 = "3:" + self.lead3
         self.leader1 = OnscreenText(text=lead1, style=1, fg=(1, 1, 1, 1),
                                     pos=(-1.3, .5), align=TextNode.ALeft,
                                     scale=.07, font=self.font_digital)
-        self.leader2 = OnscreenText(text=lead2, style=1, fg=(1, 1, 1, 1),
-                                    pos=(-1.3, .45), align=TextNode.ALeft,
-                                    scale=.07, font=self.font_digital)
-        self.leader3 = OnscreenText(text=lead3, style=1, fg=(1, 1, 1, 1),
-                                    pos=(-1.3, .4), align=TextNode.ALeft,
-                                    scale=.07, font=self.font_digital)
+        if self.lead2:
+            lead2 = "2:" + self.lead2
+            self.leader2 = OnscreenText(text=lead2, style=1, fg=(1, 1, 1, 1),
+                                        pos=(-1.3, .45), align=TextNode.ALeft,
+                                        scale=.07, font=self.font_digital)
+        if self.lead3:
+            lead3 = "3:" + self.lead3
+            self.leader3 = OnscreenText(text=lead3, style=1, fg=(1, 1, 1, 1),
+                                        pos=(-1.3, .4), align=TextNode.ALeft,
+                                        scale=.07, font=self.font_digital)
 
         return task.cont
 
