@@ -385,38 +385,57 @@ class Dashboard():
 
     def gameResult(self, isDead=False):
 
-        #print "REsult"
-        
-        if isDead:
-            print "Inside if"
-            self.rank = len(self.gameEngine.vehiclelist) - self.gameEngine.deadCounter -1
-            message = "Winner. You Won the Game!"
-        else:
-            rank = self.getRank().split("/")
-            if rank[0]=="1" :
-                message = "Winner. You Won the Game!"
-            else :
-                message = "Game Over. You Loose"
-
-        self.ResultFrame = DirectFrame(frameColor=(1,0,0,0.8),frameSize = (-0.75,.75,-.5,.5),pos=(0, 0.0, 0))
-
-        self.ResultMessage = OnscreenText(text=message, style=1, fg=(1, 1, 1, 1),
-            pos=(0,0.1), align=TextNode.ACenter, scale=.1)
-
-        position = "Position : "+str(self.getRank())
-
-        self.ResultPosition = OnscreenText(text=position, style=1, fg=(1, 1, 1, 1),
-            pos=(0,-0.1), align=TextNode.ACenter, scale=.1)
-
-        self.backToLobby = DirectButton(image = 'IMAGES/enter.png', pos = (0.3, 0, -0.4),  scale = (.17, 1, .03), relief = None, command = self.goLobby)
+        rank =""
 
 
-        self.screenBtns.append(self.ResultFrame)
-        self.screenBtns.append(self.ResultMessage)
-        self.screenBtns.append(self.ResultPosition)
-        self.screenBtns.append(self.backToLobby)
-        # self.screenBtns.append(self.Pname)
-        # self.screenBtns.append(self.Pname)
+        for x in range(1, len(self.players)+1):
+            if(self.players[x]== self.gameEngine.login):
+                rank = str(x)
+                print "rank :" ,rank
+                #print "REsult"
+                # rank = self.getRank().split("/")
+                if isDead:
+                    print "Inside if"
+                    pos = len(self.gameEngine.vehiclelist) - self.gameEngine.deadCounter
+                    # pos = rank[0]
+                    message = "Game Over. You Loose if"
+
+                else:
+                    # rank = self.getRank().split("/")
+                    if rank=="1" :
+                        message = "Winner. You Won the Game!"
+                        pos = rank
+                    elif rank=="2" :
+                        message = "Winner. You Won the Game"
+                        pos = len(self.gameEngine.vehiclelist) - self.gameEngine.deadCounter - 1
+                    else :
+                        message = "Game Over. You Loose else"
+                        pos = rank
+
+
+                self.ResultFrame = DirectFrame(frameColor=(1,0,0,0.8),frameSize = (-0.75,.75,-.5,.5),pos=(0, 0.0, 0))
+
+                self.ResultMessage = OnscreenText(text=message, style=1, fg=(1, 1, 1, 1),
+                    pos=(0,0.1), align=TextNode.ACenter, scale=.1)
+
+                position = "Position : "+str(pos)+ "/"+str(len(self.gameEngine.vehiclelist))
+
+                self.ResultPosition = OnscreenText(text=position, style=1, fg=(1, 1, 1, 1),
+                    pos=(0,-0.1), align=TextNode.ACenter, scale=.1)
+
+                self.backToLobby = DirectButton(image = 'IMAGES/enter.png', pos = (0.3, 0, -0.4),  scale = (.17, 1, .03), relief = None, command = self.goLobby)
+
+
+                self.screenBtns.append(self.ResultFrame)
+                self.screenBtns.append(self.ResultMessage)
+                self.screenBtns.append(self.ResultPosition)
+                self.screenBtns.append(self.backToLobby)
+                # self.screenBtns.append(self.Pname)
+                # self.screenBtns.append(self.Pname)
+                taskMgr.remove("updateTimer")
+                break
+
+
 
 
     def unloadScreen(self):
@@ -427,7 +446,7 @@ class Dashboard():
 
         taskMgr.remove("updateSpeed")
         taskMgr.remove("updateBoost")
-        taskMgr.remove("updateTimer")
+        
         taskMgr.remove("updateStatusBars")
         taskMgr.remove("updateminimap")
         taskMgr.remove("updateRank")
