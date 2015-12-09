@@ -13,7 +13,8 @@ class ResponsePrizes(ServerResponse):
 
             # Gives the user an item based on what the server responses with
             # Popup to show what they unlocked?
-            self.world.getPrize(self.itemId)
+            if not self.worldMgr.isDDGame:
+                self.world.getPrize(self.itemId)
             #self.log('Received [' + str(Constants.RAND_STRING) + '] String Response')
 
         except:
