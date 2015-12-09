@@ -10,6 +10,8 @@ class GarageConnectionModel(ServerConnection):
     CODE_SEND_PURCHASE = 121
     CODE_RECV_PURCHASE = 221
     
+    CODE_SEND_CURRENCY = 132
+    CODE_RECV_CURRENCY = 232
     
     def __init__(self,callback):
         self.callback = callback
@@ -18,6 +20,7 @@ class GarageConnectionModel(ServerConnection):
         return [
                 [self.CODE_RECV_DETAILS, self.getDetailMessage],
                 [self.CODE_RECV_PURCHASE, self.getPurchaseMessage],
+                [self.CODE_RECV_CURRENCY, self.getCurrencyMessage],
                 ];
     
     def sendDetail(self,carId,typeId):
@@ -53,6 +56,19 @@ class GarageConnectionModel(ServerConnection):
                 print "Upgrade Purchases!"
             else:
                 print "Not enough money!"
+                
+        except:
+            print "Something went wrong"
+            
+    def sendCurrency(self):
+        request = self.buildRequestPackage(self.CODE_SEND_PURCHASE)
+        ServerConnection.sendMessage(self,request)
+        
+    def getCurrencyMessage(self,data):
+        try:
+            currency = data.getInt()
+            
+            print "User has:", currency
                 
         except:
             print "Something went wrong"

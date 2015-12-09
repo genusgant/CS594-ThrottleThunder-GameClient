@@ -41,6 +41,7 @@ class Constants:
     CMSG_SET_POSITION                   = 128
     CMSG_TIME                           = 129
     CMSG_SET_RANK                       = 130
+    CMSG_CURRENCY                       = 132
     CMSG_CHECKPOINTS                    = 133
     REQ_HEARTBEAT                       = 301
     CMSG_REQ_TEST                       = 160
@@ -76,6 +77,7 @@ class Constants:
     SMSG_TIME                           = 229
     SMSG_SET_RANK                       = 230
     SMSG_SET_READY                      = 231
+    SMSG_CURRENCY                       = 232
     SMSG_RENDER_CHARACTER               = 310
     SMSG_REMOVE_CHARACTER               = 311
 
