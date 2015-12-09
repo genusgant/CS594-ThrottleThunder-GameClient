@@ -224,7 +224,7 @@ class World(DirectObject):
         # Camera
         self.setupCamera()
         # Create Powerups
-        self.createPowerups()
+        # self.createPowerups()
         # taskMgr.add(self.powerups.checkPowerPickup, "checkPowerupTask")
 
         # Load Audio
