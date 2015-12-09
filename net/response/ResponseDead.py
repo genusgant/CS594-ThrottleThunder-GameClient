@@ -2,6 +2,7 @@ from traceback import print_exc
 from common.Constants import Constants
 from net.response.ServerResponse import ServerResponse
 from panda3d.core import TransparencyAttrib
+from panda3d.core import BitMask32
 
 class ResponseDead(ServerResponse):
 
@@ -32,6 +33,7 @@ class ResponseDead(ServerResponse):
 
                     # disable collision
                     # self.world.ignore('bullet-contact-added')
+                    self.world.vehicleContainer.chassisNP.setCollideMask(BitMask32(0x40))
 
                     # set ghosting
                     self.world.vehicleContainer.chassisNP.setTransparency(TransparencyAttrib.MAlpha)

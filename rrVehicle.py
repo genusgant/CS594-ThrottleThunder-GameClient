@@ -143,6 +143,8 @@ class Vehicle(object):
         ts = TransformState.makePos(Point3(0, 0, .7))
         self.chassisNode = BulletRigidBodyNode('Vehicle')
         self.chassisNP = render.attachNewNode(self.chassisNode)
+        # collision bit mesh
+        self.chassisNP.setCollideMask(BitMask32(0x80))
         self.chassisNP.node().addShape(shape, ts)
         self.chassisNP.node().notifyCollisions(True)
         self.chassisNP.setPosHpr(self.pos[0], self.pos[1], self.pos[2], self.pos[3], self.pos[4], self.pos[5])
@@ -160,6 +162,8 @@ class Vehicle(object):
         self.vehicle = BulletVehicle(world, self.chassisNP.node())
         self.vehicle.setCoordinateSystem(ZUp)
         world.attachVehicle(self.vehicle)
+
+
 
         # switch the car type : 
          #1 Bruiser

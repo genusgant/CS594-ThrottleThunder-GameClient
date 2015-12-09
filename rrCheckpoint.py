@@ -40,7 +40,7 @@ class Checkpoint(object):
             self.cpnode = BulletGhostNode('CheckPoint')
             self.cpnode = render.attachNewNode(self.cpnode)
             self.cpnode.node().addShape(shape, ts)      
-            self.cpnode.setCollideMask(BitMask32(0x0f))
+            self.cpnode.setCollideMask(BitMask32(0xc0))
 #             self.cpnode.node().notifyCollisions(True)
             self.cpnode.setPos(pos.x, pos.y, pos.z)
             self.cpnode.setH(h)
