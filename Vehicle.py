@@ -115,12 +115,21 @@ class Vehicle(object):
         self.pos = pos
         self.boostFactor = 1.2
         self.props = VehicleProps(carId)
-        self.specs = {"mass": 800.0,
-                    "maxWheelForce": 2000.0,
-                    "brakeForce": 100.0,
-                    "steeringLock": 45.0,
-                    "maxSpeed": 33.0,
-                    "maxReverseSpeed": 10.0}
+                
+        self.specs = {
+            "mass": self.props.constants.MAX_WEIGHT[self.props.type],
+            "maxWheelForce": self.props.constants.MAX_WHEEL[self.props.type],
+            "brakeForce": self.props.constants.MAX_BRAKE[self.props.type],
+            "steeringLock": 45,
+            "maxSpeed": self.props.constants.MAX_SPEED[self.props.type],
+            "maxReverseSpeed": 10.0
+        }
+
+        print self.specs["mass"], ": 100"
+        print self.specs["maxWheelForce"], ": 3000"
+        print self.specs["brakeForce"], ": 100"
+        print self.specs["maxSpeed"], "30"
+
         self.vehicleControlState = {"throttle": 0, "reverse": False, "brake": 0.0, "steering": 0.0, "health": 1}
 
         self.vehicleType = carId;
