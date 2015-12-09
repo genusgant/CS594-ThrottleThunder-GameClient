@@ -192,9 +192,33 @@ class Dashboard(DirectObject):
         self.screenBtns.append(self.ResultPosition)
         self.screenBtns.append(self.backToLobby)
 
+
+    #below code added to show the points each player will get after game ends.
+    def gameResultPrize(self, prize):
+        if prize>0:
+            message="You got "+prize+" Points.."
+            self.ResultFrame = DirectFrame(frameColor=(1, 0, 0, 0.8), frameSize=(-0.75, .75, -.5, .5), pos=(0, 0.0, 0))
+            self.ResultMessage = OnscreenText(text=message, style=1, fg=(1, 1, 1, 1),pos=(0, 0.1), align=TextNode.ACenter, scale=.1)
+            self.backToLobby = DirectButton(image='IMAGES/enter.png', pos=(0.3, 0, -0.4), scale=(.17, 1, .03), relief=None,
+                                        command=self.goLobby1)
+            self.screenBtns.append(self.ResultFrame)
+            self.screenBtns.append(self.ResultMessage)
+            self.screenBtns.append(self.backToLobby)
+        else:
+            self.gameEngine.callLobby()
+    #changes ends here
+
+
     def unloadScreen(self):
         for item in self.screenBtns:
             item.destroy()
+
+    #changes start from here
+    def goLobby1(self):
+        self.unloadScreen()
+        print "Game over"
+        self.gameEngine.callLobby()
+    #changes ends here
 
     def goLobby(self):
         taskMgr.remove("updateSpeed")
