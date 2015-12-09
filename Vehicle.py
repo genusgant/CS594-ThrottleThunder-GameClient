@@ -124,14 +124,6 @@ class Vehicle(object):
             "maxReverseSpeed": 10.0
         }
 
-        self.specs = {"mass": 800.0,
-                     "maxWheelForce": 2000.0,
-                     "brakeForce": 100.0,
-                     "steeringLock": 45.0,
-                     "maxSpeed": 33.0,
-                     "maxReverseSpeed": 10.0}
-
-
         print self.specs["mass"], ": 100"
         print self.specs["maxWheelForce"], ": 3000"
         print self.specs["brakeForce"], ": 100"
