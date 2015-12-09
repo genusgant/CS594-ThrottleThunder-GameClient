@@ -583,6 +583,7 @@ class Menu(ShowBase):
         print "Launching RR GAME"
         self.World.ServerConnection.activeStatus = False
         self.unloadScreen()
+        self.World.stopMusic()
         self.rrworld = RRWorldManager(self)
         # data might be require to send to DD world
 
