@@ -9,11 +9,11 @@ class ResponsePrizes(ServerResponse):
 
         try:
             self.itemId = data.getInt32()
-
+            print "Prize for you", self.itemId
 
             # Gives the user an item based on what the server responses with
             # Popup to show what they unlocked?
-
+            self.world.getPrize(self.itemId)
             #self.log('Received [' + str(Constants.RAND_STRING) + '] String Response')
 
         except:

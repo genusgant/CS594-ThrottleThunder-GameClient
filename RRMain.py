@@ -654,6 +654,9 @@ class World(DirectObject):
         dt = globalClock.getDt()
         self.world.doPhysics(dt, 10, 0.008)
 
+    def getPrize(self, prize):
+        self.dashboard.gameResultPrize(prize)
+
     def setup(self):
         self.worldNP = render.attachNewNode('World')
         # World
