@@ -103,6 +103,7 @@ class Vehicle(object):
     COUNT = 0
 
     def __init__(self, main, username, pos = LVecBase3(-5, -5, 1), isCurrentPlayer = False, carId=3):
+        self.isDead = False
         self.username = username
         self.main = main
         self.isCurrentPlayer = isCurrentPlayer

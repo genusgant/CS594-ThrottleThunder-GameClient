@@ -163,7 +163,6 @@ class RRWorldManager():
             VehicleAttributes(username, 0, 0, 0, x, y, z, h, p, r)
 
     def startGameSequence(self):
-        #self.loadinScreen.imageObject.destroy()
         self.loadinScreen.finish(self.countdownTime)  # David said this line is breaking the timer. need to remove?
         self.gameWorld.initializeGameWorld()
         self.cManager.sendRequest(Constants.CMSG_READY)
@@ -192,7 +191,6 @@ class World(DirectObject):
         self.nodeFilterList = []
         self.collisionThreadSet = []
         self.otherPlayer = None
-        self.deadCounter = 0
         self.manager = manager
         self.lobby = manager.lobby
         self.login = self.lobby.World.username
@@ -282,11 +280,6 @@ class World(DirectObject):
 
     def doReset(self):
         self.mainCharRef.reset()
-
-    def doRanking(self):
-        #print "doRanking called"
-        self.cManager.sendRequest(Constants.CMSG_RANKINGS)
-
 
     def enterGame(self, task):
         self.startGameNow()
@@ -462,8 +455,8 @@ class World(DirectObject):
             thread.start()
 
     def killMe(self):
-        # self.vehicleContainer.props.health = self.vehicleContainer.props.armor = 0
-        # self.cManager.sendRequest(Constants.CMSG_HEALTH, 0)
+        self.vehicleContainer.props.health = self.vehicleContainer.props.armor = 0
+        self.cManager.sendRequest(Constants.CMSG_HEALTH, 0)
         # self.vehicleContainer.chassisNP.removeNode()
         self.cManager.sendRequest(Constants.CMSG_DEAD)
         self.gameEnd(True)

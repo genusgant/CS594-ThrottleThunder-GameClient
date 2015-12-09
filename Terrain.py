@@ -73,7 +73,7 @@ class Terrain(object):
 
         self.rigidNodePath = self.parentNodePath.attachNewNode(self.rigidNode)
         self.rigidNodePath.node().addShape(shape)
-        self.rigidNodePath.setScale(12.0, 12.0, 1.25)
+        self.rigidNodePath.setScale(12.0, 12.0, 1.5)
         self.rigidNodePath.setCollideMask(BitMask32.allOn())
         self.rigidNodePath.node().notifyCollisions(False)
 

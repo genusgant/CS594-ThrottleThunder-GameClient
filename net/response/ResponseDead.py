@@ -16,6 +16,7 @@ class ResponseDead(ServerResponse):
                     vehicle.props.health = vehicle.props.armor = 0
                     vehicle.isDead = True
                     vehicle.remove()
+<<<<<<< HEAD
                     self.world.deadCounter += 1
                     # del self.world.vehiclelist[self.username]
                     if self.world.deadCounter == len(self.world.vehiclelist) - 1:
@@ -43,6 +44,18 @@ class ResponseDead(ServerResponse):
 
             print "ResponseDead - ", self.username
             # self.log('Received [' + str(Constants.RAND_STRING) + '] String Response')
+=======
+                    self.world.deadCounter +=1
+                    #del self.world.vehiclelist[self.username]
+                    if self.world.deadCounter == len(self.world.vehiclelist)-1:
+                        print "Last Man Standing"
+                    self.world.gameEnd()
+                else:  # for RR game
+                    print "RR code here"
+                    #vehicle.remove()
+
+            print "ResponseDead - ",self.username
+>>>>>>> d5accc3f7cc83e9bbf0afdc242696b051aeb8ee1
 
         except:
             self.log('Bad [' + str(Constants.SMSG_DEAD) + '] Dead Response')
