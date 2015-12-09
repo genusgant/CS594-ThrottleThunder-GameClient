@@ -430,10 +430,28 @@ class Vehicle(object):
 
     # load the vehicle
     def setupVehicle(self, main):
-        scale = 0.5
+        # Choose the car type here
+            #1 Bruiser
+            #2 swisftstar
+            #3 stalion
+            #4 batmobile
+            #5 Hovercraft
+        if self.vehicleType == 1:
+            self.loadBruiser(main)
+        if self.vehicleType == 2:
+            self.loadSwiftstar(main)
+        if self.vehicleType == 3:
+            self.loadStalion(main)
+        if self.vehicleType == 4:
+            self.loadDefaultVehicle(main)
+
+
+    # instantiating Bruser car type 1
+    def loadBruiser(self, main):
+        scale = 0.75
         # Chassis
-        shape = BulletBoxShape(Vec3(0.6, 1.4, 0.5))
-        ts = TransformState.makePos(Point3(0, 0, 0.5 * scale))
+        shape = BulletBoxShape(Vec3(0.95, 2.02, 0.8)) # change the vehicle size here
+        ts = TransformState.makePos(Point3(0, -0.1, 0.67))
 
         name = self.username
         self.chassisNode = BulletRigidBodyNode(name)
@@ -462,46 +480,22 @@ class Vehicle(object):
         self.vehicle.setCoordinateSystem(ZUp)
         main.world.attachVehicle(self.vehicle)
 
-        print "Mohd: selected car type: ", self.vehicleType
+        # ******************************************
+        # Loding the Car model:
+        # ******************************************
 
-        # Choose the car type here
-            #1 Bruiser
-            #2 swisftstar
-            #3 stalion
-            #4 batmobile
-            #5 Hovercraft
-        if self.vehicleType == 1 :
-            self.loadBruiser(main, scale)
-        if self.vehicleType == 2 :
-            self.loadDefaultVehicle(main, scale)
-        if self.vehicleType == 3 :
-            self.loadDefaultVehicle(main, scale)
-            # self.loadStalion(main, scale)
-        if self.vehicleType == 4 :
-            self.loadDefaultVehicle(main, scale)
-
-
-        #elif self.type ==  :
-        # self.LoadHoverboard
-
-        # self.LoadSwiftstar()
-
-
-    # instantiating Bruser car type 1
-    def loadBruiser(self, main, scale):
         self.yugoNP = loader.loadModel('models/bruiser.egg')
         self.yugoNP.reparentTo(self.chassisNP)
+        self.yugoNP.setScale(scale)
+        # bring the model down to fit the whe
+        self.yugoNP.setZ(self.chassisNP, -0.28)
 
-        #self.carNP = loader.loadModel('models/batmobile-chassis.egg')
-        #self.yugoNP.setScale(.7)
-        #self.carNP.reparentTo(self.chassisNP)
-
-        xWheelLeft = -0.95
-        xWheelRight = 0.95
-        yWheelFront = 2.1
-        yWheelRear = -2.0
-        zWheel = 0.6
-        radius = 0.5
+        xWheelLeft = -0.8
+        xWheelRight = 0.8
+        yWheelFront = 1.5
+        yWheelRear = -1.5
+        zWheel = 0.48
+        radius = 0.45
 
         # Right front wheel
         self.rfnp = loader.loadModel('models/batmobile-wheel-right.egg')
@@ -523,8 +517,113 @@ class Vehicle(object):
         self.lrnp.reparentTo(main.worldNP)
         self.addWheel(Point3(xWheelLeft * scale, yWheelRear * scale, zWheel), False, self.lrnp, radius)
 
+    # instantiating Swisftstar car type 2
+    def loadSwiftstar(self, main):
+        scale = 0.5
+        # Chassis
+
+        shape = BulletBoxShape(Vec3(0.6, 1.4, 0.5)) # change the vehicle size here
+        ts = TransformState.makePos(Point3(0, 0, 0.5 * scale)) #
+
+        name = self.username
+        self.chassisNode = BulletRigidBodyNode(name)
+        self.chassisNode.setTag('username', str(name))
+        self.chassisNP = main.worldNP.attachNewNode(self.chassisNode)
+        self.chassisNP.setName(str(name))
+        self.chassisNP.node().addShape(shape, ts)
+        self.chassisNP.setScale(scale)
+
+        self.chassisNP.setPos(self.pos)
+        if self.isCurrentPlayer:
+            self.chassisNP.node().notifyCollisions(True)
+            self.chassisNP.node().setMass(800.0)
+        else:
+            self.chassisNP.node().notifyCollisions(True)
+            self.chassisNP.node().setMass(400.0)
+        self.chassisNP.node().setDeactivationEnabled(False)
+
+        main.world.attachRigidBody(self.chassisNP.node())
+
+        #np.node().setCcdSweptSphereRadius(1.0)
+        #np.node().setCcdMotionThreshold(1e-7)
+
+        # Vehicle
+        self.vehicle = BulletVehicle(main.world, self.chassisNP.node())
+        self.vehicle.setCoordinateSystem(ZUp)
+        main.world.attachVehicle(self.vehicle)
+
+
+
+        self.yugoNP = loader.loadModel('models/swiftstar-chassis.egg')
+        self.yugoNP.reparentTo(self.chassisNP)
+        self.yugoNP.setScale(.5)
+
+        xWheelLeft = -0.8
+        xWheelRight = 0.8
+        yWheelFront = 1
+        yWheelRear = -1
+        zWheel = 0.5
+        radiusFronWheel = 0.65
+        radiusRearWheel = 0.7
+        scale = .65
+
+        # Right front wheel
+        self.rfnp = loader.loadModel('models/swiftstar-fr-tire.egg')
+        self.rfnp.reparentTo(main.worldNP)
+        self.addWheel(Point3( xWheelRight * scale,  yWheelFront * scale, zWheel), True, self.rfnp, radiusFronWheel)
+
+        # Left front wheel
+        self.lfnp = loader.loadModel('models/swiftstar-fl-tire.egg')
+        self.lfnp.reparentTo(main.worldNP)
+        self.addWheel(Point3(xWheelLeft * scale,  yWheelFront * scale, zWheel), True, self.lfnp, radiusFronWheel)
+
+        # Right rear wheel
+        self.rrnp = loader.loadModel('models/swiftstar-fl-tire.egg')
+        self.rrnp.reparentTo(main.worldNP)
+        self.addWheel(Point3( xWheelRight * scale, yWheelRear * scale, zWheel), False, self.rrnp, radiusRearWheel)
+
+        # Left rear wheel
+        self.lrnp = loader.loadModel('models/swiftstar-rl-tire.egg')
+        self.lrnp.reparentTo(main.worldNP)
+        self.addWheel(Point3(xWheelLeft * scale, yWheelRear * scale, zWheel), False, self.lrnp, radiusRearWheel)
+
+
     # instantiating Stalion car type 3
-    def loadStalion(self, main, scale):
+    def loadStalion(self, main):
+        scale = 0.5
+        # Chassis
+
+        shape = BulletBoxShape(Vec3(0.6, 1.4, 0.5)) # change the vehicle size here
+        ts = TransformState.makePos(Point3(0, 0, 0.5 * scale)) #
+
+        name = self.username
+        self.chassisNode = BulletRigidBodyNode(name)
+        self.chassisNode.setTag('username', str(name))
+        self.chassisNP = main.worldNP.attachNewNode(self.chassisNode)
+        self.chassisNP.setName(str(name))
+        self.chassisNP.node().addShape(shape, ts)
+        self.chassisNP.setScale(scale)
+
+        self.chassisNP.setPos(self.pos)
+        if self.isCurrentPlayer:
+            self.chassisNP.node().notifyCollisions(True)
+            self.chassisNP.node().setMass(800.0)
+        else:
+            self.chassisNP.node().notifyCollisions(True)
+            self.chassisNP.node().setMass(400.0)
+        self.chassisNP.node().setDeactivationEnabled(False)
+
+        main.world.attachRigidBody(self.chassisNP.node())
+
+        #np.node().setCcdSweptSphereRadius(1.0)
+        #np.node().setCcdMotionThreshold(1e-7)
+
+        # Vehicle
+        self.vehicle = BulletVehicle(main.world, self.chassisNP.node())
+        self.vehicle.setCoordinateSystem(ZUp)
+        main.world.attachVehicle(self.vehicle)
+
+
         self.yugoNP = loader.loadModel('models/stallion.egg')
         self.yugoNP.reparentTo(self.chassisNP)
 
@@ -533,7 +632,8 @@ class Vehicle(object):
         yWheelFront = 1.1
         yWheelRear = -2.0
         zWheel = 0.7
-        radius = 0.25
+        radius = 0.20
+        scale= .4
 
         # Right front wheel
         self.rfnp = loader.loadModel('models/batmobile-wheel-right.egg')
@@ -557,13 +657,42 @@ class Vehicle(object):
 
 
     # instantiating Default car type
-    def loadDefaultVehicle(self, main, scale):
+    def loadDefaultVehicle(self, main):
+        scale = 0.5
+        # Chassis
+
+        shape = BulletBoxShape(Vec3(0.6, 1.4, 0.5)) # change the vehicle size here
+        ts = TransformState.makePos(Point3(0, 0, 0.5 * scale)) #
+
+        name = self.username
+        self.chassisNode = BulletRigidBodyNode(name)
+        self.chassisNode.setTag('username', str(name))
+        self.chassisNP = main.worldNP.attachNewNode(self.chassisNode)
+        self.chassisNP.setName(str(name))
+        self.chassisNP.node().addShape(shape, ts)
+        self.chassisNP.setScale(scale)
+
+        self.chassisNP.setPos(self.pos)
+        if self.isCurrentPlayer:
+            self.chassisNP.node().notifyCollisions(True)
+            self.chassisNP.node().setMass(800.0)
+        else:
+            self.chassisNP.node().notifyCollisions(True)
+            self.chassisNP.node().setMass(400.0)
+        self.chassisNP.node().setDeactivationEnabled(False)
+
+        main.world.attachRigidBody(self.chassisNP.node())
+
+        #np.node().setCcdSweptSphereRadius(1.0)
+        #np.node().setCcdMotionThreshold(1e-7)
+
         # Vehicle
         self.vehicle = BulletVehicle(main.world, self.chassisNP.node())
         self.vehicle.setCoordinateSystem(ZUp)
         main.world.attachVehicle(self.vehicle)
 
         radius = 0.25
+        scale = .5
 
         self.yugoNP = loader.loadModel('models/yugo/yugo.egg')
         self.yugoNP.reparentTo(self.chassisNP)

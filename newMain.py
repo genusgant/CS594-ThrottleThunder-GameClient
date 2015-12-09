@@ -38,7 +38,8 @@ class World(DirectObject):
         props.setOrigin(-2,-2)
         base.win.requestProperties( props )
         self.base = ShowBase
-        self.main_theme = base.loader.loadSfx("assets/sounds/terminator_theme.ogg")
+        # self.main_theme = base.loader.loadSfx("assets/sounds/terminator_theme.ogg")
+        self.main_theme = base.loader.loadSfx("")
         self.main_theme.play()
         
         self.username = ""
