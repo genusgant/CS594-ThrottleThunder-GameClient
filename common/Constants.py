@@ -30,6 +30,7 @@ class Constants:
     CMSG_CAR_CHOICE                     = 117
     CMSG_CAR_PAINT                      = 118
     CMSG_CAR_TIRES                      = 119
+    CMSG_GARAGE_DETAILS                 = 120
     CMSG_GARAGE_PURCHASE                = 121
     CMSG_RESULTS                        = 122
     CMSG_RANKINGS                       = 123
@@ -63,6 +64,7 @@ class Constants:
     SMSG_CAR_CHOICE                     = 217
     SMSG_CAR_PAINT                      = 218
     SMSG_CAR_TIRES                      = 219
+    SMSG_GARAGE_DETAILS                 = 220
     SMSG_GARAGE_PURCHASE                = 221
     SMSG_RESULTS                        = 222
     SMSG_RANKINGS                       = 223
