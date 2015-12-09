@@ -23,6 +23,8 @@ class Dashboard(DirectObject):
         self.start_time = datetime.datetime.now()
         self.time_elapsed = datetime.timedelta(milliseconds=0)
         self.countdown_time = datetime.timedelta(minutes=8)
+        # buttons list
+        self.screenBtns = []
         # insert total time
         self.game_time = self.countdown_time - self.time_elapsed
         # print self.game_time
@@ -159,7 +161,7 @@ class Dashboard(DirectObject):
 
     def gameResult(self, isDead=False):
 
-        # print "REsult"
+        # print "Result"
 
         if isDead:
             print "Inside if"
