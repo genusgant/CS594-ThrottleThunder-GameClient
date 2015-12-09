@@ -12,6 +12,7 @@ from panda3d.bullet import BulletVehicle
 from panda3d.bullet import ZUp
 import time
 import math
+from panda3d.core import TransparencyAttrib
 
 
 class Vehicle(object):
@@ -185,6 +186,9 @@ class Vehicle(object):
         self.carNP = loader.loadModel('models/batmobile-chassis.egg')
         # self.yugoNP.setScale(.7)
         self.carNP.reparentTo(self.chassisNP)
+
+
+
 
         # Right front wheel
         self.rfnp = loader.loadModel('models/batmobile-wheel-right.egg')
