@@ -30,13 +30,15 @@ class OtherPlayersUsername():
                                          #frameSize=(-1,1,-1,1),parent=vehicleContainer.chassisNP)
         
 
-        self.otherIdentity = DirectWaitBar(value=100,barColor= (0,0,0,0), frameSize = (-.8,.8,0.1,0.3))
-        OnscreenText(parent=self.otherIdentity,text = str(vehicleContainer.username),fg=(1,1,1,1))
+        self.otherIdentity = DirectWaitBar(value=100,scale=4,range=100,barColor=(0,0.8,0,1),barRelief=1,frameSize = (-.5,.5,0.1,0.2))
+        OnscreenText(parent=self.otherIdentity,text = str(vehicleContainer.username),fg=(255,255,255,1))
         print vehicleContainer.username
-        self.otherIdentity.setPos(0, 0, 2)
-    
+
+        self.otherIdentity.reparentTo(vehicleContainer.chassisNP)
+        self.otherIdentity.setPos(0, 0, 2.5)
         self.otherIdentity.setBillboardPointEye()
         self.otherIdentity.setBin('fixed', 0)
         self.otherIdentity.setDepthWrite(False)
-        self.otherIdentity.reparentTo(vehicleContainer.chassisNP)
+        self.otherIdentity.setAlphaScale(100)
+        
 

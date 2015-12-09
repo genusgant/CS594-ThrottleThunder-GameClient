@@ -17,7 +17,7 @@ import math
 class Vehicle(object):
     COUNT = 0
 
-    def __init__(self, world, username, pos=[0, 0, 0, 0, 0, 0], isCurrentPlayer=False):
+    def __init__(self, world, username, vehicleType, pos=[0, 0, 0, 0, 0, 0], isCurrentPlayer=False):
 
         self.isCurrentPlayer = isCurrentPlayer
         self.world = world
@@ -47,6 +47,8 @@ class Vehicle(object):
         self.centreingRate = 5.0
 
         self.pos = pos
+
+        self.type = vehicleType         # Indicate the type of the car 
 
         self.currentPowerups = {"powerup1": None, "powerup2": None, "powerup3": None}
 
@@ -288,7 +290,7 @@ class Vehicle(object):
 
         wheel.setWheelDirectionCs(Vec3(0, 0, -1))
         wheel.setWheelAxleCs(Vec3(1, 0, 0))
-        wheel.setWheelRadius(0.33)
+        wheel.setWheelRadius(radius)
         wheel.setMaxSuspensionTravelCm(40.0)
 
         wheel.setSuspensionStiffness(40.0)
@@ -355,7 +357,7 @@ class Vehicle(object):
         self.vehicle.setBrake(brakeForce, 2)
         self.vehicle.setBrake(brakeForce, 3)
 
-    
+
     def remove(self, main):
         """ Remove the whole vehicle. chassis and 4 wheels. """
         main.world.removeVehicle(self.vehicle)
