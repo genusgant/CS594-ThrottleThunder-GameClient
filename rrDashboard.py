@@ -116,8 +116,7 @@ class Dashboard(DirectObject):
     #     self.countdown_time = datetime.timedelta(milliseconds=server_time)
 
     def update_ranking(self, leaders):
-
-            for i in range(len(leaders)):
+            for i in range(1, len(leaders)+1):
                 if leaders.get(i) == self.world.login:
                     self.rm.rank = i
                     # print("My rank: " + str(i))
