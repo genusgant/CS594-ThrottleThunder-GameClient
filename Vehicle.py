@@ -519,11 +519,11 @@ class Vehicle(object):
 
     # instantiating Swisftstar car type 2
     def loadSwiftstar(self, main):
-        scale = 0.5
+        scale = 0.65
         # Chassis
 
-        shape = BulletBoxShape(Vec3(0.6, 1.4, 0.5)) # change the vehicle size here
-        ts = TransformState.makePos(Point3(0, 0, 0.5 * scale)) #
+        shape = BulletBoxShape(Vec3(0.95, 2.4, 0.82)) # change the vehicle size here
+        ts = TransformState.makePos(Point3(0, 0, 0.35)) #
 
         name = self.username
         self.chassisNode = BulletRigidBodyNode(name)
@@ -553,39 +553,44 @@ class Vehicle(object):
         main.world.attachVehicle(self.vehicle)
 
 
-
         self.yugoNP = loader.loadModel('models/swiftstar-chassis.egg')
         self.yugoNP.reparentTo(self.chassisNP)
-        self.yugoNP.setScale(.5)
+        self.yugoNP.setScale(scale)
+        self.yugoNP.setZ(self.chassisNP, -0.30)
 
-        xWheelLeft = -0.8
-        xWheelRight = 0.8
-        yWheelFront = 1
-        yWheelRear = -1
-        zWheel = 0.5
-        radiusFronWheel = 0.65
-        radiusRearWheel = 0.7
-        scale = .65
+        xWheelLeft = -1.01
+        xWheelRight = 1.01
+        yWheelFront = 1.55
+        yWheelRear = -1.55
+        zWheel = 0.48
+        radious = 0.45
+        # radious = 0.75
 
         # Right front wheel
-        self.rfnp = loader.loadModel('models/swiftstar-fr-tire.egg')
+        # self.rfnp = loader.loadModel('models/swiftstar-rr-tire.egg')
+        self.rfnp = loader.loadModel('models/batmobile-wheel-right.egg')
         self.rfnp.reparentTo(main.worldNP)
-        self.addWheel(Point3( xWheelRight * scale,  yWheelFront * scale, zWheel), True, self.rfnp, radiusFronWheel)
+        self.addWheel(Point3( xWheelRight * scale,  yWheelFront * scale, zWheel), True, self.rfnp, radious)
 
         # Left front wheel
-        self.lfnp = loader.loadModel('models/swiftstar-fl-tire.egg')
+        # self.lfnp = loader.loadModel('models/swiftstar-rl-tire.egg')
+        self.lfnp = loader.loadModel('models/batmobile-wheel-left.egg')
         self.lfnp.reparentTo(main.worldNP)
-        self.addWheel(Point3(xWheelLeft * scale,  yWheelFront * scale, zWheel), True, self.lfnp, radiusFronWheel)
+        self.addWheel(Point3(xWheelLeft * scale,  yWheelFront * scale, zWheel), True, self.lfnp, radious)
 
         # Right rear wheel
-        self.rrnp = loader.loadModel('models/swiftstar-fl-tire.egg')
+        # self.rrnp = loader.loadModel('models/swiftstar-rr-tire.egg')
+        self.rrnp = loader.loadModel('models/batmobile-wheel-right.egg')
         self.rrnp.reparentTo(main.worldNP)
-        self.addWheel(Point3( xWheelRight * scale, yWheelRear * scale, zWheel), False, self.rrnp, radiusRearWheel)
+        self.rrnp.setScale(.25)
+        self.addWheel(Point3( xWheelRight * scale, yWheelRear * scale, zWheel), False, self.rrnp, radious)
 
         # Left rear wheel
-        self.lrnp = loader.loadModel('models/swiftstar-rl-tire.egg')
+        # self.lrnp = loader.loadModel('models/swiftstar-rl-tire.egg')
+        self.lrnp = loader.loadModel('models/batmobile-wheel-left.egg')
         self.lrnp.reparentTo(main.worldNP)
-        self.addWheel(Point3(xWheelLeft * scale, yWheelRear * scale, zWheel), False, self.lrnp, radiusRearWheel)
+        self.lrnp.setScale(.25)
+        self.addWheel(Point3(xWheelLeft * scale, yWheelRear * scale, zWheel), False, self.lrnp, radious)
 
 
     # instantiating Stalion car type 3
