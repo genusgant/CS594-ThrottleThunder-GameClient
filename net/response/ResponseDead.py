@@ -28,10 +28,14 @@ class ResponseDead(ServerResponse):
             else:  # for RR game
                 if self.world.login == self.username:
                     print "you are dead"
-                    # disable bullet
-                    
-                    self.world.vehicleContainer.carNP.setTransparency(TransparencyAttrib.MAlpha)
-                    self.world.vehicleContainer.carNP.setAlphaScale(0.5)
+                    self.world.vehicleContainer.isDead = True
+
+                    # disable collision
+                    # self.world.ignore('bullet-contact-added')
+
+                    # set ghosting
+                    self.world.vehicleContainer.chassisNP.setTransparency(TransparencyAttrib.MAlpha)
+                    self.world.vehicleContainer.chassisNP.setAlphaScale(0.5)
 
                 if self.username in self.world.vehiclelist.keys():
                     vehicle = self.world.vehiclelist[self.username]
