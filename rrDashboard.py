@@ -114,12 +114,12 @@ class Dashboard(DirectObject):
     # def force_timer(self, server_time):
     #     self.start_time = datetime.datetime.now()
     #     self.countdown_time = datetime.timedelta(milliseconds=server_time)
-
+    # leaders is a map, not list
     def update_ranking(self, leaders):
             for i in range(1, len(leaders)+1):
                 if leaders.get(i) == self.world.login:
                     self.rm.rank = i
-                    # print("My rank: " + str(i))
+                    #print("My rank: " + str(i))
                     break
 
             # get usernames from list
