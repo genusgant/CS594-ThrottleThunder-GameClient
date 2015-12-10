@@ -41,8 +41,8 @@ class World(DirectObject):
         props.setOrigin(-2,-2)
         base.win.requestProperties( props )
         self.base = ShowBase
-        self.main_theme = base.loader.loadSfx("assets/sounds/greenHills.ogg")
-        # Song = Maxime Abbey by Green Hills
+        self.main_theme = base.loader.loadSfx("audio/bg music/Lobby music/drive_fast.ogg")
+        # Song = Three Chain Links - Drive Fast: https://soundcloud.com/beardmont/three-chain-links-the-5
         self.main_theme.play()
 
         self.username = ""
