@@ -242,7 +242,8 @@ class World(DirectObject):
         self.vehicleContainer.reset()
 
     def createPowerups(self):
-        self.powerups = PowerupManager(self, self.vehicleContainer)
+        self.powerups = PowerupManager(self, self.vehicleContainer,type = self.lobby.ddMapTitle)
+        self.dashboard.createpowerup_in_minimap()
 
     def setTime(self):
         self.cManager.sendRequest(Constants.CMSG_TIME)

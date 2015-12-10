@@ -30,6 +30,17 @@ class PowerupPositions:
                 8: {"id": 8, "x": 40, "y": 75, "z": -3.5}
             }
 
+        self.positions2 = {
+                1: {"id": 1, "x": 0, "y": 0, "z": -1},
+                2: {"id": 2, "x": 19.2, "y":-33.7, "z": -1},
+                3: {"id": 3, "x": 25.7, "y": -59.1, "z": -0.8},
+                4: {"id": 4, "x": -15, "y": -20, "z": -1},
+                5: {"id": 5, "x": 30, "y": 10, "z": -1},
+                6: {"id": 6, "x": 40, "y": 21, "z": -1},
+                7: {"id": 7, "x": 40, "y": -48, "z": -1},
+                8: {"id": 8, "x": 35, "y": -37, "z": -1}
+            }
+
 class PowerupIcon:
     def __init__(self, main, powerupInfo):
         self.main = main
@@ -82,7 +93,7 @@ class PowerupManager:
     MAX_COUNT = 2
     POWERUP_RESET_TIME = 60
 
-    def __init__(self, main, actor):
+    def __init__(self, main, actor,type = "heightMap"):
         self.actor = actor
         self.powerupViews = {}
         self.takenPowers = []
@@ -93,6 +104,8 @@ class PowerupManager:
 
         powerupTypes = PowerupTypes()
         self.powerupPositions = PowerupPositions().positions
+        if type == "model":
+            self.powerupPositions = PowerupPositions().positions2
 
         pwrKey = 1
         instanceCount = 0
