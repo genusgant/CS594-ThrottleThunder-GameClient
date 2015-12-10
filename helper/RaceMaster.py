@@ -42,7 +42,7 @@ class RaceMaster():
         
     '''
     tracks = ['FullTrack.curves', 'flattrack.curves']
-    trackscale = [70, 1]
+    trackscale = [70, 2*.6]
 
     def __init__(self, mGame, mvc, track, nracers, startingPos):
         '''
@@ -74,8 +74,7 @@ class RaceMaster():
         for i in range(l):
             self.checkpointlocs.append(temp[l - i - 1])
 
-            # check points are only counted if its id is > the lastcp. or else you might be going backwards.
-
+    # check points are only counted if its id is > the lastcp. or else you might be going backwards.
     def hitCheckpoint(self, cp):
         if cp > self.lastcp:
             self.lastcp = cp
@@ -105,7 +104,7 @@ class RaceMaster():
         return len(self.checkpointlocs)
 
     def getRacePos(self):
-        return self.racePos
+        return self.rank
 
     # ____TASK___
     def updateCheckpoints(self, task):
