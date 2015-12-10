@@ -5,6 +5,9 @@ from panda3d.core import NetDatagram
 from locale import currency
 
 class GarageConnectionModel(ServerConnection):
+    CODE_SEND_CAR = 105
+    CODE_RECV_CAR = 105
+    
     CODE_SEND_DETAILS = 120
     CODE_RECV_DETAILS = 220
     
@@ -22,10 +25,22 @@ class GarageConnectionModel(ServerConnection):
         
     def getConnectionActions(self):
         return [
+                [self.CODE_RECV_CAR, self.getCarMessage],
                 [self.CODE_RECV_DETAILS, self.getDetailMessage],
                 [self.CODE_RECV_PURCHASE, self.getPurchaseMessage],
                 [self.CODE_RECV_CURRENCY, self.getCurrencyMessage],
                 ];
+                
+    def sendCar(self,carId,paintId,tiresId):
+        request = self.buildRequestPackage(self.CODE_SEND_CAR)
+        request.addInt32(carId)
+        request.addInt32(paintId)
+        request.addInt32(tiresId)
+        ServerConnection.sendMessage(self,request)
+        
+    def getCarMessage(self,data):
+        status = data.getInt()
+        self.parseCarResponse(status)
     
     def sendDetail(self,carId,typeId):
         request = self.buildRequestPackage(self.CODE_SEND_DETAILS)
@@ -59,7 +74,8 @@ class GarageConnectionModel(ServerConnection):
         currency = data.getInt()
         self.parseCurrencyResponse(currency)
     
-    def setHandler(self, detailHandler, purchaseHandler, currencyHandler):
+    def setHandler(self, carHandler, detailHandler, purchaseHandler, currencyHandler):
+        self.parseCarResponse = carHandler
         self.parseDetailResponse = detailHandler
         self.parsePurchaseResponse = purchaseHandler
         self.parseCurrencyResponse = currencyHandler

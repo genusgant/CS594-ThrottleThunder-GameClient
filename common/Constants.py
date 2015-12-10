@@ -15,7 +15,7 @@ class Constants:
     CMSG_DISCONNECT                     = 102
     CMSG_REGISTER                       = 103
     CMSG_FORGOT_PASSWORD                = 104
-    CMSG_CREATE_CHARACTER               = 105
+    CMSG_CAR                            = 105
     CMSG_CHAT                           = 106
     CMSG_MOVE                           = 107
     CMSG_POWER_UP                       = 108
@@ -50,7 +50,7 @@ class Constants:
     SMSG_DISCONNECT                     = 202
     SMSG_REGISTER                       = 203
     SMSG_FORGOT_PASSWORD                = 204
-    SMSG_CREATE_CHARACTER               = 205
+    SMSG_CAR                            = 205
     SMSG_CHAT                           = 206
     SMSG_MOVE                           = 207
     SMSG_POWER_UP                       = 208
