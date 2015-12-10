@@ -104,14 +104,14 @@ class World(DirectObject):
         self.ServerConnection.activeStatus = False
         self.screen.unloadScreen()
         self.stopMusic()
-        self.screen = WorldManager(self)
+        self.screen = WorldManager(self.screen)
         
     def launchRRGame(self):
         print "Launching RR GAME"
         self.ServerConnection.activeStatus = False
         self.screen.unloadScreen()
         self.stopMusic()
-        self.screen = RRWorldManager(self)
+        self.screen = RRWorldManager(self.screen)
         # data might be require to send to DD world
     
     def parseAuthResponse(self,data):
