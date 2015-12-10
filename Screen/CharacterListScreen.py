@@ -47,7 +47,6 @@ class CharacterListScreen:
             self.hideScreen()
             
     def addPlayer(self, username):
-        print "ADD PLAYER"
         l = DirectLabel(text = username, frameSize=(-0.35, 0.35, -0.05, 0.06),text_scale=0.05,frameColor=(0,0,0,0),text_fg=(1,1,1,1))
         self.items.append(l)
         self.CharListFrame.scrolledList.addItem(l)

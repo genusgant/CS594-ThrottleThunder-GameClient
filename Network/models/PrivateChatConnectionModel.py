@@ -7,8 +7,8 @@ class PrivateChatConnectionModel(ServerConnection):
     CODE_SEND_MSG = 115
     CODE_RECV_MSG = 215
     
-    def __init__(self,screenModel):
-        self.screenModel = screenModel
+    def __init__(self):
+        self.parseResponse = None
         
     def getConnectionActions(self):
         return [[self.CODE_RECV_MSG, self.getChatMessage]];
@@ -20,4 +20,7 @@ class PrivateChatConnectionModel(ServerConnection):
         ServerConnection.sendMessage(self,request)
         
     def getChatMessage(self,data):
-        self.screenModel.parseResponse(data.getString(),data.getString())
+        self.parseResponse(data.getString(),data.getString(), data.getInt32())
+        
+    def setHandler(self, handler):
+        self.parseResponse = handler

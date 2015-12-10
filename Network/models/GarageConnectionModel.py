@@ -6,7 +6,7 @@ from locale import currency
 
 class GarageConnectionModel(ServerConnection):
     CODE_SEND_CAR = 105
-    CODE_RECV_CAR = 105
+    CODE_RECV_CAR = 205
     
     CODE_SEND_DETAILS = 120
     CODE_RECV_DETAILS = 220
@@ -14,8 +14,8 @@ class GarageConnectionModel(ServerConnection):
     CODE_SEND_PURCHASE = 121
     CODE_RECV_PURCHASE = 221
     
-    CODE_SEND_CURRENCY = 132
-    CODE_RECV_CURRENCY = 232
+    CODE_SEND_CURRENCY = 134
+    CODE_RECV_CURRENCY = 234
     
     def __init__(self,callback):
         self.callback = callback
@@ -39,7 +39,7 @@ class GarageConnectionModel(ServerConnection):
         ServerConnection.sendMessage(self,request)
         
     def getCarMessage(self,data):
-        status = data.getInt()
+        status = data.getInt32()
         self.parseCarResponse(status)
     
     def sendDetail(self,carId,typeId):
@@ -49,29 +49,28 @@ class GarageConnectionModel(ServerConnection):
         ServerConnection.sendMessage(self,request)
         
     def getDetailMessage(self,data):
-        armor = data.getInt()
-        health = data.getInt()
-        acceleration = data.getInt()
-        speed = data.getInt()
+        armor = data.getInt32()
+        health = data.getInt32()
+        acceleration = data.getInt32()
+        speed = data.getInt32()
         self.parseDetailResponse(armor, health, acceleration, speed)
         
-    def sendPurchase(self,carId,typeId,value):
+    def sendPurchase(self,carId,typeId):
         request = self.buildRequestPackage(self.CODE_SEND_PURCHASE)
         request.addInt32(carId)
         request.addInt32(typeId)
-        request.addInt32(value)
         ServerConnection.sendMessage(self,request)
         
     def getPurchaseMessage(self,data):
-        status = data.getInt()
+        status = data.getInt32()
         self.parsePurchaseResponse(status)
             
     def sendCurrency(self):
-        request = self.buildRequestPackage(self.CODE_SEND_PURCHASE)
+        request = self.buildRequestPackage(self.CODE_SEND_CURRENCY)
         ServerConnection.sendMessage(self,request)
         
     def getCurrencyMessage(self,data):
-        currency = data.getInt()
+        currency = data.getInt32()
         self.parseCurrencyResponse(currency)
     
     def setHandler(self, carHandler, detailHandler, purchaseHandler, currencyHandler):

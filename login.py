@@ -30,7 +30,7 @@ class Login(ShowBase):
 
     def createLoginWindow(self):
 
-        self.myImage = OnscreenImage(image='IMAGES/game_login.png', pos=(0, 0, 0), scale=(2, 1, 1))
+        self.myImage = OnscreenImage(image='IMAGES/login.png', pos=(0, 0, 0), scale=(2, 1, 1))
 
         self.enter_btn = DirectButton(image='IMAGES/enter.png', pos=(-1.4, 0, -.5), scale=(.15, 1, .04),
                                       command=self.auth, relief=None)
@@ -56,7 +56,7 @@ class Login(ShowBase):
     def createRegisterWindow(self):
 
 
-        self.myImage = OnscreenImage(image='IMAGES/game_register.png', pos=(0, 0, 0), scale=(2, 1, 1))
+        self.myImage = OnscreenImage(image='IMAGES/register_w.png', pos=(0, 0, 0), scale=(2, 1, 1))
 
         self.cancel_btn = DirectButton(image='IMAGES/cancel.png', pos=(-1, 0, -.5), command=self.clickedRegCancel, scale=(.15, 1, .04), relief=None)
 

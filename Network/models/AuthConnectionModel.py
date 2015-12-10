@@ -5,9 +5,6 @@ class AuthConnectionModel(ServerConnection):
     CODE_SEND_AUTH=101
     CODE_RESP_AUTH=201
     
-    CODE_SEND_DISCONNECT=102
-    CODE_RESP_DISCONNECT=202
-    
     CODE_SEND_REG =103
     CODE_RESP_REG=203
     
@@ -17,7 +14,7 @@ class AuthConnectionModel(ServerConnection):
     def getConnectionActions(self):
         return [
                 [self.CODE_RESP_AUTH, self.getAuth],
-                [self.CODE_RESP_DISCONNECT, self.getDisconnect],
+                
                 [self.CODE_RESP_REG, self.getReg],
                 ];
     
@@ -25,10 +22,6 @@ class AuthConnectionModel(ServerConnection):
         request = self.buildRequestPackage(self.CODE_SEND_AUTH)
         request.addString(username)
         request.addString(password)
-        ServerConnection.sendMessage(self,request)
-        
-    def sendDisconnectRequest(self):
-        request = self.buildRequestPackage(self.CODE_SEND_DISCONNECT)
         ServerConnection.sendMessage(self,request)
         
     def sendRegisterRequest(self,username,password):
@@ -39,19 +32,12 @@ class AuthConnectionModel(ServerConnection):
         ServerConnection.sendMessage(self,request)
     
     def getAuth(self, data):
-        self.screenModel.parseAuthResponse(data.getUint16())
-        
-    def getDisconnect(self, data):
-        try:
-            username = data.getString()
-            if self.world.vehiclelist[username] != None :
-                self.world.vehiclelist[username].chassisNP.remove()
-                #self.world.vehiclelist[username].chassisNode.remove()
-                self.world.vehiclelist.pop(username)
-
-        except:
-            print "Something went wrong"
+        self.parseAuthResponse(data.getUint16())
 
     def getReg(self, data):
-        self.screenModel.parseRegResponse(data.getUint16())
+        self.parseRegResponse(data.getUint16())
+        
+    def setHandler(self, authhandler, reghandler):
+        self.parseAuthResponse = authhandler
+        self.parseRegResponse = reghandler
         
