@@ -94,8 +94,6 @@ class RaceMaster():
                 # recalculate cp distance
 
                 # returns number of laps compleated
-                
-        self.main.cManager.sendRequest(Constants.CMSG_CHECKPOINTS, [self.laps, self.checkpointspassed])
 
     def getLaps(self):
         self.laps

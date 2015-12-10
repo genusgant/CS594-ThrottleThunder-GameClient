@@ -23,7 +23,7 @@ from panda3d.bullet import BulletWorld, BulletTriangleMesh, BulletTriangleMeshSh
     BulletRigidBodyNode, BulletBoxShape
 from Track import Track
 from rrVehicle import Vehicle
-from Camera import Camera
+from rrCamera import Camera
 from SkyDome import SkyDome
 from Powerups import PowerupManager
 from panda3d.bullet import BulletHeightfieldShape
@@ -33,6 +33,7 @@ from Obstruction import Obstruction
 from LoadingScreen import LoadingScreen
 from VehicleAttributes import VehicleAttributes
 from rrTrack import Track
+import rrDayTrack
 from rrAudio import Audio
 # """ Custom Imports """
 # import your modules
@@ -93,6 +94,7 @@ class RRWorldManager():
         self.countdownTime = 5
         self.otherPlayersDataAvailable = False
         self.lobby = lobby
+        self.trackNum = self.lobby.trackNum
         self.isDDGame = False
         self.gameWorld = World(self)
         self.loadinScreen = LoadingScreen(self.gameWorld)
@@ -103,7 +105,7 @@ class RRWorldManager():
         self.gameWorld.cManager = self.cManager
         self.cManager.sendRequest(Constants.CMSG_READY)
         self.cManager.sendRequest(Constants.CMSG_RANKINGS)
-        self.addVehicleProps(self.lobby.World.username, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+        self.addVehicleProps(self.lobby.World.username, 1, 0, 0, 0, 0, 0, 0, 0, 0)
         # self.cManager.sendRequest(Constants.CMSG_SET_POSITION)
         # while not self.otherPlayersDataAvailable:
         # print "Wait for respponse"
@@ -120,10 +122,9 @@ class RRWorldManager():
         #             self.addPlayer(player, 1, 0, 0, x, y, z, 0, 0, 0)
         #             x += 10
         #             y += 10
-        taskMgr.add(self.startGameTask, "startGameTask")
+        taskMgr.doMethodLater(.1, self.startGameTask, "startGameTask")
 
     def startGameTask(self, task):
-
         if self.otherPlayersDataAvailable:
             self.startGameSequence()
             self.gameWorld.startGameNow()
@@ -161,7 +162,7 @@ class RRWorldManager():
             self.playerList[username] = vehicle
 
         else:
-            VehicleAttributes(username, 0, 0, 0, x, y, z, h, p, r)
+            VehicleAttributes(username, 1, 0, 0, x, y, z, h, p, r)
 
     def startGameSequence(self):
         #self.loadinScreen.imageObject.destroy()
@@ -188,6 +189,7 @@ class World(DirectObject):
 
     def __init__(self, manager):
         # Stores the list of all the others players characters
+        self.trackNum = manager.trackNum
         self.vehiclelist = {}
         self.isActive = False
         self.nodeFilterList = []
@@ -222,7 +224,8 @@ class World(DirectObject):
         self.createPlayers()
 
         # Camera
-        self.setupCamera()
+        self.camera = Camera(self.vehicleContainer.chassisNP, self.world)
+        # self.setupCamera()
         # Create Powerups
         # self.createPowerups()
         # taskMgr.add(self.powerups.checkPowerPickup, "checkPowerupTask")
@@ -245,15 +248,17 @@ class World(DirectObject):
     def activateKeys(self):
         inputState.watchWithModifiers('boostUp', '1-up')
         inputState.watchWithModifiers('forward', 'w')
+        inputState.watchWithModifiers('forward', 'z')
         inputState.watchWithModifiers('left', 'a')
+        inputState.watchWithModifiers('left', 'q')
         inputState.watchWithModifiers('brake', 's')
         inputState.watchWithModifiers('right', 'd')
         inputState.watchWithModifiers('turnLeft', 'q')
         inputState.watchWithModifiers('turnRight', 'e')
-        inputState.watchWithModifiers('forward', 'up')
-        inputState.watchWithModifiers('left', 'left')
-        inputState.watchWithModifiers('brake', 'down')
-        inputState.watchWithModifiers('right', 'right')
+        inputState.watchWithModifiers('forward', 'arrow_up')
+        inputState.watchWithModifiers('left', 'arrow_left')
+        inputState.watchWithModifiers('brake', 'arrow_down')
+        inputState.watchWithModifiers('right', 'arrow_right')
 
         self.world.setGravity(Vec3(0, 0, -9.81))
 
@@ -490,18 +495,15 @@ class World(DirectObject):
         self.setup()
 
     def toggleWireframe(self):
-
         base.toggleWireframe()
 
     def toggleTexture(self):
-
         base.toggleTexture()
 
     def toggleDebug(self):
-        if self.debugNP.isHidden() and self.isDebug:
+        if self.debugNP.isHidden():
             self.debugNP.show()
-        else:
-            self.debugNP.hide()
+        else: self.debugNP.hide()
 
     def calculateDamage(self, fromCar, toCar, fromCollisionSection=2, toCollisionSection=2):
         # toCar takes more damage than fromCar
@@ -563,8 +565,8 @@ class World(DirectObject):
         #     self.vehicleContainer.processInput(inputState, dt)
         #     self.moveCrazyCar(dt)
         #     self.stepPhysicsWorld()
-
-        self.updateCamera(self.vehicleContainer.speed)
+        self.camera.update()
+        # self.updateCamera(self.vehicleContainer.speed)
         return task.again
 
     def updateCamera(self, speed=0.0, initial=False):
@@ -667,7 +669,10 @@ class World(DirectObject):
         # self.debugNP.node().showNormals(True)
 
         self.world = BulletWorld()
-        Track(self.world)
+        if self.trackNum == 1:
+            Track(self.world)
+        elif self.trackNum == 2:
+            rrDayTrack.Track(self.world)
         self.world.setDebugNode(self.debugNP.node())
 
         # Obstruction
@@ -697,11 +702,12 @@ class World(DirectObject):
                 #4 batmobile
                 #5 Hovercraft 
                 #self.vehicleType = 1
+                print "Creating Vehicle of type: ", vehicleAttributes.carId
                 playerVehicle = Vehicle(self.world, createPlayerUsername, vehicleAttributes.carId, pos, isCurrentPlayer )  # ,
                 # pos=LVecBase3(vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z),
                 #    isCurrentPlayer=isCurrentPlayer, carId=vehicleAttributes.carId)
-                if self.login != createPlayerUsername:
-                    self.otherUser = OtherPlayersUsername(self,playerVehicle)
+                #if self.login != createPlayerUsername:
+                self.nameBar = OtherPlayersUsername(self,playerVehicle)
                 if isCurrentPlayer:
                     self.vehicleContainer = playerVehicle
                     print "I AM: ", createPlayerUsername
