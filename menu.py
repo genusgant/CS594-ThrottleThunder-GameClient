@@ -559,40 +559,6 @@ class Menu(ShowBase):
         self.upgrade_type = 0
         self.displayLevels()
 
-        self.power_btn = DirectButton(image = 'IMAGES/power.png',
-                                      pos = (-.9, 0, -.75),
-                                      scale = (.1, 1, .1),
-                                      relief = None,
-                                      command=self.displayMeter,
-                                      extraArgs=[self.power_value, 'power'])
-        self.power_btn.setTransparency(TransparencyAttrib.MAlpha)
-
-        self.handling_btn = DirectButton(image = 'IMAGES/handling.png',
-                                         pos = (-.6, 0, -.75),
-                                         scale = (.1, 1, .1),
-                                         relief = None,
-                                         command=self.displayMeter,
-                                         extraArgs=[self.handling_value, 'handling'])
-        self.handling_btn.setTransparency(TransparencyAttrib.MAlpha)
-
-        self.armor_btn = DirectButton(image = 'IMAGES/armor.png',
-                                      pos = (-.3, 0, -.75),
-                                      scale = (.1, 1, .1),
-                                      relief = None,
-                                      command=self.displayMeter,
-                                      extraArgs=[self.armor_value, 'armor'])
-        self.armor_btn.setTransparency(TransparencyAttrib.MAlpha)
-
-        self.speed_btn = DirectButton(image = 'IMAGES/speed.png',
-                                      pos = (0, 0, -.75),
-                                      scale = (.1, 1, .1),
-                                      relief = None,
-                                      command=self.displayMeter,
-                                      extraArgs=[self.speed_value, 'speed'])
-        self.speed_btn.setTransparency(TransparencyAttrib.MAlpha)
-        
-
-
         self.screenBtns.append(self.power_btn)
         self.screenBtns.append(self.handling_btn)
         self.screenBtns.append(self.armor_btn)
