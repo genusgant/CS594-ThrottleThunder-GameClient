@@ -611,12 +611,13 @@ class World(DirectObject):
         plnp = self.lightpivot.attachNewNode(plight)
         plnp.setPos(45, 0, 0)
         plnp.lookAt(*Vec3(0, 0, 0, ))
+        self.plnp = plnp
 
         # Light
         alight = AmbientLight('ambientLight')
         alight.setColor(Vec4(0.2, 0.2, 0.2, 1))
         alightNP = render.attachNewNode(alight)
-
+        self.alightNP = alightNP
         #   dlight = DirectionalLight('directionalLight')
         #   dlight.setDirection(Vec3(1, 1, -1))
         #   dlight.setColor(Vec4(0.7, 0.7, 0.7, 1))
@@ -632,9 +633,14 @@ class World(DirectObject):
         sphere.reparentTo(plnp)
         sun_tex = loader.loadTexture("models/tex/sun.jpg")
         sphere.setTexture(sun_tex, 1)
-
+        self.sphere = sphere
         render.setShaderAuto()
 
+    def removeLights(self):
+        self.plnp.remove()
+        self.lightpivot.remove()
+        self.sphere.remove()
+        self.alightNP.remove()
 
     def stepPhysicsWorld(self):
         dt = globalClock.getDt()
