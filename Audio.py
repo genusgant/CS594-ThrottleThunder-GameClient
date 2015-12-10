@@ -46,19 +46,19 @@ class Audio(DirectObject):
 
 
     def play_collision(self):
-        crash = loader.loadSfx("audio/Sounds effects/crashing/crashing4.mp3")
+        crash = loader.loadSfx("audio/crashing/crashing4.mp3")
         crash.setVolume(0.7) 
         crash.play()
 
 
     def play_powerup(self):
-        music = loader.loadSfx("audio/Sounds effects/powerups/powerup1.mp3")
+        music = loader.loadSfx("audio/powerups/powerup1.mp3")
         music.setVolume(0.8) 
         music.play()
 
 
     def play_brake(self):
-        brake = loader.loadSfx("audio/Sounds effects/braking/braking3.mp3")
+        brake = loader.loadSfx("audio/braking/braking3.mp3")
         brake.setVolume(0.7) 
         brake.play()
 
@@ -75,7 +75,7 @@ class Audio(DirectObject):
         music.play()
 
     def play_brake(self):
-        crash = loader.loadSfx("audio/Sounds effects/braking/braking3.mp3")
+        crash = loader.loadSfx("audio/braking/braking3.mp3")
         crash.setVolume(0.8) 
         crash.play()
 
