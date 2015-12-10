@@ -40,7 +40,8 @@ class World(DirectObject):
         props.setOrigin(-2,-2)
         base.win.requestProperties( props )
         self.base = ShowBase
-        self.main_theme = base.loader.loadSfx("assets/sounds/terminator_theme.ogg")
+        self.main_theme = base.loader.loadSfx("assets/sounds/greenHills.ogg")
+        # Song = Maxime Abbey by Green Hills
         self.main_theme.play()
         
         self.username = ""
@@ -54,11 +55,11 @@ class World(DirectObject):
         self.globalChatConnection = ChatConnectionModel(self)
         self.ServerConnection.setupConnectionModel(self.globalChatConnection)
         
-        self.queueConnection = QueueConnectionModel(self)
+        #self.queueConnection = QueueConnectionModel(self)
         self.ServerConnection.setupConnectionModel(self.authConnection)#uncomment when going live
         
-        self.friendConnection = FriendConnectionModel(self)
-        self.ServerConnection.setupConnectionModel(self.friendConnection)
+        #self.friendConnection = FriendConnectionModel(self)
+        #self.ServerConnection.setupConnectionModel(self.friendConnection)
         
         
 #         self.taskMgr.doMethodLater(self.conf['heartbeatRate'], self.doHeartbeat, "heartbeat")#uncomment when going live
@@ -67,7 +68,7 @@ class World(DirectObject):
         self.screen = Login(self)#uncomment when going live
         #self.screen = Menu(self)#comment this one when you are trying to log into it like normal
 
-        self.ServerConnection.setupConnectionModel(self.queueConnection)
+        #self.ServerConnection.setupConnectionModel(self.queueConnection)
         self.taskMgr.doMethodLater(self.conf['heartbeatRate'], self.doHeartbeat, "heartbeat")
 
         self.taskMgr.doMethodLater(1, self.doSong, "song")
