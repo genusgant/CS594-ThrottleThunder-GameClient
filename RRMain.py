@@ -97,6 +97,7 @@ class RRWorldManager():
         self.trackNum = self.lobby.trackNum
         self.isDDGame = False
         self.gameWorld = World(self)
+        self.unloadScreen = self.gameWorld.unloadScreen
         self.loadinScreen = LoadingScreen(self.gameWorld)
         self.lobby.World.ServerConnection.activeStatus = False
         self.cManager = ConnectionManager(self, self.lobby.World.ServerConnection)
@@ -283,9 +284,17 @@ class World(DirectObject):
 
     def cleanup(self):
         self.cManager.sendRequest(Constants.CMSG_DISCONNECT)
+        self.unloadScreen()
+        
+    def unloadScreen(self):
+        print "unloading screen"
         self.cManager.closeConnection()
-        self.world = None
-        self.outsideWorldRender.removeNode()
+        self.dashboard.unloadScreen()
+        base.setFrameRateMeter(False)
+        
+        taskMgr.remove('updateMinimap')
+        taskMgr.remove('updateRace')
+        taskMgr.remove('updateMove')
 
     def doReset(self):
         self.mainCharRef.reset()

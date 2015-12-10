@@ -220,7 +220,12 @@ class Dashboard(DirectObject):
 
     #changes start from here
     def goLobby1(self):
+        taskMgr.remove("updateSpeed")
+        taskMgr.remove("updateTimer")
+        taskMgr.remove("updateRank")
+
         self.unloadScreen()
+        self.world.lobby.World.doMenu()
         print "Game over"
         #self.gameEngine.callLobby()
     #changes ends here
