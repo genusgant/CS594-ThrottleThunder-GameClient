@@ -95,6 +95,7 @@ class World(DirectObject):
     
     def doMenu(self):
         print("doing menu")
+        self.ServerConnection.activeStatus = True
         self.screen.unloadScreen()
         self.screenType = "menu"
         self.screen = Menu(self)

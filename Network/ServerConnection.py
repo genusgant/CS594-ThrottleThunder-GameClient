@@ -106,9 +106,7 @@ class ServerConnection(BaseConnection):
         print "recieved ", msg
     
     def updateRoutine(self,task):
-        self.check()
         if self.activeStatus:
-            return task.again;
-        else:
-            return task.done
+            self.check()
+        return task.again
 
