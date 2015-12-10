@@ -67,7 +67,7 @@ class World(DirectObject):
         #self.ServerConnection.setupConnectionModel(self.friendConnection)
 
 
-	    self.taskMgr.doMethodLater(self.conf['heartbeatRate'], self.doHeartbeat, "heartbeat")#uncomment when going live
+        self.taskMgr.doMethodLater(self.conf['heartbeatRate'], self.doHeartbeat, "heartbeat")#uncomment when going live
         self.taskMgr.doMethodLater(self.conf['heartbeatRate'], self.doHeartbeat, "heartbeat")#uncomment when going live
 
         self.screen = Login(self)#uncomment when going live

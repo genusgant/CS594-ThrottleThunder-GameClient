@@ -175,7 +175,6 @@ class Menu(ShowBase):
         self.screenBtns.append(self.ChatFrame)
         self.screenBtns.append(self.messageBox)
         self.screenBtns.append(self.addFriend)
-        self.screenBtns.append(self.usersChatFrame)
         self.screenBtns.append(self.addFriendBox)
         self.screenBtns.append(self.usersFriendFrame)
         self.printChat()
@@ -229,7 +228,7 @@ class Menu(ShowBase):
             text_bg = (1,1,1,0),
             text_scale = 0.2
             )
-        self.screenBtns.append(self.usersChatFrame)
+        #self.screenBtns.append(self.usersChatFrame)
 
         for friend in self.friends:
             f = DirectFrame(frameColor=(0, 0, 0, 0),
