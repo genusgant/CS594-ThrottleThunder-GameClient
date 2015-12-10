@@ -14,6 +14,8 @@ from Network.models.QueueConnectionModel import QueueConnectionModel
 from Network.models.ChatConnectionModel import ChatConnectionModel
 from Network.models.FriendConnectionModel import FriendConnectionModel
 from Network.ServerConnection import ServerConnection
+from Main import WorldManager
+from RRMain import RRWorldManager
 from login import Login
 from menu import Menu
 loadPrcFileData('', 'bullet-enable-contact-events true')
@@ -96,6 +98,21 @@ class World(DirectObject):
         self.screen.unloadScreen()
         self.screenType = "menu"
         self.screen = Menu(self)
+    
+    def launchDDGame(self):
+        print "Launching DD GAME"
+        self.ServerConnection.activeStatus = False
+        self.screen.unloadScreen()
+        self.stopMusic()
+        self.screen = WorldManager(self.screen)
+        
+    def launchRRGame(self):
+        print "Launching RR GAME"
+        self.ServerConnection.activeStatus = False
+        self.screen.unloadScreen()
+        self.stopMusic()
+        self.screen = RRWorldManager(self.screen)
+        # data might be require to send to DD world
     
     def parseAuthResponse(self,data):
         if data == 1:

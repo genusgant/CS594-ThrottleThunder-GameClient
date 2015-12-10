@@ -8,8 +8,6 @@ from Network.models.QueueConnectionModel import QueueConnectionModel
 from Network.models.FriendConnectionModel import FriendConnectionModel
 from Network.models.PrivateChatConnectionModel import PrivateChatConnectionModel
 from Network.models.ChatConnectionModel import ChatConnectionModel
-from Main import WorldManager
-from RRMain import RRWorldManager
 import atexit
 
 def disconnect(world):
@@ -567,11 +565,8 @@ class Menu(ShowBase):
         # Call the DD World from here
 
     def launchDDGame(self):
-        print "Launching DD GAME"
-        self.World.ServerConnection.activeStatus = False
-        self.unloadScreen()
-        self.World.stopMusic()
-        self.ddworld = WorldManager(self)
+        #print "Launching DD GAME"
+        self.World.launchDDGame()
         #data might be require to send to DD world
 
     def pressRRReady(self):
@@ -583,10 +578,8 @@ class Menu(ShowBase):
         print "RR Ready pressed ", self.selectedCar
 
     def launchRRGame(self):
-        print "Launching RR GAME"
-        self.World.ServerConnection.activeStatus = False
-        self.unloadScreen()
-        self.rrworld = RRWorldManager(self)
+        #print "Launching RR GAME"
+        self.World.launchRRGame()
         # data might be require to send to DD world
 
     def showUsers(self, players):
