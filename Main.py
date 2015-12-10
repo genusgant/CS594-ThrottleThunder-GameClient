@@ -454,7 +454,8 @@ class World(DirectObject):
         self.audioManager.StopAudioManager()
         self.audioManager.stop_music_dd()
         self.dashboard.gameResult(isDead)
-        self.terrainContainer.removeBackground()     
+        self.terrainContainer.removeBackground()
+        self.removeLights()
         self.cleanup()
 
 
