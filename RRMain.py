@@ -105,7 +105,7 @@ class RRWorldManager():
         self.gameWorld.cManager = self.cManager
         self.cManager.sendRequest(Constants.CMSG_READY)
         self.cManager.sendRequest(Constants.CMSG_RANKINGS)
-        self.addVehicleProps(self.lobby.World.username, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+        self.addVehicleProps(self.lobby.World.username, 1, 0, 0, 0, 0, 0, 0, 0, 0)
         # self.cManager.sendRequest(Constants.CMSG_SET_POSITION)
         # while not self.otherPlayersDataAvailable:
         # print "Wait for respponse"
@@ -125,7 +125,6 @@ class RRWorldManager():
         taskMgr.doMethodLater(.1, self.startGameTask, "startGameTask")
 
     def startGameTask(self, task):
-
         if self.otherPlayersDataAvailable:
             self.startGameSequence()
             self.gameWorld.startGameNow()
@@ -253,10 +252,10 @@ class World(DirectObject):
         inputState.watchWithModifiers('right', 'd')
         inputState.watchWithModifiers('turnLeft', 'q')
         inputState.watchWithModifiers('turnRight', 'e')
-        inputState.watchWithModifiers('forward', 'up')
-        inputState.watchWithModifiers('left', 'left')
-        inputState.watchWithModifiers('brake', 'down')
-        inputState.watchWithModifiers('right', 'right')
+        inputState.watchWithModifiers('forward', 'arrow_up')
+        inputState.watchWithModifiers('left', 'arrow_left')
+        inputState.watchWithModifiers('brake', 'arrow_down')
+        inputState.watchWithModifiers('right', 'arrow_right')
 
         self.world.setGravity(Vec3(0, 0, -9.81))
 
@@ -493,18 +492,15 @@ class World(DirectObject):
         self.setup()
 
     def toggleWireframe(self):
-
         base.toggleWireframe()
 
     def toggleTexture(self):
-
         base.toggleTexture()
 
     def toggleDebug(self):
         if self.debugNP.isHidden():
             self.debugNP.show()
-        else:
-            self.debugNP.hide()
+        else: self.debugNP.hide()
 
     def calculateDamage(self, fromCar, toCar, fromCollisionSection=2, toCollisionSection=2):
         # toCar takes more damage than fromCar
@@ -703,11 +699,12 @@ class World(DirectObject):
                 #4 batmobile
                 #5 Hovercraft 
                 #self.vehicleType = 1
+                print "Creating Vehicle of type: ", vehicleAttributes.carId
                 playerVehicle = Vehicle(self.world, createPlayerUsername, vehicleAttributes.carId, pos, isCurrentPlayer )  # ,
                 # pos=LVecBase3(vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z),
                 #    isCurrentPlayer=isCurrentPlayer, carId=vehicleAttributes.carId)
-                if self.login != createPlayerUsername:
-                    self.otherUser = OtherPlayersUsername(self,playerVehicle)
+                #if self.login != createPlayerUsername:
+                self.nameBar = OtherPlayersUsername(self,playerVehicle)
                 if isCurrentPlayer:
                     self.vehicleContainer = playerVehicle
                     print "I AM: ", createPlayerUsername

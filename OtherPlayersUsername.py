@@ -43,6 +43,13 @@ class OtherPlayersUsername():
        # taskMgr.add(self.incbar,"healthchange")
 
 
+
+		def incbar(self,val):
+		       self.bar['value'] += val
+		       self.checkcolor()
+		       self.checkdead()
+		
+
 # def incbar(self,task):
 #    if (keyMap["health-minus"]!=0):
 #       self.bar['value']+= -1
