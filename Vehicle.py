@@ -453,9 +453,11 @@ class Vehicle(object):
         if self.vehicleType == 2:
             self.loadSwiftstar(main)
         if self.vehicleType == 3:
-            self.loadStalion(main)
-        if self.vehicleType == 4:
+            # self.loadStalion(main)
             self.loadDefaultVehicle(main)
+        if self.vehicleType == 4:
+            # self.loadDefaultVehicle(main)
+            self.loadBatMobile(main)
 
 
     # instantiating Bruser car type 1
@@ -671,6 +673,83 @@ class Vehicle(object):
         self.lrnp = loader.loadModel('models/batmobile-wheel-left.egg')
         self.lrnp.reparentTo(main.worldNP)
         self.addWheel(Point3(xWheelLeft * scale, yWheelRear * scale, zWheel), False, self.lrnp, radius)
+
+
+    # instantiating Mystery car type 4
+    def loadBatMobile(self, main):
+        scale = 0.73
+        # Chassis
+
+        shape = BulletBoxShape(Vec3(.98, 1.85, 0.71)) # change the vehicle size here
+        ts = TransformState.makePos(Point3(0, -0.22, 0.35)) #
+
+        name = self.username
+        self.chassisNode = BulletRigidBodyNode(name)
+        self.chassisNode.setTag('username', str(name))
+        self.chassisNP = main.worldNP.attachNewNode(self.chassisNode)
+        self.chassisNP.setName(str(name))
+        self.chassisNP.node().addShape(shape, ts)
+        self.chassisNP.setScale(scale)
+
+        self.chassisNP.setPos(self.pos)
+        if self.isCurrentPlayer:
+            self.chassisNP.node().notifyCollisions(True)
+            self.chassisNP.node().setMass(800.0)
+        else:
+            self.chassisNP.node().notifyCollisions(True)
+            self.chassisNP.node().setMass(400.0)
+        self.chassisNP.node().setDeactivationEnabled(False)
+
+        main.world.attachRigidBody(self.chassisNP.node())
+
+        #np.node().setCcdSweptSphereRadius(1.0)
+        #np.node().setCcdMotionThreshold(1e-7)
+
+        # Vehicle
+        self.vehicle = BulletVehicle(main.world, self.chassisNP.node())
+        self.vehicle.setCoordinateSystem(ZUp)
+        main.world.attachVehicle(self.vehicle)
+
+
+        self.yugoNP = loader.loadModel('models/batmobile-chassis.egg')
+        self.yugoNP.reparentTo(self.chassisNP)
+        self.yugoNP.setScale(scale)
+        self.yugoNP.setZ(self.chassisNP, -0.25)
+
+        xWheelLeft = -0.8
+        xWheelRight = 0.8
+        yWheelFront = 1.25
+        yWheelRear = -1.7
+        zWheel = 0.25
+        radious = 0.45
+        # radious = 0.75
+
+        # Right front wheel
+        # self.rfnp = loader.loadModel('models/swiftstar-rr-tire.egg')
+        self.rfnp = loader.loadModel('models/batmobile-wheel-right.egg')
+        self.rfnp.reparentTo(main.worldNP)
+        self.addWheel(Point3( xWheelRight * scale,  yWheelFront * scale, zWheel), True, self.rfnp, radious)
+
+        # Left front wheel
+        # self.lfnp = loader.loadModel('models/swiftstar-rl-tire.egg')
+        self.lfnp = loader.loadModel('models/batmobile-wheel-left.egg')
+        self.lfnp.reparentTo(main.worldNP)
+        self.addWheel(Point3(xWheelLeft * scale,  yWheelFront * scale, zWheel), True, self.lfnp, radious)
+
+        # Right rear wheel
+        # self.rrnp = loader.loadModel('models/swiftstar-rr-tire.egg')
+        self.rrnp = loader.loadModel('models/batmobile-wheel-right.egg')
+        self.rrnp.reparentTo(main.worldNP)
+        self.rrnp.setScale(.25)
+        self.addWheel(Point3( xWheelRight * scale, yWheelRear * scale, zWheel), False, self.rrnp, radious)
+
+        # Left rear wheel
+        # self.lrnp = loader.loadModel('models/swiftstar-rl-tire.egg')
+        self.lrnp = loader.loadModel('models/batmobile-wheel-left.egg')
+        self.lrnp.reparentTo(main.worldNP)
+        self.lrnp.setScale(.25)
+        self.addWheel(Point3(xWheelLeft * scale, yWheelRear * scale, zWheel), False, self.lrnp, radious)
+
 
 
     # instantiating Default car type
