@@ -8,9 +8,9 @@ from time import sleep
 
 class Audio(DirectObject):
     def __init__(self, main):
-        
+
         self.main = main
-        
+
 
     def play_music_rr(self):
         # load background music
@@ -30,8 +30,8 @@ class Audio(DirectObject):
 
     def play_music_dd(self):
         # load background music
-        self.dd_bg = loader.loadSfx("audio/bg music/DD music/ThrottleThunderSong2.mp3")
-        self.dd_bg.setVolume(0.6)       
+        self.dd_bg = loader.loadSfx("audio/bg music/DD music/ThrottleThunderSong2.ogg")
+        self.dd_bg.setVolume(0.6)
 
         # self.music_seq = Sequence(SoundInterval(music1),name="Music Sequence")
         # self.music_seq.loop(0.0, -1.0, 1.0)
@@ -46,40 +46,40 @@ class Audio(DirectObject):
 
 
     def play_collision(self):
-        crash = loader.loadSfx("audio/crashing/crashing4.mp3")
-        crash.setVolume(0.7) 
+        crash = loader.loadSfx("audio/crashing/crashing4.ogg")
+        crash.setVolume(0.7)
         crash.play()
 
 
     def play_powerup(self):
-        music = loader.loadSfx("audio/powerups/powerup1.mp3")
-        music.setVolume(0.8) 
+        music = loader.loadSfx("audio/powerups/powerup1.ogg")
+        music.setVolume(0.8)
         music.play()
 
 
     def play_brake(self):
-        brake = loader.loadSfx("audio/braking/braking3.mp3")
-        brake.setVolume(0.7) 
+        brake = loader.loadSfx("audio/braking/braking3.ogg")
+        brake.setVolume(0.7)
         brake.play()
 
     def play_victory(self):
         music = loader.loadSfx("audio/victory music/victory1.ogg")
-        music.setVolume(0.8) 
+        music.setVolume(0.8)
         sleep(2)
         music.play()
 
     def play_loser(self):
-        music = loader.loadSfx("audio/lose music/Losing Horn.mp3")
-        music.setVolume(0.8) 
+        music = loader.loadSfx("audio/lose music/Losing Horn.ogg")
+        music.setVolume(0.8)
         sleep(2)
         music.play()
 
     def play_brake(self):
-        crash = loader.loadSfx("audio/braking/braking3.mp3")
-        crash.setVolume(0.8) 
+        crash = loader.loadSfx("audio/braking/braking3.ogg")
+        crash.setVolume(0.8)
         crash.play()
 
-        
+
 
     def startAudioManager(self):
 
@@ -95,7 +95,7 @@ class Audio(DirectObject):
     def StopAudioManager(self):
 
         self.engineSound.stop()
-        
+
 
 
 
@@ -123,14 +123,14 @@ class Audio(DirectObject):
         self.gearSpacing = (vehicleContainer.specs['maxSpeed'] / 4)
 
         self.reversing = False
-            
+
 
 
     def updateSound(self,vehicleContainer):
         """Use vehicle speed to update sound pitch"""
 
         speed, normalizedSpeed = vehicleContainer.getSpeed()
-            
+
         wheelRate = 0.75 * speed
 
         # Calculate which gear we're in, and what the normalised revs are
@@ -140,10 +140,10 @@ class Audio(DirectObject):
             numberOfGears = 4
 
         gear = min(int(wheelRate/ self.gearSpacing),
-                numberOfGears - 1)            
+                numberOfGears - 1)
 
         if max(int(wheelRate/ self.gearSpacing),numberOfGears - 1) < 4 :
-            
+
             posInGear = (wheelRate - gear * self.gearSpacing) / self.gearSpacing
 
             targetPlayRate = 0.6 + posInGear * (1.5 - 0.6)
