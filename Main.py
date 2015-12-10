@@ -453,7 +453,8 @@ class World(DirectObject):
     def gameEnd(self, isDead=False):
         self.audioManager.StopAudioManager()
         self.audioManager.stop_music_dd()
-        self.dashboard.gameResult(isDead)        
+        self.dashboard.gameResult(isDead)
+        self.terrainContainer.removeBackground()     
         self.cleanup()
 
 
