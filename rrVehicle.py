@@ -191,53 +191,49 @@ class Vehicle(object):
         # self.yugoNP.setScale(.7)
         self.carNP.reparentTo(self.chassisNP)
 
-
-
-
         # Right front wheel
         self.rfnp = loader.loadModel('models/batmobile-wheel-right.egg')
-        self.rfnp.reparentTo(self.carNP)
+        self.rfnp.reparentTo(render)
         self.addWheel(Point3(1, 1.1, .7), True, self.rfnp, .7)
 
         # Left front wheel
         self.lfnp = loader.loadModel('models/batmobile-wheel-left.egg')
-        self.lfnp.reparentTo(self.carNP)
+        self.lfnp.reparentTo(render)
         self.addWheel(Point3(-1, 1.1, .7), True, self.lfnp, .7)
 
         # Right rear wheel
         self.rrnp = loader.loadModel('models/batmobile-wheel-right.egg')
-        self.rrnp.reparentTo(self.carNP)
+        self.rrnp.reparentTo(render)
         self.addWheel(Point3(1, -2, .7), False, self.rrnp, .7)
 
         # Left rear wheel
         self.lrnp = loader.loadModel('models/batmobile-wheel-left.egg')
-        self.lrnp.reparentTo(self.carNP)
+        self.lrnp.reparentTo(render)
         self.addWheel(Point3(-1, -2, .7), False, self.lrnp, .7)
 
     def LoadStalion(self):                       # Load the Stalion ! 
         self.carNP = loader.loadModel('models/stallion.egg')
-        # self.yugoNP.setScale(.7)
+        self.carNP.setScale(0.9)
         self.carNP.reparentTo(self.chassisNP)
 
         # Right front wheel
-        np = loader.loadModel('models/batmobile-wheel-right.egg')
-        np.reparentTo(self.carNP)
-        self.addWheel(Point3(1, 1.1, .7), True, np, .25)
+        np = loader.loadModel('models/stallion-right-tire.egg')
+        np.reparentTo(render)
+        self.addWheel(Point3(0.85, 1.40, .6), True, np, .6)
 
         # Left front wheel
-        np = loader.loadModel('models/batmobile-wheel-left.egg')
-        np.reparentTo(self.carNP)
-        self.addWheel(Point3(-1, 1.1, .7), True, np, .25)
-
+        np = loader.loadModel('models/stallion-left-tire.egg')
+        np.reparentTo(render)
+        self.addWheel(Point3(-0.85, 1.40, .6), True, np, .6)
         # Right rear wheel
-        np = loader.loadModel('models/batmobile-wheel-right.egg')
-        np.reparentTo(self.carNP)
-        self.addWheel(Point3(1, -2, .7), False, np, .25)
+        np = loader.loadModel('models/stallion-right-tire.egg')
+        np.reparentTo(render)
+        self.addWheel(Point3(0.85, -1.3, .6), False, np, .6)
 
         # Left rear wheel
-        np = loader.loadModel('models/batmobile-wheel-left.egg')
-        np.reparentTo(self.carNP)
-        self.addWheel(Point3(-1, -2, .7), False, np, .25)
+        np = loader.loadModel('models/stallion-left-tire.egg')
+        np.reparentTo(render)
+        self.addWheel(Point3(-0.85, -1.3, .6), False, np, .6)
 
     def LoadBruiser(self):                             # Load the bruiser ! 
         self.carNP = loader.loadModel('models/bruiser.egg')
@@ -245,23 +241,23 @@ class Vehicle(object):
         self.carNP.reparentTo(self.chassisNP)
 
         # Right front wheel
-        np = loader.loadModel('models/batmobile-wheel-right.egg')
-        np.reparentTo(self.carNP)
+        np = loader.loadModel('models/bruiser-right-tire.egg')
+        np.reparentTo(render)
         self.addWheel(Point3(1, 1.1, .7), True, np, .25)
 
         # Left front wheel
-        np = loader.loadModel('models/batmobile-wheel-left.egg')
-        np.reparentTo(self.carNP)
+        np = loader.loadModel('models/bruiser-left-tire.egg')
+        np.reparentTo(render)
         self.addWheel(Point3(-1, 1.1, .7), True, np, .25)
 
         # Right rear wheel
-        np = loader.loadModel('models/batmobile-wheel-right.egg')
-        np.reparentTo(self.carNP)
+        np = loader.loadModel('models/bruiser-right-tire.egg')
+        np.reparentTo(render)
         self.addWheel(Point3(1, -2, .7), False, np, .25)
 
         # Left rear wheel
-        np = loader.loadModel('models/batmobile-wheel-left.egg')
-        np.reparentTo(self.carNP)
+        np = loader.loadModel('models/bruiser-left-tire.egg')
+        np.reparentTo(render)
         self.addWheel(Point3(-1, -2, .7), False, np, .25)
 
     def LoadSwiftstar(self):                         # Load the swiftstar ! 
@@ -270,25 +266,25 @@ class Vehicle(object):
         self.carNP.reparentTo(self.chassisNP)
 
         # Right front wheel
-        np = loader.loadModel('models/swiftstar-rr-tire.egg')
-        np.reparentTo(self.carNP)
-        self.addWheel(Point3(.8, 1, 0.65), True, np, 0.65)
+        np = loader.loadModel('models/swiftstar-fr-tire.egg')
+        np.reparentTo(render)
+        self.addWheel(Point3(.7, 1, 0.65), True, np, 0.65)
 
         # Left front wheel
-        np = loader.loadModel('models/swiftstar-rl-tire.egg')
-        np.reparentTo(self.carNP)
-        self.addWheel(Point3(-.8, 1, 0.65), True, np, 0.65)
+        np = loader.loadModel('models/swiftstar-fl-tire.egg')
+        np.reparentTo(render)
+        self.addWheel(Point3(-.7, 1, 0.65), True, np, 0.65)
 
         # Right rear wheel
         np = loader.loadModel('models/swiftstar-rr-tire.egg')
-        np.reparentTo(self.carNP)
-        self.addWheel(Point3(0.8, -1.25, .7), False, np, 0.7)
+        np.reparentTo(render)
+        self.addWheel(Point3(0.7, -1.4, .8), False, np, 0.9)
 
         # Left rear wheel
         np = loader.loadModel('models/swiftstar-rl-tire.egg')
 
-        np.reparentTo(self.carNP)
-        self.addWheel(Point3(-.8, -1.25, 0.7), False, np, 0.7)
+        np.reparentTo(render)
+        self.addWheel(Point3(-0.7, -1.4, 0.8), False, np, 0.9)
 
     def addWheel(self, pos, front, np, radius):
         wheel = self.vehicle.createWheel()
