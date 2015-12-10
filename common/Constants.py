@@ -6,7 +6,7 @@ class Constants:
     RAND_SHORT                          = 3
     RAND_FLOAT                          = 4
 
-    SERVER_IP                           = 'csproject.calstatela.edu' # csproject.calstatela.edu # also need to change config.json
+    SERVER_IP                           = 'superlunchvote.com' # csproject.calstatela.edu # also need to change config.json
     SERVER_PORT                         = 9252
     DEBUG                               = True
     MSG_NONE                            = 0
@@ -83,36 +83,36 @@ class Constants:
 
 
     MAX_HEALTH = {
-        "1": 250,
+        "1": 200,
         "2": 200,
         "3": 150,
-        "4": 125,
+        "4": 150,
     }
     VEHICLE_HEALTH = {
         "1": 200,
-        "2": 170,
-        "3": 100,
-        "4": 175,
+        "2": 175,
+        "3": 125,
+        "4": 100,
     }
 
     MAX_WEIGHT = {
         "1": 1500,
-        "2": 550,
-        "3": 400,
-        "4": 350,
+        "2": 1100,
+        "3": 900,
+        "4": 800,
     }
     MAX_ARMOR = {
-        "1": 375,
-        "2": 300,
-        "3": 225,
-        "4": 250,
+        "1": 100,
+        "2": 100,
+        "3": 150,
+        "4": 150,
     }
 
     MAX_WHEEL = {
         "1": 1050,
-        "2": 1750,
-        "3": 3250,
-        "4": 3600,
+        "2": 1050,
+        "3": 1050,
+        "4": 1050,
     }
 
     MAX_BRAKE = {
@@ -126,5 +126,5 @@ class Constants:
         "1": 30,
         "2": 35,
         "3": 45,
-        "4": 500,
+        "4": 60,
     }

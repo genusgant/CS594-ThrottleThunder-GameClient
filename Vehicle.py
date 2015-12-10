@@ -268,10 +268,10 @@ class Vehicle(object):
 
         if self.reversing and self.speed > self.specs["maxReverseSpeed"]:
             self.applyForcesAndSteering(steering, 0, brakeForce)
-            return
+            return [steering, 0, brakeForce]
         if not self.reversing and self.speed > self.specs["maxSpeed"]:
             self.applyForcesAndSteering(steering, 0, brakeForce)
-            return
+            return [steering, 0, brakeForce]
 
         wheelForce = self.vehicleControlState["throttle"] * self.specs["maxWheelForce"]
 
