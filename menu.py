@@ -346,7 +346,13 @@ class Menu(ShowBase):
         self.mystery_car_btn = DirectButton(image = 'IMAGES/mystery_car_btn.png', pos = (-1.1, 0, -.1), scale = (.17, 1, .04), relief = None, command=self.carMystery)
         self.mystery_car_btn.setTransparency(TransparencyAttrib.MAlpha)
 
-        self.ready_btn = DirectButton(image = 'IMAGES/ready_btn.png', pos = (-1.1, 0, -.3), scale = (.2, 1, .04), relief = None, command=self.pressRRReady)
+        # for DD team must be different command
+        selectcommand = None
+        if(self.selectedGame == "DD"):
+            selectcommand = self.pressDDReady
+        else:
+            selectcommand = self.pressRRReady
+        self.ready_btn = DirectButton(image = 'IMAGES/ready_btn.png', pos = (-1.1, 0, -.3), scale = (.2, 1, .04), relief = None, command=selectcommand)
 
         self.screenBtns.append(self.bruiser_btn)
         self.screenBtns.append(self.swift_star_btn)
@@ -977,6 +983,11 @@ class Menu(ShowBase):
             self.userCount['text'] = str(len(players)) + ' / '+ str(sizeNeeded)
             self.userMessage['text'] = 'More players needed'
         self.showUsersInLobby(players)
+        if start:
+            if self.gameType == "DD":
+                self.launchDDGame()
+            elif self.gameType == "RR":
+                self.launchRRGame()
 
     def handleChatNotification(self, username, msg):
         self.globalChat.insert(0, [username, msg])
@@ -1078,15 +1089,29 @@ class Menu(ShowBase):
     def pressDDReady(self):
         if (self.selectedCar == 0):
             return
-        self.queueConnection.sendReadyMessage(self.selectedCar)
+        print "Car selected: ", self.selectedCar
+        self.World.queueConnection.sendReadyMessage(self.selectedCar)
+        self.gameType = "DD"
         print "DD Ready pressed " , self.selectedCar
+        # Call the DD World from here
+
+    def launchDDGame(self):
+        #print "Launching DD GAME"
+        self.World.launchDDGame()
+        #data might be require to send to DD world
 
     def pressRRReady(self):
 
         if (self.selectedCar == 0):
             return
-        self.queueConnection.sendReadyMessage(self.selectedCar)
-        print "RR Ready pressed " , self.selectedCar
+        self.World.queueConnection.sendReadyMessage(self.selectedCar)
+        self.gameType = "RR"
+        print "RR Ready pressed ", self.selectedCar
+
+    def launchRRGame(self):
+        #print "Launching RR GAME"
+        self.World.launchRRGame()
+        # data might be require to send to DD world
 
     def showUsersInLobby(self, playersInLobby):
         print "showUsersInLobby"

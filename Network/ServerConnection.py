@@ -13,6 +13,7 @@ class ServerConnection(BaseConnection):
     
     def __init__(self):
         BaseConnection.__init__(self)
+        self.activeStatus = True
         self.recvActions = []
         
     def connect(self, host, port):
@@ -105,5 +106,7 @@ class ServerConnection(BaseConnection):
         print "recieved ", msg
     
     def updateRoutine(self,task):
-        self.check()
-        return task.again; 
+        if self.activeStatus:
+            self.check()
+        return task.again
+
