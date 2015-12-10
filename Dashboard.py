@@ -22,9 +22,8 @@ class Dashboard():
         self.isGameTimeOver = False
         self.Audio = Audio(self)
 
-
         # insert total time
-        self.game_time = self.countdown_time - self.time_elapsed
+        self.game_time = str(self.countdown_time - self.time_elapsed) [2:11]
         # print self.game_time
 
         # players is a map that holds all the players with their ranking and updates every second key= rank, value= username
@@ -73,8 +72,13 @@ class Dashboard():
             self.Armour_bar['value'] = armour
 
         # Timer
-        self.display_timer = OnscreenText(text=str(self.game_time), style=1, fg=(1, 1, 1, 1), pos=(0, .9), scale=.1,
+        self.display_timer = OnscreenText(text=" ",
+                                          style=1,
+                                          fg=(1, 1, 1, 1),
+                                          pos=(0, .9),
+                                          scale=.1,
                                           font=self.font_digital)
+
         self.mini_map = OnscreenImage(image="models/dashb/speedometer.png", scale=.2, pos=(-1.15, 0, .8))
         self. mini_map.setTransparency(TransparencyAttrib.MAlpha)
         self.char = OnscreenImage(image='models/triangle.png', scale=.1, parent=self.mini_map,pos=(-1.15, 0, .8) )
@@ -185,37 +189,42 @@ class Dashboard():
         return task.cont
 
     def updateTimer(self, task):
-        self.time_elapsed = datetime.datetime.now() - self.start_time
-        game_time = "0.00.000"
-        if(self.countdown_time <= self.time_elapsed):
-            # print "Time must over here"
-            self.isGameTimeOver = True
+        # print "self.gameEngine.isActive: ",  self.gameEngine.isActive
+        if(not self.gameEngine.isActive):
+            self.start_time = datetime.datetime.now()
         else:
-            game_time = str(self.countdown_time - self.time_elapsed)[2:11]
+            self.time_elapsed = datetime.datetime.now() - self.start_time
+            game_time = "0.00.000"
+            if(self.countdown_time <= self.time_elapsed):
+                # print "Time must over here"
+                self.isGameTimeOver = True
+            else:
+                game_time = str(self.countdown_time - self.time_elapsed)[2:11]
 
-        # print "datetime.datetime.now(): ", datetime.datetime.now()
-        # print "self.start_time:", self.start_time
-        # print datetime.datetime.now(), " - ", self.start_time, " =", self.time_elapsed, "self.time_elapsed"
-        # print "self.countdown_time", self.countdown_time
-        # print "self.time_elapsed: ", self.time_elapsed
-        # print self.countdown_time, " - ", self.time_elapsed, " ="
-        # print "game_time: ", game_time
-        # print "--------------------------------------------------------"
 
-        self.display_timer.destroy()
-        self.display_timer = OnscreenText(text=game_time, style=3, fg=(1, 1, 1, 1), pos=(0, .9), scale=.15,
-                                          font=self.font_digital)
-        self.screenBtns.append(self.display_timer)
+            # print "datetime.datetime.now(): ", datetime.datetime.now()
+            # print "self.start_time:", self.start_time
+            # print datetime.datetime.now(), " - ", self.start_time, " =", self.time_elapsed, "self.time_elapsed"
+            # print "self.countdown_time", self.countdown_time
+            # print "self.time_elapsed: ", self.time_elapsed
+            # print self.countdown_time, " - ", self.time_elapsed, " ="
+            # print "game_time: ", game_time
+            # print "--------------------------------------------------------"
 
-        # updateTimer task will stop when the countdown time hits to zero
-        if(self.isGameTimeOver):
-            self.gameEngine.gameEnd()
-            print "Time Over"
-            # self.gameResult()
-            return task.done
-        else:
-            return task.cont
+            self.display_timer.destroy()
+            self.display_timer = OnscreenText(text=game_time, style=3, fg=(1, 1, 1, 1), pos=(0, .9), scale=.15,
+                                              font=self.font_digital)
+            self.screenBtns.append(self.display_timer)
 
+            # updateTimer task will stop when the countdown time hits to zero
+            if(self.isGameTimeOver):
+                self.gameEngine.gameEnd()
+                print "Time Over"
+                # self.gameResult()
+                return task.done
+            else:
+                return task.cont
+        return task.cont
 
     def setupSpeedImages(self):
         self.display_speed = OnscreenText(text="0", style=1, fg=(1, 1, 1, 1),

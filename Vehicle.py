@@ -445,7 +445,7 @@ class Vehicle(object):
         # Choose the car type here
             #1 Bruiser
             #2 swisftstar
-            #3 stalion
+            #3 stallion
             #4 batmobile
             #5 Hovercraft
         if self.vehicleType == 1:
@@ -453,8 +453,8 @@ class Vehicle(object):
         if self.vehicleType == 2:
             self.loadSwiftstar(main)
         if self.vehicleType == 3:
-            # self.loadStalion(main)
-            self.loadDefaultVehicle(main)
+            self.loadStallion(main)
+            # self.loadDefaultVehicle(main)
         if self.vehicleType == 4:
             # self.loadDefaultVehicle(main)
             self.loadBatMobile(main)
@@ -607,9 +607,9 @@ class Vehicle(object):
         self.addWheel(Point3(xWheelLeft * scale, yWheelRear * scale, zWheel), False, self.lrnp, radious)
 
 
-    # instantiating Stalion car type 3
-    def loadStalion(self, main):
-        scale = 0.5
+    # instantiating Stallion car type 3
+    def loadStallion(self, main):
+        scale = 0.35
         # Chassis
 
         shape = BulletBoxShape(Vec3(0.6, 1.4, 0.5)) # change the vehicle size here
@@ -651,7 +651,7 @@ class Vehicle(object):
         yWheelFront = 1.1
         yWheelRear = -2.0
         zWheel = 0.7
-        radius = 0.20
+        radius = 0.25
         scale= .4
 
         # Right front wheel
