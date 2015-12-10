@@ -911,7 +911,7 @@ class Menu(ShowBase):
         rotation_interval = self.car.hprInterval(10,Vec3(510,0,0))
         rotation_interval.loop()
         self.wheels.reparentTo(render)
-        self.wheels.setScale(.4)
+        self.wheels.setScale(.405)
         self.wheels.setPos(2,11.5,-.6)
         self.wheels.setH(150)
         rotation_interval2 = self.wheels.hprInterval(10,Vec3(510,0,0))
