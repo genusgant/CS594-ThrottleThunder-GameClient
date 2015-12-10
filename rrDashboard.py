@@ -220,6 +220,7 @@ class Dashboard(DirectObject):
 
     #changes start from here
     def goLobby1(self):
+        self.world.lobby.World.authConnection.sendLeaveSessionRequest()
         taskMgr.remove("updateSpeed")
         taskMgr.remove("updateTimer")
         taskMgr.remove("updateRank")
