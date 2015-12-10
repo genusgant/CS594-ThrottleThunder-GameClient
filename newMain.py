@@ -96,9 +96,11 @@ class World(DirectObject):
     
     def doMenu(self):
         print("doing menu")
-        self.ServerConnection.activeStatus = True
-        self.screen.unloadScreen()
+        if self.screenType == "login" :
+            self.screen.unloadScreen()
+        
         self.screenType = "menu"
+        self.ServerConnection.activeStatus = True
         self.screen = Menu(self)
     
     def launchDDGame(self):
