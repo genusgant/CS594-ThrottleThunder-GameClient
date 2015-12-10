@@ -97,6 +97,21 @@ class World(DirectObject):
         self.screenType = "menu"
         self.screen = Menu(self)
     
+    def launchDDGame(self):
+        print "Launching DD GAME"
+        self.ServerConnection.activeStatus = False
+        self.screen.unloadScreen()
+        self.stopMusic()
+        self.screen = WorldManager(self)
+        
+    def launchRRGame(self):
+        print "Launching RR GAME"
+        self.ServerConnection.activeStatus = False
+        self.screen.unloadScreen()
+        self.stopMusic()
+        self.screen = RRWorldManager(self)
+        # data might be require to send to DD world
+    
     def parseAuthResponse(self,data):
         if data == 1:
             print("unloading")
