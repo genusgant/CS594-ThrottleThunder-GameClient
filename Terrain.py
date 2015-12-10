@@ -40,7 +40,10 @@ class Terrain(object):
         self.parentNodePath.reparentTo(main.worldNP)
         self.hf = self.rigidNodePath.node() # To enable/disable debug visualisation
         # Sky Dome
-        universeBackground = UniverseBackground()
+        self.universeBackground = UniverseBackground()
+
+    def removeBackground(self):
+        self.universeBackground.remove()
 
     def terrainFromModel(self, main):
         self.parentNodePath = NodePath("FloorNodePath")
