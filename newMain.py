@@ -14,6 +14,8 @@ from Network.models.QueueConnectionModel import QueueConnectionModel
 from Network.models.ChatConnectionModel import ChatConnectionModel
 from Network.models.FriendConnectionModel import FriendConnectionModel
 from Network.ServerConnection import ServerConnection
+from Main import WorldManager
+from RRMain import RRWorldManager
 from login import Login
 from menu import Menu
 loadPrcFileData('', 'bullet-enable-contact-events true')

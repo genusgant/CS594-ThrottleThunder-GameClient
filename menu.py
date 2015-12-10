@@ -8,8 +8,6 @@ from Network.models.QueueConnectionModel import QueueConnectionModel
 from Network.models.FriendConnectionModel import FriendConnectionModel
 from Network.models.PrivateChatConnectionModel import PrivateChatConnectionModel
 from Network.models.ChatConnectionModel import ChatConnectionModel
-from Main import WorldManager
-from RRMain import RRWorldManager
 import atexit
 
 def disconnect(world):
