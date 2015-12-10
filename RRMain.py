@@ -23,7 +23,7 @@ from panda3d.bullet import BulletWorld, BulletTriangleMesh, BulletTriangleMeshSh
     BulletRigidBodyNode, BulletBoxShape
 from Track import Track
 from rrVehicle import Vehicle
-from Camera import Camera
+from rrCamera import Camera
 from SkyDome import SkyDome
 from Powerups import PowerupManager
 from panda3d.bullet import BulletHeightfieldShape
@@ -224,7 +224,8 @@ class World(DirectObject):
         self.createPlayers()
 
         # Camera
-        self.setupCamera()
+        self.camera = Camera(self.vehicleContainer.chassisNP, self.world)
+        # self.setupCamera()
         # Create Powerups
         # self.createPowerups()
         # taskMgr.add(self.powerups.checkPowerPickup, "checkPowerupTask")
@@ -564,8 +565,8 @@ class World(DirectObject):
         #     self.vehicleContainer.processInput(inputState, dt)
         #     self.moveCrazyCar(dt)
         #     self.stepPhysicsWorld()
-
-        self.updateCamera(self.vehicleContainer.speed)
+        self.camera.update()
+        # self.updateCamera(self.vehicleContainer.speed)
         return task.again
 
     def updateCamera(self, speed=0.0, initial=False):

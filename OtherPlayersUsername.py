@@ -44,10 +44,10 @@ class OtherPlayersUsername():
 
 
 
-		def incbar(self,val):
-		       self.bar['value'] += val
-		       self.checkcolor()
-		       self.checkdead()
+    def incbar(self,val):
+        self.bar['value'] += val
+        self.checkcolor()
+        self.checkdead()
 		
 
 # def incbar(self,task):
