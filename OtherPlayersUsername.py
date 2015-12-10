@@ -42,14 +42,15 @@ class OtherPlayersUsername():
         self.bar.setDepthWrite(False)
        # taskMgr.add(self.incbar,"healthchange")
 
-
-
-    def incbar(self,val):
-        self.bar['value'] += val
+    def setVal(self,val):
+        #print "setting bar to: ", val
+        self.bar['value'] = val
         self.checkcolor()
-        self.checkdead()
-		
+        #self.checkdead()
 
+    def updateRange(self, m):
+        self.bar['range'] = m
+		
 # def incbar(self,task):
 #    if (keyMap["health-minus"]!=0):
 #       self.bar['value']+= -1
@@ -61,12 +62,12 @@ class OtherPlayersUsername():
 #     return task.cont
 
     def checkcolor(self):
-        if(self.bar['value']<=34):
+        if(self.bar['value']<=2):
             self.bar ["barColor"]=(0.8,0,0,1) #red
             if (self.bar['value'] <=0):
                 self.bar['value']=0  # block to zero
 
-        elif(self.bar['value']>34 and self.bar['value']<=67):
+        elif(self.bar['value']>2 and self.bar['value']<=99):
             self.bar ["barColor"]=(0.8,0.8,0,1) #yellow
         else:
             self.bar ["barColor"]=(0,0.8,0,1) #green
@@ -83,3 +84,5 @@ class OtherPlayersUsername():
     def revival(self):
         self.bar['value']=100
         self.bar ["barColor"]=(0,0.8,0,1)
+        
+        
