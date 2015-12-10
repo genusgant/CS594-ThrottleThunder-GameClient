@@ -16,6 +16,11 @@ class Menu(ShowBase):
     def __init__(self, World):
         #just comment out the two lines below
         #self.appRunner = None#added this to overide the login
+        self.trackNum = 0
+        self.ddMapTitle = "heightMap"
+        #just comment out the two lines below
+        #self.appRunner = None#added this to overide the login
+        self.playerList = []
 
         self.World = World
         self.ServerConnection = self.World.ServerConnection
@@ -1101,7 +1106,7 @@ class Menu(ShowBase):
         if (self.selectedCar == 0):
             return
         print "Car selected: ", self.selectedCar
-        self.World.queueConnection.sendReadyMessage(self.selectedCar)
+        self.queueConnection.sendReadyMessage(self.selectedCar)
         self.gameType = "DD"
         print "DD Ready pressed " , self.selectedCar
         # Call the DD World from here
@@ -1115,7 +1120,7 @@ class Menu(ShowBase):
 
         if (self.selectedCar == 0):
             return
-        self.World.queueConnection.sendReadyMessage(self.selectedCar)
+        self.queueConnection.sendReadyMessage(self.selectedCar)
         self.gameType = "RR"
         print "RR Ready pressed ", self.selectedCar
 
