@@ -10,14 +10,16 @@ from Network.models.PrivateChatConnectionModel import PrivateChatConnectionModel
 from Network.models.ChatConnectionModel import ChatConnectionModel
 from Network.models.GroupConnectionModel import GroupConnectionModel
 from Network.models.GarageConnectionModel import GarageConnectionModel
-
+from Main import WorldManager
+from RRMain import RRWorldManager
 class Menu(ShowBase):
 
     def __init__(self, World):
         #just comment out the two lines below
         #self.appRunner = None#added this to overide the login
-
+        self.playerList = []
         self.World = World
+        self.ddMapTitle = "heightMap"
         self.ServerConnection = self.World.ServerConnection
         self.WhichScreen = "";
         self.lastSelectedFriend = None
@@ -79,6 +81,17 @@ class Menu(ShowBase):
         self.createSocialization()
         self.navi()
 
+    def dd_ScreenMap1(self):
+        self.World.queueConnection.sendQueueMessage(0) #0=map1
+        print "Screen Map 1"
+        self.ddMapTitle = "heightMap"
+        self.dd_screen()
+
+    def dd_ScreenMap2(self):
+        self.World.queueConnection.sendQueueMessage(1) #1=map2
+        print "Screen Map 2"
+        self.ddMapTitle = "model"
+        self.dd_screen()
 
     def navi(self):
         if self.WhichScreen =="Social":
@@ -260,6 +273,35 @@ class Menu(ShowBase):
             self.messageBox.enterText('')
             self.messageBox['focus'] = 1
 
+    def pressDDReady(self):
+        if (self.selectedCar == 0):
+            return
+        print "Car selected: ", self.selectedCar
+        self.World.queueConnection.sendReadyMessage(self.selectedCar)
+        print "DD Ready pressed " , self.selectedCar
+        # Call the DD World from here
+
+    def launchDDGame(self):
+        print "Launching DD GAME"
+        self.World.ServerConnection.activeStatus = False
+        self.unloadScreen()
+        #self.World.stopMusic()
+        self.ddworld = WorldManager(self)
+        #data might be require to send to DD world
+
+    def pressRRReady(self):
+
+        if (self.selectedCar == 0):
+            return
+        self.World.queueConnection.sendReadyMessage(self.selectedCar)
+        print "RR Ready pressed ", self.selectedCar
+
+    def launchRRGame(self):
+        print "Launching RR GAME"
+        self.World.ServerConnection.activeStatus = False
+        self.unloadScreen()
+        self.rrworld = RRWorldManager(self)
+        # data might be require to send to DD world
 
     def printChat(self):
         if self.WhichScreen == "Social":
@@ -281,8 +323,6 @@ class Menu(ShowBase):
                                                text_align = TextNode.ALeft,
                                                frameColor = (0,0,0,0)))
                 msgNum = msgNum+1
-
-
 
     def createMatchMaking(self):
         self.unloadScreen()
@@ -967,15 +1007,25 @@ class Menu(ShowBase):
         self.enableReady(4) #Mystery
 
     def handleQueueNotification(self, size, sizeNeeded, players):
-        print "Received Handle Queue"
-        self.players = players
+        print "Received Handle Queue MAX_PLAYERS: ", sizeNeeded
+        start = False
         if (len(players) >= sizeNeeded):
             self.userCount['text'] = str(len(players)) + ' / '+ str(size)
             self.userMessage['text'] = 'Ready to start'
+            start = True
+            print "Ready to go players list", players
+            for val in players:
+                print val
+                if val != None and len(val) >= sizeNeeded and val[1] == 0:
+                    start = False
+                    break
         else:
             self.userCount['text'] = str(len(players)) + ' / '+ str(sizeNeeded)
             self.userMessage['text'] = 'More players needed'
-        self.showUsersInLobby(players)
+        self.showUsers(players)
+        if start:
+            self.launchDDGame()
+            #self.launchRRGame()
 
     def handleChatNotification(self, username, msg):
         self.globalChat.insert(0, [username, msg])
@@ -1086,6 +1136,58 @@ class Menu(ShowBase):
             return
         self.queueConnection.sendReadyMessage(self.selectedCar)
         print "RR Ready pressed " , self.selectedCar
+
+    def showUsers(self, players):
+        #print "showUsers"
+        numItemsVisible = 8
+        itemHeight = 0.11
+        if (hasattr(self, "myScrolledList")) and (not self.myScrolledList is None):
+            self.myScrolledList.destroy()
+        self.myScrolledList = DirectScrolledList(
+            decButton_pos= (0.35, 0.5, 0.5),
+            decButton_text = "-",
+            decButton_text_fg = (1,1,1,1),
+            decButton_text_scale = 0.08,
+            decButton_frameSize = (-0.035, 0.045, -0.03, 0.04),
+            decButton_frameColor = (0.5, 0.5, 0.6, 0.5),
+            decButton_borderWidth = (0.01, 0.01),
+
+            incButton_pos= (0.35, 0.5, -0.5),
+            incButton_text = "+",
+            incButton_text_fg = (1,1,1,1),
+            incButton_text_scale = 0.08,
+            incButton_frameSize = (-0.035, 0.045, -0.03, 0.04),
+            incButton_frameColor = (0.5, 0.5, 0.6, 0.5),
+            incButton_borderWidth = (0.01, 0.01),
+
+            frameSize = (0.7, 0.7, -.5, 1),
+            frameColor = (0, 0, 1.0, 1),
+            pos = (0.5, 0, -0.3),
+            #items = [b1, b2],
+            numItemsVisible = numItemsVisible,
+            forceHeight = itemHeight,
+            itemFrame_frameSize = (-0.5, 0.6, -0.85, 0.11),
+            itemFrame_pos = (0.35, 0, 0.4),
+            itemFrame_frameColor = (0, 0, 1.0, 0),
+            text_fg = (1,1,1,1),
+
+            itemFrame_text_bg = (1,1,1,0),
+            text_bg = (1,1,1,0),
+            text_scale = 0.2
+            )
+
+        for player in players:
+            #print "PLAYERS GOT"
+            l = DirectLabel(text = player[0], text_scale=0.1,
+            text_bg = (1,1,1,0), text_fg = (1,1,1,1),
+            frameColor = (0,0,0,0))
+            if (player[1]): #player ready
+                l['text'] = '         '+ l['text'] + ' (READY!)'
+            if player[0] not in self.playerList:
+                self.playerList.append(player[0])
+            print 'Adding '+player[0]
+            self.myScrolledList.addItem(l)
+        self.screenBtns.append(self.myScrolledList)
 
     def showUsersInLobby(self, playersInLobby):
         print "showUsersInLobby"
