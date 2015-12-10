@@ -237,28 +237,27 @@ class Vehicle(object):
 
     def LoadBruiser(self):                             # Load the bruiser ! 
         self.carNP = loader.loadModel('models/bruiser.egg')
-        # self.yugoNP.setScale(.7)
         self.carNP.reparentTo(self.chassisNP)
 
         # Right front wheel
         np = loader.loadModel('models/bruiser-right-tire.egg')
         np.reparentTo(render)
-        self.addWheel(Point3(1, 1.1, .7), True, np, .25)
+        self.addWheel(Point3(1.2, 1.7, 0.8), True, np, 0.8)
 
         # Left front wheel
         np = loader.loadModel('models/bruiser-left-tire.egg')
         np.reparentTo(render)
-        self.addWheel(Point3(-1, 1.1, .7), True, np, .25)
+        self.addWheel(Point3(-1.2, 1.7, 0.8), True, np, 0.8)
 
         # Right rear wheel
         np = loader.loadModel('models/bruiser-right-tire.egg')
         np.reparentTo(render)
-        self.addWheel(Point3(1, -2, .7), False, np, .25)
+        self.addWheel(Point3(1.2, -1.95, 0.8), False, np, 0.8)
 
         # Left rear wheel
         np = loader.loadModel('models/bruiser-left-tire.egg')
         np.reparentTo(render)
-        self.addWheel(Point3(-1, -2, .7), False, np, .25)
+        self.addWheel(Point3(-1.2, -1.95, 0.8), False, np, 0.8)
 
     def LoadSwiftstar(self):                         # Load the swiftstar ! 
         self.carNP = loader.loadModel('models/swiftstar-chassis.egg')
