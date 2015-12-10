@@ -139,8 +139,18 @@ class Vehicle(object):
 
     def setupVehicle(self, world):
         # Chassis
-        shape = BulletBoxShape(Vec3(1, 2.2, 0.5))
-        ts = TransformState.makePos(Point3(0, 0, .7))
+        if self.type == 1:
+            shape = BulletBoxShape(Vec3(1.5, 2.2, 0.5))
+            ts = TransformState.makePos(Point3(0, 0, 1))
+        elif self.type == 2:
+            shape = BulletBoxShape(Vec3(1, 2.2, 0.5))
+            ts = TransformState.makePos(Point3(0, 0, .7))
+        elif self.type == 3:
+            shape = BulletBoxShape(Vec3(1, 2.2, 0.5))
+            ts = TransformState.makePos(Point3(0, 0, .7))
+        elif self.type == 4:
+            shape = BulletBoxShape(Vec3(1, 2.2, 0.5))
+            ts = TransformState.makePos(Point3(0, 0, .7))
         self.chassisNode = BulletRigidBodyNode('Vehicle')
         self.chassisNP = render.attachNewNode(self.chassisNode)
         # collision bit mesh

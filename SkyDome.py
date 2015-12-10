@@ -6,7 +6,7 @@ class SkyDome(object):
         tex = loader.loadTexture('models/tex/env_sky_edit_test.jpg')
         self.sky.setTexture(tex)
         self.sky.setEffect(CompassEffect.make(render))
-        self.sky.setScale(500)
+        self.sky.setScale(700)
         self.sky.setZ(-65)
         self.sky.reparentTo(base.camera)
     
