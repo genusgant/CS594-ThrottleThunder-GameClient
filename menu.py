@@ -1074,6 +1074,12 @@ class Menu(ShowBase):
     def handleCurrencyNotification(self, currency):
         print currency
         self.World.balance = str(currency)
+        if (self.WhichScreen == "Custom"):
+            self.balance.destroy()
+            self.balance = DirectLabel(text='Wallet: '+self.World.balance, pos = (0.8,-4.0,-0.57), text_scale=0.065, text_align = TextNode.ARight)
+            self.balance['text_fg'] = (1,1,1.0,1)
+            self.balance['frameColor'] = (0,0,0,0.1)
+            self.screenBtns.append(self.balance)
 
 
     def handleDetailNotification(self, armor, handling, power, speed):

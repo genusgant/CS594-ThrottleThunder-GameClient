@@ -207,7 +207,7 @@ class Dashboard(DirectObject):
         self.ResultFrame = DirectFrame(frameColor=(1, 0, 0, 0.8), frameSize=(-0.75, .75, -.5, .5), pos=(0, 0.0, 0))
         self.ResultMessage = OnscreenText(text=message, style=1, fg=(1, 1, 1, 1),pos=(0, 0.1), align=TextNode.ACenter, scale=.1)
         self.backToLobby = DirectButton(image='IMAGES/enter.png', pos=(0.3, 0, -0.4), scale=(.17, 1, .03), relief=None,
-                                    command=self.goLobby)
+                                    command=self.world.doExit())
         self.screenBtns.append(self.ResultFrame)
         self.screenBtns.append(self.ResultMessage)
         self.screenBtns.append(self.backToLobby)
