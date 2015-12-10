@@ -184,6 +184,7 @@ class World(DirectObject):
         self.collisionThreadSet = []
         self.otherPlayer = None
         self.deadCounter = 0
+        self.playerstats =[]
         self.manager = manager
         self.lobby = manager.lobby
         self.login = self.lobby.World.username
@@ -252,11 +253,11 @@ class World(DirectObject):
         self.cleanup()
         sys.exit(1)
 
-    def cleanup(self):
-        self.cManager.sendRequest(Constants.CMSG_DISCONNECT)
-        self.cManager.closeConnection()
-        self.world = None
-        self.outsideWorldRender.removeNode()
+    # def cleanup(self):
+    #     self.cManager.sendRequest(Constants.CMSG_DISCONNECT)
+    #     self.cManager.closeConnection()
+    #     self.world = None
+    #     self.outsideWorldRender.removeNode()
 
 
     def doReset(self):
