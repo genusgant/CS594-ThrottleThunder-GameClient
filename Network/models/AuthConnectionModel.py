@@ -60,4 +60,8 @@ class AuthConnectionModel(ServerConnection):
 
     def getReg(self, data):
         self.screenModel.parseRegResponse(data.getUint16())
+
+    def setHandler(self, authhandler, reghandler):
+        self.parseAuthResponse = authhandler
+        self.parseRegResponse = reghandler
         

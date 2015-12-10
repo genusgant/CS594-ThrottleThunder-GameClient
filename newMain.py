@@ -57,23 +57,23 @@ class World(DirectObject):
         
         self.ServerConnection.setupConnectionModel(self.heartbeatConnection)#uncomment when going live
         
-        self.globalChatConnection = ChatConnectionModel(self)
-        self.ServerConnection.setupConnectionModel(self.globalChatConnection)
+        #self.globalChatConnection = ChatConnectionModel(self)
+        #self.ServerConnection.setupConnectionModel(self.globalChatConnection)
         
-        self.queueConnection = QueueConnectionModel(self)
-        self.ServerConnection.setupConnectionModel(self.authConnection)#uncomment when going live
+        #self.queueConnection = QueueConnectionModel(self)
+        #self.ServerConnection.setupConnectionModel(self.authConnection)#uncomment when going live
         
-        self.friendConnection = FriendConnectionModel(self)
-        self.ServerConnection.setupConnectionModel(self.friendConnection)
+        #self.friendConnection = FriendConnectionModel(self)
+        #self.ServerConnection.setupConnectionModel(self.friendConnection)
         
         
-#         self.taskMgr.doMethodLater(self.conf['heartbeatRate'], self.doHeartbeat, "heartbeat")#uncomment when going live
-        
+	self.taskMgr.doMethodLater(self.conf['heartbeatRate'], self.doHeartbeat, "heartbeat")#uncomment when going live
+        self.taskMgr.doMethodLater(self.conf['heartbeatRate'], self.doHeartbeat, "heartbeat")#uncomment when going live
         
         self.screen = Login(self)#uncomment when going live
         #self.screen = Menu(self)#comment this one when you are trying to log into it like normal
 
-        self.ServerConnection.setupConnectionModel(self.queueConnection)
+        #self.ServerConnection.setupConnectionModel(self.queueConnection)
         self.taskMgr.doMethodLater(self.conf['heartbeatRate'], self.doHeartbeat, "heartbeat")
 
         self.taskMgr.doMethodLater(1, self.doSong, "song")

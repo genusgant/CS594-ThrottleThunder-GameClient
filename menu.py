@@ -22,6 +22,9 @@ class Menu(ShowBase):
         self.WhichScreen = "";
         self.lastSelectedFriend = None
 
+        # variable to save game selected DD or RR
+        self.selectedGame = None
+
         #self.taskMgr = World.taskMgr#added this to overide the login
 
         props = WindowProperties()
@@ -51,7 +54,7 @@ class Menu(ShowBase):
 
         self.garageConnection = GarageConnectionModel(self)
         self.garageConnection.setHandler(self.handleCarNotification, self.handleDetailNotification, self.handlePurchaseNotification, self.handleCurrencyNotification)
-        
+
         self.ServerConnection.setupConnectionModel(self.garageConnection)
         self.garageConnection.sendCurrency()
 
@@ -521,7 +524,7 @@ class Menu(ShowBase):
                                          scale = (.1, 1, .1),
                                          relief = None)
         self.handling_btn.setTransparency(TransparencyAttrib.MAlpha)
-        
+
         self.armor_btn = DirectButton(image = 'IMAGES/armor.png',
                                       pos = (-.3, 0, -.75),
                                       scale = (.1, 1, .1),
@@ -534,8 +537,8 @@ class Menu(ShowBase):
                                       relief = None)
         self.speed_btn.setTransparency(TransparencyAttrib.MAlpha)
 
-        #This is the current level of the upgrades. This variable should correspond to what ever is in the 
-        #database. 
+        #This is the current level of the upgrades. This variable should correspond to what ever is in the
+        #database.
         self.armor_value = 0
         self.power_value = 0
         self.handling_value = 0
@@ -574,7 +577,7 @@ class Menu(ShowBase):
                                       command=self.displayMeter,
                                       extraArgs=[self.speed_value, 'speed'])
         self.speed_btn.setTransparency(TransparencyAttrib.MAlpha)
-        
+
 
 
         self.screenBtns.append(self.power_btn)
@@ -629,114 +632,114 @@ class Menu(ShowBase):
         level = self.armor_value
         if level == 0:
             self.armor_level = OnscreenText(text="0", pos=(-0.3, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
-        
-        elif level == 1: 
+
+        elif level == 1:
             self.armor_level = OnscreenText(text="1", pos=(-0.3, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
 
         elif level == 2:
-            self.armor_level = OnscreenText(text="2", pos=(-0.3, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)     
-    
+            self.armor_level = OnscreenText(text="2", pos=(-0.3, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
+
         elif level == 3:
-            self.armor_level = OnscreenText(text="3", pos=(-0.3, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter) 
-    
+            self.armor_level = OnscreenText(text="3", pos=(-0.3, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
+
         elif level == 4:
-            self.armor_level = OnscreenText(text="4", pos=(-0.3, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter) 
+            self.armor_level = OnscreenText(text="4", pos=(-0.3, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
 
         elif level == 5:
             self.armor_level = OnscreenText(text="5", pos=(-0.3, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
-    
-        elif level == 6: 
+
+        elif level == 6:
             self.armor_level = OnscreenText(text="6", pos=(-0.3, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
-    
+
         elif level == 7:
             self.armor_level = OnscreenText(text="7", pos=(-0.3, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
         else:
             self.armor_level = OnscreenText(text="Error", pos=(-0.3, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
-        
+
         self.screenBtns.append(self.armor_level)
     def power_function(self):
         level = self.power_value
         if level == 0:
             self.power_level = OnscreenText(text="0", pos=(-0.9, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
-        
+
         elif level == 1:
             self.power_level = OnscreenText(text="1", pos=(-0.9, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
 
         elif level == 2:
-            self.power_level = OnscreenText(text="2", pos=(-0.9, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)     
-    
-        elif level == 3: 
+            self.power_level = OnscreenText(text="2", pos=(-0.9, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
+
+        elif level == 3:
             self.power_level = OnscreenText(text="3", pos=(-0.9, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
-    
+
         elif level == 4:
             self.power_level = OnscreenText(text="4", pos=(-0.9, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
 
         elif level == 5:
             self.power_level = OnscreenText(text="5", pos=(-0.9, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
-    
+
         elif level == 6:
-            self.power_level = OnscreenText(text="6", pos=(-0.9, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter) 
-    
+            self.power_level = OnscreenText(text="6", pos=(-0.9, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
+
         elif level == 7:
             self.power_level = OnscreenText(text="7", pos=(-0.9, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
         else:
             self.power_level = OnscreenText(text="7", pos=(-0.9, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
-        self.screenBtns.append(self.power_level)    
+        self.screenBtns.append(self.power_level)
     def handling_function(self):
         level = self.handling_value
         if level == 0:
             self.handling_level = OnscreenText(text="0", pos=(-.6, -0.92, -.75), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
-        
+
         elif level == 1:
             self.handling_level = OnscreenText(text="1", pos=(-.6, -0.92, -.75), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
 
-        elif level == 2:     
+        elif level == 2:
             self.handling_level = OnscreenText(text="2", pos=(-.6, -0.92, -.75), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
-    
-        elif level == 3: 
+
+        elif level == 3:
             self.handling_level = OnscreenText(text="3", pos=(-.6, -0.92, -.75), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
 
         elif level == 4:
             self.handling_level = OnscreenText(text="4", pos=(-.6, -0.92, -.75), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
         elif level == 5:
             self.handling_level = OnscreenText(text="5", pos=(-.6, -0.92, -.75), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
-        elif level == 6: 
+        elif level == 6:
             self.handling_level = OnscreenText(text="6", pos=(-.6, -0.92, -.75), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
-    
+
         elif level == 7:
-            self.handling_level = OnscreenText(text="7", pos=(-.6, -0.92, -.75), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter) 
+            self.handling_level = OnscreenText(text="7", pos=(-.6, -0.92, -.75), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
         else:
             self.handling_level = OnscreenText(text="Error", pos=(-.6, -0.92, -.75), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
-        self.screenBtns.append(self.handling_level)    
+        self.screenBtns.append(self.handling_level)
     def speed_function(self):
         level = self.speed_value
         if level == 0:
             self.speed_level = OnscreenText(text="0", pos=(-0.0, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
-        
-        elif level == 1:
-            self.speed_level = OnscreenText(text="1", pos=(-0.0, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter) 
 
-        elif level == 2:  
-            self.speed_level = OnscreenText(text="2", pos=(-0.0, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)   
-    
-        elif level == 3: 
+        elif level == 1:
+            self.speed_level = OnscreenText(text="1", pos=(-0.0, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
+
+        elif level == 2:
+            self.speed_level = OnscreenText(text="2", pos=(-0.0, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
+
+        elif level == 3:
             self.speed_level = OnscreenText(text="3", pos=(-0.0, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
-    
-        elif level == 4: 
+
+        elif level == 4:
             self.speed_level = OnscreenText(text="4", pos=(-0.0, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
 
         elif level == 5:
             self.speed_level = OnscreenText(text="5", pos=(-0.0, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
-    
-        elif level == 6: 
+
+        elif level == 6:
             self.speed_level = OnscreenText(text="6", pos=(-0.0, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
-    
-        elif level == 7: 
+
+        elif level == 7:
             self.speed_level = OnscreenText(text="7", pos=(-0.0, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
-        else: 
+        else:
             self.speed_level = OnscreenText(text="Error", pos=(-0.0, -0.92, 0.0), scale=0.075, fg=(1, 1, 0, 1), align=TextNode.ACenter)
         self.screenBtns.append(self.speed_level
-            )           
+            )
     def displayMeter(self, level, powerup):
         if(powerup == 'armor'):
             self.upgrade_type = 1
@@ -761,7 +764,7 @@ class Menu(ShowBase):
         self.cost_text = self.displayCost(level)
         self.upgrade.append(self.meter)
         self.upgrade.append(self.cost_text)
-        
+
         self.upgrade_to_buy = [level, powerup, self.vehicle]
     #This is the cost for each upgrade.
 
@@ -772,29 +775,29 @@ class Menu(ShowBase):
             self.cost =100
             return OnscreenText(text = str(self.cost), pos = (0.18, -.567), scale = 0.07, fg= (1,1,1,1))
         elif level == 1:
-            self.cost =200   
+            self.cost =200
             return OnscreenText(text = str(self.cost), pos = (0.18, -.567), scale = 0.07, fg= (1,1,1,1))
         elif level == 2:
-            self.cost =300       
-            return OnscreenText(text = str(self.cost), pos = (0.18, -.567), scale = 0.07, fg= (1,1,1,1))   
+            self.cost =300
+            return OnscreenText(text = str(self.cost), pos = (0.18, -.567), scale = 0.07, fg= (1,1,1,1))
         elif level == 3:
-            self.cost =500   
-            return OnscreenText(text = str(self.cost), pos = (0.18, -.567), scale = 0.07, fg= (1,1,1,1))   
+            self.cost =500
+            return OnscreenText(text = str(self.cost), pos = (0.18, -.567), scale = 0.07, fg= (1,1,1,1))
         elif level == 4:
-            self.cost =800   
+            self.cost =800
             return OnscreenText(text = str(self.cost), pos = (0.18, -.567), scale = 0.07, fg= (1,1,1,1))
         elif level == 5:
-            self.cost =1300  
-            return OnscreenText(text = str(self.cost), pos = (0.18, -.567), scale = 0.07, fg= (1,1,1,1))   
+            self.cost =1300
+            return OnscreenText(text = str(self.cost), pos = (0.18, -.567), scale = 0.07, fg= (1,1,1,1))
         elif level == 6:
-            self.cost =2100  
-            return OnscreenText(text = str(self.cost), pos = (0.18, -.567), scale = 0.07, fg= (1,1,1,1))   
+            self.cost =2100
+            return OnscreenText(text = str(self.cost), pos = (0.18, -.567), scale = 0.07, fg= (1,1,1,1))
         elif level == 7:
             self.cost = 0
-            return OnscreenText(text = "Max out", pos = (0.18, -.567), scale = 0.07, fg= (1,1,1,1))               
+            return OnscreenText(text = "Max out", pos = (0.18, -.567), scale = 0.07, fg= (1,1,1,1))
         else:
             self.cost = 0
-            return OnscreenText(text = "Max out", pos = (0.18, -.567), scale = 0.07, fg= (1,1,1,1))               
+            return OnscreenText(text = "Max out", pos = (0.18, -.567), scale = 0.07, fg= (1,1,1,1))
 
     # Below is the functions that will pull the upgrade levels for the car selected
     # USE self.vehicle to determine the vehicle selected
@@ -802,7 +805,7 @@ class Menu(ShowBase):
     def buy_upgrade(self):
         try:
             what = self.cost
-        except: 
+        except:
             self.okay = OkDialog(text = "Select car and powerup!", command=self.destroyOk)
             return
 
@@ -975,10 +978,18 @@ class Menu(ShowBase):
 
     def handleQueueNotification(self, size, sizeNeeded, players):
         print "Received Handle Queue"
+        start = False
         self.players = players
         if (len(players) >= sizeNeeded):
             self.userCount['text'] = str(len(players)) + ' / '+ str(size)
             self.userMessage['text'] = 'Ready to start'
+            start = True
+            print "Ready to go players list", players
+            for val in players:
+                print val
+                if val != None and len(val) >= sizeNeeded and val[1] == 0:
+                    start = False
+                    break
         else:
             self.userCount['text'] = str(len(players)) + ' / '+ str(sizeNeeded)
             self.userMessage['text'] = 'More players needed'
