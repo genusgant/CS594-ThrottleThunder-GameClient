@@ -247,7 +247,9 @@ class World(DirectObject):
     def activateKeys(self):
         inputState.watchWithModifiers('boostUp', '1-up')
         inputState.watchWithModifiers('forward', 'w')
+        inputState.watchWithModifiers('forward', 'z')
         inputState.watchWithModifiers('left', 'a')
+        inputState.watchWithModifiers('left', 'q')
         inputState.watchWithModifiers('brake', 's')
         inputState.watchWithModifiers('right', 'd')
         inputState.watchWithModifiers('turnLeft', 'q')
