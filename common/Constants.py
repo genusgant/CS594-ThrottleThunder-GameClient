@@ -43,6 +43,7 @@ class Constants:
     CMSG_SET_RANK                       = 130
     CMSG_CHECKPOINTS                    = 133
     CMSG_CURRENCY                       = 134
+    CMSG_LEAVE_SESSION                  = 135
     REQ_HEARTBEAT                       = 301
     CMSG_REQ_TEST                       = 160
 

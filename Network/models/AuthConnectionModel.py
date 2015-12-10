@@ -11,6 +11,8 @@ class AuthConnectionModel(ServerConnection):
     CODE_SEND_REG =103
     CODE_RESP_REG=203
     
+    CODE_SEND_LEAVE_SESSION=135
+    
     def __init__(self,screenModel):
         self.screenModel = screenModel
         
@@ -36,6 +38,10 @@ class AuthConnectionModel(ServerConnection):
         request.addString(username)
         request.addString(password)
         request.addString("")
+        ServerConnection.sendMessage(self,request)
+        
+    def sendLeaveSessionRequest(self):
+        request = self.buildRequestPackage(self.CODE_SEND_LEAVE_SESSION)
         ServerConnection.sendMessage(self,request)
     
     def getAuth(self, data):
