@@ -705,6 +705,16 @@ class World(DirectObject):
             enemyHealth = self.enemyHealthList[username]
             print "self.vehicleContainer.props.health", self.vehicleContainer.props.health
             enemyHealth.HealthBar['value'] = health
+
+            if(health<=30):
+                enemyHealth.HealthBar["barColor"]=(0.8,0,0,1) #red
+
+            elif(health>30 and health<=75):
+                enemyHealth.HealthBar["barColor"]=(0.8,0.8,0,1) #yellow
+
+            else:
+                enemyHealth.HealthBar["barColor"]=(0,0.8,0,1) #green
+
         else:
             print "updateStatusBars: Enemy entry not found"
 
