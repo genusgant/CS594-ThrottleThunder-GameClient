@@ -52,8 +52,8 @@ class World(DirectObject):
         
         self.ServerConnection.setupConnectionModel(self.heartbeatConnection)#uncomment when going live
         
-        self.globalChatConnection = ChatConnectionModel(self)
-        self.ServerConnection.setupConnectionModel(self.globalChatConnection)
+        #self.globalChatConnection = ChatConnectionModel(self)
+        #self.ServerConnection.setupConnectionModel(self.globalChatConnection)
         
         #self.queueConnection = QueueConnectionModel(self)
         self.ServerConnection.setupConnectionModel(self.authConnection)#uncomment when going live

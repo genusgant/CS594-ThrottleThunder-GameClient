@@ -93,7 +93,7 @@ class Menu(ShowBase):
         #self.World.privateChatConnection.setHandler(self.handlePrivateChatNotification)
         self.navi()
 
-        self.accept('enter', self.sendMessage)
+        #self.accept('enter', self.sendMessage)
 
 
     def navi(self):
@@ -1074,7 +1074,7 @@ class Menu(ShowBase):
         self.power_level = power
         self.speed_level = speed
         
-    def handlePrivateChatNotification(self, username, msg):
+    def handlePrivateChatNotification(self, username, msg, isSelf):
         self.privateChat.setdefault(username, []).insert(0, [username if isSelf else self.World.username, msg])
         self.privateChatSeen[username] = False
         print 'private ', username, msg
