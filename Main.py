@@ -223,6 +223,7 @@ class World(DirectObject):
         self.createPowerups()
         taskMgr.add(self.powerups.checkPowerPickup, "checkPowerupTask")
         self.dashboard = Dashboard(self, taskMgr)
+        #self.dashboard.createpowerup_in_minimap()
 
 
     def activateKeys(self):
@@ -243,7 +244,6 @@ class World(DirectObject):
 
     def createPowerups(self):
         self.powerups = PowerupManager(self, self.vehicleContainer,type = self.lobby.ddMapTitle)
-        self.dashboard.createpowerup_in_minimap()
 
     def setTime(self):
         self.cManager.sendRequest(Constants.CMSG_TIME)
