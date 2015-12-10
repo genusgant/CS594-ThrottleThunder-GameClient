@@ -17,15 +17,16 @@ class ResponseDead(ServerResponse):
                 if self.username in self.world.vehiclelist.keys():
                     vehicle = self.world.vehiclelist[self.username]
                     vehicle.props.health = vehicle.props.armor = 0
-                    vehicle.isDead = True
-                    vehicle.remove(self.world)
-                    self.world.deadCounter +=1
-                    #del self.world.vehiclelist[self.username]
-                    print "deadCounter :",self.world.deadCounter
-                    print "vehicle :",len(self.world.vehiclelist)
-                    if self.world.deadCounter == len(self.world.vehiclelist)-1:
-                        print "Last Man Standing"
-                        self.world.gameEnd()
+                    if not vehicle.isDead:
+                        vehicle.isDead = True
+                        vehicle.remove(self.world)
+                        self.world.deadCounter +=1
+                        #del self.world.vehiclelist[self.username]
+                        print "deadCounter :",self.world.deadCounter
+                        print "vehicle :",len(self.world.vehiclelist)
+                        if self.world.deadCounter == len(self.world.vehiclelist)-1:
+                            print "Last Man Standing"
+                            self.world.gameEnd()
             else:  # for RR game
                 if self.world.login == self.username:
                     print "you are dead"
