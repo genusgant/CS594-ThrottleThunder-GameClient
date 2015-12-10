@@ -450,8 +450,9 @@ class World(DirectObject):
         self.gameEnd(True)
 
     def gameEnd(self, isDead=False):
-        self.dashboard.gameResult(isDead)
         self.audioManager.StopAudioManager()
+        self.audioManager.stop_music_dd()
+        self.dashboard.gameResult(isDead)        
         self.cleanup()
 
 
@@ -684,7 +685,7 @@ class World(DirectObject):
                 self.cManager.sendRequest(Constants.CMSG_HEALTH, playerVehicle.props.getHitPoint())
                 if self.login == createPlayerUsername:
                     self.vehicleContainer = playerVehicle
-                    # self.audioManager.play_music_dd()
+                    self.audioManager.play_music_dd()
                     self.audioManager.initialiseSound(self.vehicleContainer)
                     print "I AM: ", createPlayerUsername
                 #print "Creating other players: ", createPlayerUsername, "@ ", vehicleAttributes.x, vehicleAttributes.y, vehicleAttributes.z

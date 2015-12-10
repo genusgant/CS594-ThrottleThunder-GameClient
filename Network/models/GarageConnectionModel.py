@@ -2,6 +2,7 @@ from Network.ServerConnection import ServerConnection
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
 from panda3d.core import NetDatagram
+from locale import currency
 
 class GarageConnectionModel(ServerConnection):
     CODE_SEND_DETAILS = 120
@@ -15,6 +16,9 @@ class GarageConnectionModel(ServerConnection):
     
     def __init__(self,callback):
         self.callback = callback
+        self.parseDetailResponse = None
+        self.parsePurchaseResponse = None
+        self.parseCurrencyResponse = None
         
     def getConnectionActions(self):
         return [
@@ -30,16 +34,11 @@ class GarageConnectionModel(ServerConnection):
         ServerConnection.sendMessage(self,request)
         
     def getDetailMessage(self,data):
-        try:
-            armor = data.getInt()
-            health = data.getInt()
-            acceleration = data.getInt()
-            speed = data.getInt()
-            
-            print "Car Upgrades!"
-
-        except:
-            print "Something went wrong"
+        armor = data.getInt()
+        health = data.getInt()
+        acceleration = data.getInt()
+        speed = data.getInt()
+        self.parseDetailResponse(armor, health, acceleration, speed)
         
     def sendPurchase(self,carId,typeId,value):
         request = self.buildRequestPackage(self.CODE_SEND_PURCHASE)
@@ -49,26 +48,18 @@ class GarageConnectionModel(ServerConnection):
         ServerConnection.sendMessage(self,request)
         
     def getPurchaseMessage(self,data):
-        try:
-            status = data.getInt()
-            
-            if status == 1:
-                print "Upgrade Purchases!"
-            else:
-                print "Not enough money!"
-                
-        except:
-            print "Something went wrong"
+        status = data.getInt()
+        self.parsePurchaseResponse(status)
             
     def sendCurrency(self):
         request = self.buildRequestPackage(self.CODE_SEND_PURCHASE)
         ServerConnection.sendMessage(self,request)
         
     def getCurrencyMessage(self,data):
-        try:
-            currency = data.getInt()
-            
-            print "User has:", currency
-                
-        except:
-            print "Something went wrong"
+        currency = data.getInt()
+        self.parseCurrencyResponse(currency)
+    
+    def setHandler(self, detailHandler, purchaseHandler, currencyHandler):
+        self.parseDetailResponse = detailHandler
+        self.parsePurchaseResponse = purchaseHandler
+        self.parseCurrencyResponse = currencyHandler
