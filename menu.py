@@ -92,7 +92,7 @@ class Menu(ShowBase):
         self.createSocialization()
         self.navi()
 
-        self.accept('enter', self.sendMessage)
+        #self.accept('enter', self.sendMessage)
 
 
     def navi(self):
