@@ -441,7 +441,7 @@ class Dashboard():
                 self.ResultPosition = OnscreenText(text=position, style=1, fg=(1, 1, 1, 1),
                     pos=(0,0), align=TextNode.ACenter, scale=.1)
 
-                self.backToLobby = DirectButton(text = "Lobby",image = 'IMAGES/buttonunpressed.png', pos = (0.5, 0, -0.15),  scale = (.2, 1, .075), relief = None, command = self.goLobby)
+                self.backToLobby = DirectButton(image = 'IMAGES/buttonunpressed-lobby.png', pos = (0.5, 0, -0.15),  scale = (.25, 1, .06), relief = None, command = self.goLobby)
 
 
                 self.screenBtns.append(self.ResultFrame)
