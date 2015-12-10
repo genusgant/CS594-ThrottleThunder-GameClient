@@ -568,7 +568,8 @@ class World(DirectObject):
                                        self.vehicleContainer.chassisNP.getR()])
 
         # self.moveCrazyCar(dt)
-        self.world.doPhysics(dt, 10, 0.008)
+        if self.world != None:
+            self.world.doPhysics(dt, 10, 0.008)
 
         # if inputState.isSet('step'):
         #     self.vehicleContainer.processInput(inputState, dt)

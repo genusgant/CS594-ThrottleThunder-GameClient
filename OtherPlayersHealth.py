@@ -25,13 +25,24 @@ class OtherPlayersHealth():
         print "OtherPlayersHealth"
         self.gameEngine = gameEngine
         self.vehicleContainer = vehicleContainer
-        self.bar_text= loader.loadTexture("models/dashb/bar_text.jpg")
+        
+        self.bar_text= loader.loadTexture("tex/bar_text.jpg")
+        self.HealthBar = DirectWaitBar(text = str(vehicleContainer.username),
+                            value = 100,
+                            scale =2,
+                            range=self.vehicleContainer.props.health,
+                            pos = (0,.4,.4),
+                            barRelief=1,
+                            relief = 1,
+                            barColor=(0,0.8,0,1),
+                            barTexture =(self.bar_text))
 
-        self.HealthBar = DirectWaitBar(text = vehicleContainer.username, range = self.vehicleContainer.props.health, barColor= (1,0,0,1), frameSize = (-.8,.8,0.1,0.3),barTexture =("models/dashb/barHealth.png"))
-
-        self.HealthBar.setPos(0, 0, 1.5)
+        
+        self.HealthBar.reparentTo(vehicleContainer.chassisNP)
+        actualz = int(self.HealthBar.getZ())
+        self.HealthBar.setZ(actualz + 3)
         self.HealthBar.setBillboardPointEye()
+        self.HealthBar.setShaderOff()
         self.HealthBar.setBin('fixed', 0)
         self.HealthBar.setDepthWrite(False)
-        self.HealthBar.reparentTo(vehicleContainer.chassisNP)
 

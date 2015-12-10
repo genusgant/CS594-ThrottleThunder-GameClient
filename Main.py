@@ -454,7 +454,8 @@ class World(DirectObject):
         self.audioManager.StopAudioManager()
         self.audioManager.stop_music_dd()
         self.dashboard.gameResult(isDead)
-        self.terrainContainer.removeBackground()     
+        self.terrainContainer.removeBackground()
+        self.removeLights()
         self.cleanup()
 
 
@@ -704,6 +705,16 @@ class World(DirectObject):
             enemyHealth = self.enemyHealthList[username]
             print "self.vehicleContainer.props.health", self.vehicleContainer.props.health
             enemyHealth.HealthBar['value'] = health
+
+            if(health<=30):
+                enemyHealth.HealthBar["barColor"]=(0.8,0,0,1) #red
+
+            elif(health>30 and health<=75):
+                enemyHealth.HealthBar["barColor"]=(0.8,0.8,0,1) #yellow
+
+            else:
+                enemyHealth.HealthBar["barColor"]=(0,0.8,0,1) #green
+
         else:
             print "updateStatusBars: Enemy entry not found"
 

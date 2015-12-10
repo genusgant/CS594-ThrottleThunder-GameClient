@@ -10,6 +10,10 @@ from Network.models.PrivateChatConnectionModel import PrivateChatConnectionModel
 from Network.models.ChatConnectionModel import ChatConnectionModel
 from Network.models.GroupConnectionModel import GroupConnectionModel
 from Network.models.GarageConnectionModel import GarageConnectionModel
+import atexit
+
+def disconnect(world):
+    world.authConnection.sendDisconnectRequest()
 
 class Menu(ShowBase):
 
@@ -24,6 +28,7 @@ class Menu(ShowBase):
 
         self.World = World
         self.ServerConnection = self.World.ServerConnection
+        atexit.register(disconnect, self.World)
         self.WhichScreen = "";
         self.lastSelectedFriend = None
 
@@ -86,6 +91,8 @@ class Menu(ShowBase):
 
         self.createSocialization()
         self.navi()
+
+        self.accept('enter', self.sendMessage)
 
 
     def navi(self):
@@ -168,6 +175,7 @@ class Menu(ShowBase):
         self.screenBtns.append(self.ChatFrame)
         self.screenBtns.append(self.messageBox)
         self.screenBtns.append(self.addFriend)
+        self.screenBtns.append(self.usersChatFrame)
         self.screenBtns.append(self.addFriendBox)
         self.screenBtns.append(self.usersFriendFrame)
         self.printChat()
@@ -221,6 +229,7 @@ class Menu(ShowBase):
             text_bg = (1,1,1,0),
             text_scale = 0.2
             )
+        self.screenBtns.append(self.usersChatFrame)
 
         for friend in self.friends:
             f = DirectFrame(frameColor=(0, 0, 0, 0),
@@ -310,6 +319,8 @@ class Menu(ShowBase):
 
 
     def ddMaps(self):
+        print "ddMaps"
+        self.selectedGame = "DD";
         self.unloadScreen()
         self.myImage=OnscreenImage(image = 'IMAGES/matchmaking_menu_map.png', pos = (0, 0, 0), scale = (2, 1, 1))
         self.navi()
@@ -326,6 +337,8 @@ class Menu(ShowBase):
 
 
     def rrMaps(self):
+        print "rrMaps"
+        self.selectedGame = "RR";
         self.unloadScreen()
         self.myImage=OnscreenImage(image = 'IMAGES/matchmaking_menu_map.png', pos = (0, 0, 0), scale = (2, 1, 1))
         self.navi()
@@ -408,8 +421,7 @@ class Menu(ShowBase):
         self.dd_screen()
         self.showUsersInLobby(self.players)
 
-
-    #This code create the customiztion window
+#This code create the customiztion window
     def createCustomization(self):
         self.unloadScreen()
         self.WhichScreen = "Custom"
@@ -952,22 +964,26 @@ class Menu(ShowBase):
     def dd_ScreenMap1(self):
         self.queueConnection.sendQueueMessage(0) #0=map1
         print "Screen Map 1"
+        self.ddMapTitle = "heightMap"
         self.dd_screen()
 
     def dd_ScreenMap2(self):
         self.queueConnection.sendQueueMessage(1) #1=map2
         print "Screen Map 2"
+        self.ddMapTitle = "model"
         self.dd_screen()
 
     def rr_ScreenMap1(self):
         self.queueConnection.sendQueueMessage(2) #2=map3
         print "Screen Map 3"
         self.rr_screen()
+        self.trackNum = 1
 
     def rr_ScreenMap2(self):
         self.queueConnection.sendQueueMessage(3) #3=map4
         print "Screen Map 4"
         self.rr_screen()
+        self.trackNum = 2
 
     def carBruiser(self):
         self.enableReady(1) #Bruiser

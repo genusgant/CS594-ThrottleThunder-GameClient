@@ -50,7 +50,7 @@ class RaceMaster():
         self.vehicleContainer = mvc
         #         if track < len(RaceMaster.tracks):
         self.checkpointlocs = loadTrack(RaceMaster.tracks[track - 1], RaceMaster.trackscale[track - 1])
-        if track == 2:
+        if track == 1:
             self.reverseTrack()  # flip check point order
         #         print self.checkpointlocs
         self.trackSections = startingPos
@@ -91,9 +91,9 @@ class RaceMaster():
                 self.laps += 1
                 self.checkpointspassed = 0
                 self.lastcp = -1  #
-            elif self.lastcp != 0:
-                self.laps -= 1
-                self.lastcp = 0
+            # elif self.lastcp != 0:
+            #     self.laps -= 1
+            #     self.lastcp = 0
 
                 # recalculate cp distance
 
@@ -132,7 +132,7 @@ class RaceMaster():
     def setupCheckpoints(self, mGame):
         self.checkpointmarkers = []
         cpl = self.checkpointlocs
-        for i in range(len(cpl) - 1):
+        for i in range(len(cpl)-1):
             a = angleTo(cpl[i + 1], cpl[i])
             self.checkpointmarkers.append(Checkpoint(mGame, cpl[i], a))
 
@@ -154,23 +154,24 @@ class RaceMaster():
     #                      (-136.685, 88.1453, 4.49636)]
 
 
-    def applyOffset(self, start, x, y, m):
-        return [start.x + x * m, start.y + y * m, start.z, angleTo(start, self.checkpointlocs[1]), 0, 0]
+    def applyOffset(self, start, to, x, y, m):
+        return [start.x + x * m, start.y + y * m, start.z, angleTo(start, to), 0, 0]
 
     def getStartingPoints(self):
         sp = []
         xoff = self.startingOffsets[0]
         yoff = self.startingOffsets[1]
         for i in range(self.racers):
-            sp.append(self.applyOffset(self.checkpointlocs[1], xoff, yoff, i))
+            sp.append(self.applyOffset(self.checkpointlocs[0], self.checkpointlocs[1],  xoff, yoff, i))
         return sp
 
     def getStartingPoint(self, i):
         xoff = self.startingOffsets[0]
         yoff = self.startingOffsets[1]
-        return self.applyOffset(self.checkpointlocs[0], xoff, yoff, i)
+        return self.applyOffset(self.checkpointlocs[1], self.checkpointlocs[2], xoff, yoff, i)
 
     def setStartingPos(self, i):
+        print "Setting start pos: ", i
         p = self.getStartingPoint(i)
         self.setPosHpr(p)
 

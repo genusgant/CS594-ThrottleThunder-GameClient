@@ -30,6 +30,7 @@ class ResponseRankings(ServerResponse):
                         name = data.getString()
                         rank = data.getInt32()
                         rankings[rank] = name
+                        #print(name +  " Rank: " + str(rank))
                     self.world.dashboard.update_ranking(rankings)
 
         except:

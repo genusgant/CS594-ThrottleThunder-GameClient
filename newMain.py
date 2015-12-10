@@ -1,6 +1,6 @@
 
 import direct.directbase.DirectStart
-from direct.showbase.DirectObject import DirectObject   
+from direct.showbase.DirectObject import DirectObject
 from direct.showbase.ShowBase import ShowBase
 from direct.gui.OnscreenImage import OnscreenImage
 from panda3d.core import *
@@ -30,7 +30,7 @@ class World(DirectObject):
     def __init__(self):
         print("began")
         self.taskMgr = taskMgr
-        with open('config.json') as data_file:    
+        with open('config.json') as data_file:
             self.conf = json.load(data_file)
         self.ServerConnection = ServerConnection()#uncomment when going live
         self.ServerConnection.connect(self.conf['host'],self.conf['port'])#uncomment when going live
@@ -44,32 +44,32 @@ class World(DirectObject):
         self.main_theme = base.loader.loadSfx("assets/sounds/greenHills.ogg")
         # Song = Maxime Abbey by Green Hills
         self.main_theme.play()
-        
+
         self.username = ""
         self.balance = "900000"
 
         self.authConnection = AuthConnectionModel(self)#uncomment when going live
         self.authConnection.setHandler(self.parseAuthResponse, self.parseRegResponse)
         self.ServerConnection.setupConnectionModel(self.authConnection)#uncomment when going live
-       
-        
+
+
         self.heartbeatConnection = HeartbeatConnectionModel()#uncomment when going live
-        
+
         self.ServerConnection.setupConnectionModel(self.heartbeatConnection)#uncomment when going live
-        
+
         #self.globalChatConnection = ChatConnectionModel(self)
         #self.ServerConnection.setupConnectionModel(self.globalChatConnection)
-        
+
         #self.queueConnection = QueueConnectionModel(self)
         #self.ServerConnection.setupConnectionModel(self.authConnection)#uncomment when going live
-        
+
         #self.friendConnection = FriendConnectionModel(self)
         #self.ServerConnection.setupConnectionModel(self.friendConnection)
-        
-        
-	self.taskMgr.doMethodLater(self.conf['heartbeatRate'], self.doHeartbeat, "heartbeat")#uncomment when going live
+
+
+	    self.taskMgr.doMethodLater(self.conf['heartbeatRate'], self.doHeartbeat, "heartbeat")#uncomment when going live
         self.taskMgr.doMethodLater(self.conf['heartbeatRate'], self.doHeartbeat, "heartbeat")#uncomment when going live
-        
+
         self.screen = Login(self)#uncomment when going live
         #self.screen = Menu(self)#comment this one when you are trying to log into it like normal
 
@@ -77,14 +77,14 @@ class World(DirectObject):
         self.taskMgr.doMethodLater(self.conf['heartbeatRate'], self.doHeartbeat, "heartbeat")
 
         self.taskMgr.doMethodLater(1, self.doSong, "song")
-        
+
         self.screenType = "login"
         self.screen.run()
-    
+
     def doHeartbeat(self,task):
         self.heartbeatConnection.sendHeartbeat()
         return task.again
-    
+
     def doSong(self,task):
         if self.main_theme.status() == self.main_theme.READY:
             self.main_theme.play()
@@ -98,21 +98,23 @@ class World(DirectObject):
         self.main_theme.stop()
         self.taskMgr.remove("song")
         print "stopMusic"
-    
+
     def doMenu(self):
         print("doing menu")
-        self.ServerConnection.activeStatus = True
-        self.screen.unloadScreen()
+        if self.screenType == "login" :
+            self.screen.unloadScreen()
+
         self.screenType = "menu"
+        self.ServerConnection.activeStatus = True
         self.screen = Menu(self)
-    
+
     def launchDDGame(self):
         print "Launching DD GAME"
         self.ServerConnection.activeStatus = False
         self.screen.unloadScreen()
         self.stopMusic()
         self.screen = WorldManager(self.screen)
-        
+
     def launchRRGame(self):
         print "Launching RR GAME"
         self.ServerConnection.activeStatus = False
@@ -120,25 +122,25 @@ class World(DirectObject):
         self.stopMusic()
         self.screen = RRWorldManager(self.screen)
         # data might be require to send to DD world
-    
+
     def parseAuthResponse(self,data):
         if data == 1:
             print("unloading")
             self.doMenu()
-        else: 
+        else:
             if data == 2:
                 self.screen.setStatusText("Already logged in")
             else:
-                self.screen.setStatusText("Invalid username/password")   
+                self.screen.setStatusText("Invalid username/password")
             self.screen.enter_btn['state'] = DGG.NORMAL
-            self.screen.register_btn['state'] = DGG.NORMAL        
-        
+            self.screen.register_btn['state'] = DGG.NORMAL
+
     def parseRegResponse(self,data):
         if data == 1:
             print("unloading")
             self.doMenu()
         else:
-            self.screen.setStatusText("User already exists")   
+            self.screen.setStatusText("User already exists")
             self.screen.cancel_btn['state'] = DGG.NORMAL
             self.screen.register_btn['state'] = DGG.NORMAL
 app = World();

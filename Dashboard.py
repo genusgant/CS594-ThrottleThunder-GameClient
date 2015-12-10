@@ -410,21 +410,21 @@ class Dashboard():
                     print "Inside if"
                     pos = len(self.gameEngine.vehiclelist) - self.gameEngine.deadCounter
                     # pos = rank[0]
-                    message = "Game Over. You Loose if"
+                    message = "Game Over. You Loose !!"
                     self.Audio.play_loser()
 
                 else:
                     # rank = self.getRank().split("/")
                     if rank=="1" :
-                        message = "Winner. You Won the Game!"
+                        message = "Winner. You Won the Game !!"
                         pos = rank
                         self.Audio.play_victory()
                     elif rank=="2" :
                         message = "Winner. You Won the Game"
-                        pos = len(self.gameEngine.vehiclelist) - self.gameEngine.deadCounter - 1
+                        pos = len(self.gameEngine.vehiclelist) - self.gameEngine.deadCounter
                         self.Audio.play_victory()
                     else :
-                        message = "Game Over. You Loose else"
+                        message = "Game Over. You Loose "
                         pos = rank
                         self.Audio.play_loser()
 
