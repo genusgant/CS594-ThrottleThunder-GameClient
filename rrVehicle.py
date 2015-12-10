@@ -182,7 +182,8 @@ class Vehicle(object):
             self.LoadBatmobile()
         #elif self.type ==  :
         else:
-            self.LoadHoverboard()
+            print self.type
+            self.LoadBatmobile()
 
         # self.LoadSwiftstar()
 

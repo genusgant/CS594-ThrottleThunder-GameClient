@@ -33,6 +33,7 @@ from Obstruction import Obstruction
 from LoadingScreen import LoadingScreen
 from VehicleAttributes import VehicleAttributes
 from rrTrack import Track
+import rrDayTrack
 from rrAudio import Audio
 # """ Custom Imports """
 # import your modules
@@ -93,6 +94,7 @@ class RRWorldManager():
         self.countdownTime = 5
         self.otherPlayersDataAvailable = False
         self.lobby = lobby
+        self.trackNum = self.lobby.trackNum
         self.isDDGame = False
         self.gameWorld = World(self)
         self.loadinScreen = LoadingScreen(self.gameWorld)
@@ -120,7 +122,7 @@ class RRWorldManager():
         #             self.addPlayer(player, 1, 0, 0, x, y, z, 0, 0, 0)
         #             x += 10
         #             y += 10
-        taskMgr.add(self.startGameTask, "startGameTask")
+        taskMgr.doMethodLater(.1, self.startGameTask, "startGameTask")
 
     def startGameTask(self, task):
 
@@ -161,7 +163,7 @@ class RRWorldManager():
             self.playerList[username] = vehicle
 
         else:
-            VehicleAttributes(username, 0, 0, 0, x, y, z, h, p, r)
+            VehicleAttributes(username, 1, 0, 0, x, y, z, h, p, r)
 
     def startGameSequence(self):
         #self.loadinScreen.imageObject.destroy()
@@ -188,6 +190,7 @@ class World(DirectObject):
 
     def __init__(self, manager):
         # Stores the list of all the others players characters
+        self.trackNum = manager.trackNum
         self.vehiclelist = {}
         self.isActive = False
         self.nodeFilterList = []
@@ -498,7 +501,7 @@ class World(DirectObject):
         base.toggleTexture()
 
     def toggleDebug(self):
-        if self.debugNP.isHidden() and self.isDebug:
+        if self.debugNP.isHidden():
             self.debugNP.show()
         else:
             self.debugNP.hide()
@@ -667,7 +670,10 @@ class World(DirectObject):
         # self.debugNP.node().showNormals(True)
 
         self.world = BulletWorld()
-        Track(self.world)
+        if self.trackNum == 1:
+            Track(self.world)
+        elif self.trackNum == 2:
+            rrDayTrack.Track(self.world)
         self.world.setDebugNode(self.debugNP.node())
 
         # Obstruction

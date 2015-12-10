@@ -18,6 +18,7 @@ def disconnect(world):
 class Menu(ShowBase):
 
     def __init__(self, World):
+        self.trackNum = 0
         self.ddMapTitle = "heightMap"
         #just comment out the two lines below
         #self.appRunner = None#added this to overide the login
@@ -452,11 +453,13 @@ class Menu(ShowBase):
         self.World.queueConnection.sendQueueMessage(2) #2=map3
         print "Screen Map 3"
         self.rr_screen()
+        self.trackNum = 1
 
     def rr_ScreenMap2(self):
         self.World.queueConnection.sendQueueMessage(3) #3=map4
         print "Screen Map 4"
         self.rr_screen()
+        self.trackNum = 2
 
     def carBruiser(self):
         self.enableReady(1) #Bruiser
