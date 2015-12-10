@@ -5,6 +5,7 @@ from direct.gui.OnscreenImage import OnscreenImage
 from panda3d.core import TransparencyAttrib
 import math
 from direct.gui.DirectGui import *
+from Audio import Audio
 
 
 class Dashboard():
@@ -19,6 +20,8 @@ class Dashboard():
         self.otherc={}
 
         self.isGameTimeOver = False
+        self.Audio = Audio(self)
+
 
         # insert total time
         self.game_time = self.countdown_time - self.time_elapsed
@@ -399,31 +402,37 @@ class Dashboard():
                     pos = len(self.gameEngine.vehiclelist) - self.gameEngine.deadCounter
                     # pos = rank[0]
                     message = "Game Over. You Loose if"
+                    self.Audio.play_loser()
 
                 else:
                     # rank = self.getRank().split("/")
                     if rank=="1" :
                         message = "Winner. You Won the Game!"
                         pos = rank
+                        self.Audio.play_victory()
                     elif rank=="2" :
                         message = "Winner. You Won the Game"
                         pos = len(self.gameEngine.vehiclelist) - self.gameEngine.deadCounter - 1
+                        self.Audio.play_victory()
                     else :
                         message = "Game Over. You Loose else"
                         pos = rank
+                        self.Audio.play_loser()
 
 
-                self.ResultFrame = DirectFrame(frameColor=(1,0,0,0.8),frameSize = (-0.75,.75,-.5,.5),pos=(0, 0.0, 0))
+                # self.ResultFrame = DirectFrame(frameColor=(1,0,0,0.8),frameSize = (-0.75,.75,-.5,.5),pos=(0, 0.0, 0))
+
+                self.ResultFrame = OnscreenImage(image='IMAGES/metal frame.png', pos=(0, 0, 0.1), scale=(1, 1, .5))
 
                 self.ResultMessage = OnscreenText(text=message, style=1, fg=(1, 1, 1, 1),
-                    pos=(0,0.1), align=TextNode.ACenter, scale=.1)
+                    pos=(0,0.3), align=TextNode.ACenter, scale=.1)
 
                 position = "Position : "+str(pos)+ "/"+str(len(self.gameEngine.vehiclelist))
 
                 self.ResultPosition = OnscreenText(text=position, style=1, fg=(1, 1, 1, 1),
-                    pos=(0,-0.1), align=TextNode.ACenter, scale=.1)
+                    pos=(0,0), align=TextNode.ACenter, scale=.1)
 
-                self.backToLobby = DirectButton(image = 'IMAGES/enter.png', pos = (0.3, 0, -0.4),  scale = (.17, 1, .03), relief = None, command = self.goLobby)
+                self.backToLobby = DirectButton(text = "Lobby",image = 'IMAGES/buttonunpressed.png', pos = (0.5, 0, -0.15),  scale = (.2, 1, .075), relief = None, command = self.goLobby)
 
 
                 self.screenBtns.append(self.ResultFrame)

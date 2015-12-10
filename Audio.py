@@ -3,6 +3,7 @@ from direct.showbase import Audio3DManager
 from direct.interval.IntervalGlobal import Sequence, SoundInterval
 from panda3d.core import *
 from direct.gui.DirectGui import *
+from time import sleep
 
 
 class Audio(DirectObject):
@@ -29,28 +30,53 @@ class Audio(DirectObject):
 
     def play_music_dd(self):
         # load background music
-        music1 = loader.loadSfx("audio/bg music/DD music/DemoDerbySong.mp3")
-        music1.setVolume(0.1)       
+        self.dd_bg = loader.loadSfx("audio/bg music/DD music/ThrottleThunderSong2.mp3")
+        self.dd_bg.setVolume(0.6)       
 
-        music_seq = Sequence(SoundInterval(music1),name="Music Sequence")
-        music_seq.loop(0.0, -1.0, 1.0)
+        # self.music_seq = Sequence(SoundInterval(music1),name="Music Sequence")
+        # self.music_seq.loop(0.0, -1.0, 1.0)
+        self.dd_bg.setLoop(True)
+        self.dd_bg.play()
+
+
+    def stop_music_dd(self):
+        # self.music_seq.stop()
+        self.dd_bg.setLoop(False)
+        self.dd_bg.stop()
 
 
     def play_collision(self):
         crash = loader.loadSfx("audio/Sounds effects/crashing/crashing4.mp3")
-        crash.setVolume(1) 
+        crash.setVolume(0.7) 
         crash.play()
 
 
     def play_powerup(self):
-        crash = loader.loadSfx("audio/Sounds effects/powerups/powerup1.mp3")
-        crash.setVolume(1) 
-        crash.play()
+        music = loader.loadSfx("audio/Sounds effects/powerups/powerup1.mp3")
+        music.setVolume(0.8) 
+        music.play()
 
 
     def play_brake(self):
+        brake = loader.loadSfx("audio/Sounds effects/braking/braking3.mp3")
+        brake.setVolume(0.7) 
+        brake.play()
+
+    def play_victory(self):
+        music = loader.loadSfx("audio/victory music/victory1.ogg")
+        music.setVolume(0.8) 
+        sleep(2)
+        music.play()
+
+    def play_loser(self):
+        music = loader.loadSfx("audio/lose music/Losing Horn.mp3")
+        music.setVolume(0.8) 
+        sleep(2)
+        music.play()
+
+    def play_brake(self):
         crash = loader.loadSfx("audio/Sounds effects/braking/braking3.mp3")
-        crash.setVolume(1) 
+        crash.setVolume(0.8) 
         crash.play()
 
         
@@ -69,6 +95,7 @@ class Audio(DirectObject):
     def StopAudioManager(self):
 
         self.engineSound.stop()
+        
 
 
 
@@ -90,6 +117,7 @@ class Audio(DirectObject):
         self.audioManager.attachSoundToObject(self.engineSound, vehicleContainer.chassisNP)
         self.engineSound.setLoop(True)
         self.engineSound.setPlayRate(0.6)
+        self.engineSound.setVolume(0.4)
         self.engineSound.play()
 
         self.gearSpacing = (vehicleContainer.specs['maxSpeed'] / 4)

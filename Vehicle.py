@@ -16,6 +16,7 @@ from panda3d.bullet import ZUp
 import time
 from direct.particles.ParticleEffect import ParticleEffect
 from common.Constants import Constants
+from Audio import Audio
 
 import math
 
@@ -112,6 +113,7 @@ class Vehicle(object):
         self.boostStep = 2
         self.boostDuration = 0
         self.moveStartTime = self.startTime = self.boostStartTime = time.time()
+        self.Audio = Audio(self)
         self.pos = pos
         self.boostFactor = 1.2
         self.props = VehicleProps(carId)
@@ -231,10 +233,11 @@ class Vehicle(object):
             else:
                 self.vehicleControlState["reverse"] = False
                 self.vehicleControlState["brake"] = 1.0
+
         else:
             self.vehicleControlState["reverse"] = False
             self.vehicleControlState["brake"] = 0.0
-
+            # self.Audio.play_brake()
         # steering is normalised from -1 to 1, corresponding
         # to the steering lock right and left
         steering = self.vehicleControlState["steering"]
